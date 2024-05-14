@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-lg fixed-top"style="background-color: #0ABBEF;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/"><font style="vertical-align: inherit;"><img src="https://upload.wikimedia.org/wikipedia/fr/thumb/b/b9/Universit%C3%A9_d%27Angers_%28logo%29.svg/640px-Universit%C3%A9_d%27Angers_%28logo%29.svg.png" width="50px"> </font></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto"> 
+        <li class="nav-item list">
+          <a class="nav-link" href="{{path('app_etudiant')}}"><font style="vertical-align: inherit;margin-left:30px;"><B>Étudiants</B></font></a>
+        </li>
+        <li class="nav-item list">
+          <a class="nav-link" href="{{path('app_maquette')}}"><font style="vertical-align: inherit;margin-left:30px;"><B>maquettes</B></font></a>
+        </li>
+         <li class="nav-item list">
+          <a class="nav-link" href="{{path('app_maquette')}}"><font style="vertical-align: inherit;margin-left:30px;"><B>Statistiques</B></font></a>
+        </li>
+       <!-- <li class="nav-item">
+          <a class="nav-link" href="#"><font style="vertical-align: inherit;margin-left:30px;"><img src="https://cdn-icons-png.flaticon.com/512/2948/2948059.png" width="40px" title="A propos" > </font></a>
+
+          </li> -->
+    
+      </ul>
+    </div>
+  </div>
+</nav>
+<br><br><br><br>
+
+
+<style>
+      .nav-link{
+  
+        }
+        .list{
+            display:flex;
+            flex-direction:column;
+  
+      }
+          .dropdown-menu {
+            display: none;
+            position: absolute;
+            z-index: 9999;
+            min-width: 100%;
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+        }
+
+        .form-control:focus + .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-item:hover {
+            background-color: #e9ecef;
+        }
+
+</style>

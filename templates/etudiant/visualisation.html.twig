@@ -1,0 +1,117 @@
+{% extends "base.html.twig" %}
+{% block stylesheets %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #003B73;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .table th,
+        .table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .table th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+        .table tbody tr:nth-of-type(even) {
+            background-color: #f2f2f2;
+        }
+        .table tbody tr:hover {
+            background-color: #ddd;
+        }
+        .total {
+            color: #4CAF50;
+            font-size: 18px;
+            background-color: #e8f5e9;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        #search-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        #search-bar {
+            width: 30%;
+            padding: 8px 36px 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%234CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+{% set total = 0 %}
+    <div id="search-container">
+        <input type="text" id="search-bar" placeholder="Rechercher un étudiant..." onkeyup="searchStudent()">
+    </div>
+    <table class="table table-bordered table-hover" id="student-table">
+        <thead>
+            <tr>
+                <th>Numéro Étudiant</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Voir plus</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for etudiant in etudiants %}
+                <tr>
+                    <td>{{ etudiant.getNumetd }}</td>
+                    <td>{{ etudiant.getNom }}</td>
+                    <td>
+                            {{ etudiant.getPrenom }}
+                        
+                    </td>
+                    <td>
+                        <a href="mailto:{{ etudiant.getEmail }}">
+                            {{ etudiant.getEmail }}
+                        </a>
+                    </td>
+                        <td><a href="{{ path('etudiant_visual', {'numetd': etudiant.getNumetd}) }}">information-resultat</a></td>
+                </tr>
+                {% set total = total + 1 %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function searchStudent() {
+            const input = document.getElementById('search-bar');
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById('student-table');
+            const tr = table.getElementsByTagName('tr');
+
+            for (let i = 0; i < tr.length; i++) {
+                const td = tr[i].getElementsByTagName('td');
+                let found = false;
+
+                for (let j = 0; j < td.length; j++) {
+                    if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        found = true;
+                    }
+                }
+
+                if (found) {
+                    tr[i].style.display = '';
+                } else {
+                    tr[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+{% endblock body %}

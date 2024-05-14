@@ -1,0 +1,98 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+<style>
+   body {
+    font-family: Arial, sans-serif;
+    background-color: #003B73;
+}
+
+.form-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    font-size: 30px;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 30px;
+}
+
+.form-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+}
+
+.form-error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+}
+
+.form-container img {
+    display: block;
+    margin: 30px auto;
+    max-width: 100%;
+    height: auto;
+}
+
+</style>
+{% endblock stylesheets %}
+
+{% block body %}
+    <div class="form-container">
+        <h1 style="text-align:center; font-size:30px;">Insertion des notes reçus par émail </h1>
+        <p>Vos données doivent obligatoirement correspondre aux formats ci-dessous :</p>
+        <img src="/note.png" alt="Exemple de format de données">
+        {{ form_start(form) }}
+        <div class="form-group">
+            {{ form_label(form.email_data) }}
+            {{ form_widget(form.email_data) }}
+            <div class="form-error">
+                {{ form_errors(form.email_data) }}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock body %}
+

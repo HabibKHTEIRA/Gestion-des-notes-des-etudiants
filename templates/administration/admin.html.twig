@@ -1,0 +1,176 @@
+{% extends "base.html.twig" %}
+{% block title %}Page d'Administration{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+  body {
+    background-color: #003B73;
+    font-family: 'Roboto', sans-serif;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.btn-custom {
+    background-color: #1abc9c;
+    border: none;
+    color: #ffffff;
+    padding: 0 30px;
+    font-size: 20px;
+    margin: 0 10px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 90px;
+    width: 200px;
+}
+
+.btn-custom:hover {
+    background-color: #16a085;
+}
+
+.btn-custom:focus {
+    outline: none;
+}
+
+.btn-container a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+}
+
+/* Ajout de la classe .nav-right */
+.nav-right {
+    margin-left: auto;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 100%;
+}
+
+.flex-item {
+    flex-basis: calc(25% - 20px);
+    margin: 10px;
+}
+
+.filiere-box {
+    display: inline-block;
+    width: 100%;
+    height: 200px;
+    text-align: center;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    background-color:#BFD7ED;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.filiere-head {
+    background-color: #ff9800;
+    color: #fff;
+    padding: 10px 0;
+    border-radius: 10px 10px 0 0;
+}
+
+.filiere-body {
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+    background-color: #BFD7ED;
+}
+
+.link-box {
+    display: inline-block;
+    width: 100px;
+    height: 50px;
+    background-color: #1abc9c;
+    margin: 10px;
+    line-height: 50px;
+    text-align: center;
+    color: #fff;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.link-box:hover {
+    background-color: #16a085;
+}
+
+.link-box a {
+    color: #fff;
+    text-decoration: none;
+}
+
+
+</style>
+{% endblock %}
+{% block body %}
+<nav class="navbar navbar-expand-lg fixed-top" style="background-color: #0ABBEF;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><img src="https://upload.wikimedia.org/wikipedia/fr/thumb/b/b9/Universit%C3%A9_d%27Angers_%28logo%29.svg/640px-Universit%C3%A9_d%27Angers_%28logo%29.svg.png" width="50px" alt="Logo de l'université d'Angers"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav nav-right"> <!-- Ajout de la classe .nav-right -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_admin_user') }}"><strong>Utilisateurs</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_etudiant') }}"><strong>Étudiants</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_maquette') }}"><strong>Maquettes</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_maquette') }}"><strong>Statistiques</strong></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br><br><br><br>
+   
+</div>
+    <div class="flex-container">
+    {% for filiere in filieres %}
+        <div class="flex-item">
+            <div class="filiere-box">
+                <div class="filiere-head" style="background-color:#0ABBEF;">
+                    <b> Gestion de la {{ filiere }}</b>
+                </div>
+                <div class="filiere-body">
+                    <div class="link-box">
+                        <a href="{{ path('app_etudiant_particulier' , {'codefiliere' : filiere.codefiliere }) }}">Étudiants</a>
+                    </div>
+                    <div class="link-box">
+                        <a href="{{ path('app_maquette_particulier' ,{'codefiliere' : filiere.codefiliere }) }}">Maquette</a>
+                    </div>
+                    <div class="link-box">
+                        <a href="{{ path('app_maquette_particulier' , {'codefiliere' : filiere.codefiliere }) }}">Statistiques</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

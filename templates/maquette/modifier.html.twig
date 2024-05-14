@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MaquetteController!{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block body %}
+    <br><br><br><br>
+    <table class="table table-striped table-bordered">
+        <tr>
+            <th colspan="4">Filiere: {{ filiere.nomFiliere }}</th>
+        </tr>
+        {% for bloc in filiere.getBlocs() %}
+            <tr>
+                <td class="block" colspan="3">Block: {{ bloc.nomBloc }}</td>
+                <td>Note Plancher: {{ bloc.notePlancher }}</td>
+            </tr>
+            {% for unite in bloc.getUnites() %}
+                <tr>
+                    <td colspan="3">Unite: {{ unite.nomUnite }} </td>
+                    <td>Coeficient: {{ unite.coeficient }}</td>
+                </tr>
+                {% for matiere in unite.getMatieres() %}
+                    <tr>
+                        <td class="periode">{{ matiere.periode }}</td>
+                        <td colspan="2">{{ matiere.nomMat }}</td>
+                        <td>
+                            {% for epreuve in matiere.getEpreuves() %}
+                                {{ epreuve.typeEpreuve }} {{ epreuve.duree }} min<br>
+                            {% endfor %}
+                            <a href="{{ path('epreuve.ajouter', {'codematiere': matiere.codemat}) }}">ajouter une épreuve</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="4"><a href="{{ path('matiere.ajouter', {'codeunite': unite.codeunite}) }}">ajouter une matière</a></td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="4"><a href="{{ path('unite.ajouter', {'codebloc': bloc.codebloc}) }}">ajouter une unité</a></td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="4"><a href="{{ path('bloc.ajouter', {'codefiliere': filiere.codefiliere}) }}">ajouter un bloc</a></td>
+        </tr>
+    </table>
+{% endblock %}

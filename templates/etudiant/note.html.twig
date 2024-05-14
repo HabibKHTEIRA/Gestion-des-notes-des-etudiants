@@ -1,0 +1,66 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            background-color:#003B73;
+        }
+
+        .container {
+            max-width: 600px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .btn-custom {
+            background-color: #1abc9c; /* Couleur du bouton */
+            border: none;
+            color: #ffffff; /* Couleur de texte */
+            padding: 0 30px;
+            font-size: 20px;
+            margin: 0 10px;
+            border-radius: 25px; /* Ajuster le rayon des bords pour créer une forme ovale */
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: row; /* Revenir à la disposition par défaut (ligne) */
+            align-items: center;
+            justify-content: center;
+            height: 90px; /* Définir une hauteur fixe pour les boutons */
+            width: 210px;
+        }
+
+        .btn-custom:hover {
+            background-color: #16a085; /* Couleur du bouton au survol */
+        }
+
+        .btn-custom:focus {
+            outline: none;
+        }
+
+        .btn-icon {
+            margin-right: 5px; /* Ajouter une marge à droite de l'icône pour la séparer du texte */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="btn-container">
+            <a class="btn btn-custom" href="{{ path('insertion_mail') }}">
+                Insertion par email
+            </a>
+            <a class="btn btn-custom" href="{{ path('insertion_file') }}">
+                Insertion par fichier csv
+            </a>
+        </div>
+    </div>
+{% endblock body %}

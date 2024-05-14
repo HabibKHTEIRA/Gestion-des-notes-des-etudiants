@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        <p style="text-align:center;color:green;">Bienvenue {{app.user.firstname}}</p>    
+        {% else %}
+        <p style="text-align:center;">Bienvenue</p>
+    {% endif %}
+{% endblock %}

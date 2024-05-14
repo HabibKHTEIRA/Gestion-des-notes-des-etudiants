@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+<style>
+   body{
+        background-color:#003B73;
+   }
+    .form-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 30px;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 30px;
+    }
+
+    .form-control {
+        width: 100%;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: 600;
+    }
+
+    .required-field {
+        color: red;
+    }
+
+    .table-container {
+        margin-top: 50px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="form-container">
+    <h1 style="text-align:center; font-size:30px;">Importation d'un fichier CSV contenant les étudiants</h1>
+    {{ form_start(form) }}
+    <div class="form-group">
+        {{ form_label(form.csv_file) }}
+        {{ form_widget(form.csv_file) }}
+        <div class="form-error">
+            {{ form_errors(form.csv_file) }}
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Importer</button>
+    {{ form_end(form) }}
+</div>
+
+<div class="table-container">
+    <small>
+        <br><br><b style="color:black;">Le fichier CSV doit comporter les entêtes suivantes:<br>
+        Les entêtes en rouge sont obligatoires et leurs données doivent être renseignées</b><br><br>
+        <table>
+            <tr>
+                <th title="correspond au code étudiant" class="required-field">Cod.etu.</th>
+                <th title="correspond au type de bac obtenu">bac</th>
+                <th title="correspond à la mention du bac">mention</th>
+                <th title="correspond au prénom de l'étudiant" class="required-field">Prenom</th>
+                <th title="voici les valeurs à saisir : M pour Masculin, F pour Féminin, A pour Autre" class="required-field">sexe</th>
+                <th title="correspond au nom de l'étudiant" class="required-field">nomUsu.</th>
+                <th title="correspond à la date de naissance de l'étudiant" class="required-field">date nai.</th>
+                <th title="correspond à la ville de naissance de l'étudiant" class="required-field">vil.nai.</th>
+                <th title="correspond au département de naissance de l'étudiant">dep.nai.</th>
+                <th class="required-field">nation.</th>
+                <th title="correspond au numéro de portable de l'étudiant">port.</th>
+                <th title="correspond au dernier diplôme obtenu par l'étudiant">Der.Dip</th>
+                <th title="correspond à son statut au sein de l'université" class="required-field">Statut</th>
+                <th title="correspond à sa date d'inscription à la filière en cours" class="required-field">D.Ins.</th>
+                <th class="required-field">Email</th>
+                <th title="correspond au numéro de l'élément filière suivi par l'étudiant">etp</th>
+                <th title="correspond au libellé ou nom de la filière suivie par l'étudiant">lib.etp</th>
+            </tr>
+        </table>
+    </small>
+</div>
+
+
+{% endblock %}

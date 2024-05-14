@@ -1,0 +1,63 @@
+{% extends "base.html.twig" %}
+{% block stylesheets %}
+    <style>
+        /* CSS personnalisé pour les notes */
+        .note-green {
+            color: rgb(23, 229, 23);
+        }
+        .note-red {
+            color: rgb(242, 5, 5);
+        }
+        /* Sélecteur plus spécifique pour les cellules de note */
+        .table-striped .note-green {
+            color: rgb(23, 229, 23);
+        }
+        .table-striped .note-red {
+            color: rgb(242, 5, 5);
+        }
+        .total {
+            color: green;
+            font-size: 18px;
+            background-color: #f2f9f2;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+{% set total = 0 %}
+    <p style="text-align: center; text-decoration: underline; font-size:20px;"><b>Les statistiques sur cette insertion</b></p>
+    <div>
+        <p style="font-size:15px;"><b>Epreuve</b> : {{ type }} du {{ nommat }} </p>
+        <p style="font-size:15px;"><b>Nombre des étudiants </b>: {{ long }}</p>
+        <p style="font-size:15px;"><b>Moyenne générale </b>: {{ moyen }}</p>
+        <p style="font-size:15px;" > <b>Nombre des étudiants qui ont eu une note >= à la moyenne :</b> {{ compteurmoy }}</p>
+        <p style="font-size:15px;"><b>Nombre des étudiants qui ont validé : </b>{{ compteurval }}</p>
+    </div>
+    <br>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Numéro Étudiant</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Note</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for note in notes %}
+                <tr>
+                    <td>{{ note.getEtudiant.getNumetd }}</td>
+                    <td>{{ note.getEtudiant.getNom }}</td>
+                    <td>{{ note.getEtudiant.getPrenom }}</td>
+                    <td class="{% if note.note > 10 %}note-green{% else %}note-red{% endif %}">
+                        {{ note.note }}
+                    </td>
+                </tr>
+                {% set total = total + 1 %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <p class="total">Nombre total de notes insérées avec succès : <b>{{ total }}</b></p>
+{% endblock body %}

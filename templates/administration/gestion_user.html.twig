@@ -1,0 +1,161 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateurs en attente {% endblock %}
+
+{% block stylesheets %}
+    {# Include Bootstrap CSS if it's not already included #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU" crossorigin="anonymous">
+
+    <style>
+    body {
+            font-family: Arial, sans-serif;
+            background-color:#003B73;
+        }
+        .table .block {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #333;
+        }
+        .table td.unite {
+            font-size: 1.1em;
+            color: rgb(13, 95, 210);
+            background-color: rgb(209, 235, 242) !important;
+        }
+        .table .periode {
+            font-size: 1em;
+        }
+        .table td.periode-P6 {
+            background-color: pink !important;
+            width: 10px;
+        }
+        .table td.periode-P7 {
+            background-color: blue !important;
+        }
+        .table td.periode-P8 {
+            background-color: green !important;
+        }
+        .table td.periode-P9 {
+            background-color: blueviolet !important;
+        }
+        .table td.periode-P10 {
+            background-color: red !important;
+        }
+        .table .type-epreuve-1 {
+            color: green;
+        }
+        .table .type-epreuve-2 {
+            color: purple;
+        }
+        th{
+            background-color: aqua;
+        }
+        button {
+    padding: 5px 10px; /* réduire le rembourrage intérieur du bouton */
+    font-size: 0.8em; /* réduire la taille de la police du bouton */
+    border-radius: 20px; /* arrondir les coins du bouton */
+    display: block; /* afficher le bouton comme un bloc pour pouvoir le centrer */
+    margin: 0 auto; /* centrer le bouton horizontalement dans la cellule */
+}
+
+/* Ajoutez des styles pour les boutons verts et rouges */
+button.ajouter {
+    background-color: greenyellow;
+    color: black;
+}
+
+button.delete {
+    background-color: red;
+    color: black;
+}
+
+    </style>
+{% endblock %}
+
+{% block body %}
+    <br><br><br><br>
+     <p style="text-align:center ; color : white;"><b> Nouveaux utilisateurs en attente de validation </b></p>
+        <table id="pending-users-table" class="table table-bordered table-hover table-sm">
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.firstname }}</td>
+                        <td>{{ user.lastname }}</td>
+                        <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+                        <td><button id="refuse-{{ user.firstname }}" class="delete" data-id="{{ user.id }}" data-action="delete" >Réfus</button></td>
+                        <td><button id="confirm-{{ user.firstname }}" class="ajouter" data-id="{{ user.id }}" data-action="confirm">Confirmation</button></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+     <p style="text-align:center ; color : white;"><b> Utilisateurs </b></p>
+        <table id="validated-users-table" class="table table-bordered table-hover table-sm">
+            {% for user in user_validate %}>
+            <tr>
+                <td>{{ user.firstname }}</td>
+                        <td>{{ user.lastname }}</td>
+                        <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    <script>
+       // Sélectionner tous les boutons de suppression
+const deleteButtons = document.querySelectorAll('.delete');
+
+// Boucler sur chaque bouton de suppression
+deleteButtons.forEach((button) => {
+    // Ajouter un écouteur d'événement de clic à chaque bouton
+    button.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        // Récupérer l'ID de l'utilisateur et l'action à effectuer
+        const userFirstname = event.target.id.split('-')[1];
+
+        // Effectuer la requête AJAX
+        fetch('/administration/user/user/' + userFirstname + '/delete', {
+            method: 'POST',
+        }).then(() => {
+            // Supprimer la ligne du tableau
+            event.target.closest('tr').remove();
+        });
+    });
+});
+
+// Sélectionner tous les boutons de confirmation
+const confirmButtons = document.querySelectorAll('.ajouter');
+
+// Boucler sur chaque bouton de confirmation
+confirmButtons.forEach((button) => {
+    // Ajouter un écouteur d'événement de clic à chaque bouton
+    button.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        // Récupérer l'ID de l'utilisateur et l'action à effectuer
+        const userFirstname = event.target.id.split('-')[1];
+
+        // Effectuer la requête AJAX
+        fetch('/administration/user/user/' + userFirstname + '/confirm', {
+            method: 'POST',
+        }).then(() => {
+            // Déplacer la ligne vers le tableau des utilisateurs validés
+            moveRowToValidatedUsers(event.target.closest('tr'));
+        });
+    });
+});
+
+function moveRowToValidatedUsers(row) {
+    // Cloner la ligne
+    const clonedRow = row.cloneNode(true);
+
+    // Supprimer les cellules contenant les boutons "Refus" et "Confirmation"
+    clonedRow.querySelectorAll('td:last-child, td:nth-last-child(2)').forEach((cell) => cell.remove());
+
+    // Ajouter la ligne clonée au tableau des utilisateurs validés
+    document.querySelector('#validated-users-table tbody').appendChild(clonedRow);
+
+    // Supprimer la ligne d'origine du tableau des utilisateurs en attente
+    row.remove();
+}
+
+    </script>
+{% endblock %}

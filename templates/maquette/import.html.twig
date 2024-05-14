@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+<style>
+   body{font-family: Arial, sans-serif;
+        background-color: #003B73;
+   }
+    .form-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 30px;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 30px;
+    }
+
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="form-container">
+    <h1 style="text-align:center; font-size:30px;">Importation d'un fichier CSV contenant les étudiants</h1>
+    {{ form_start(form) }}
+    <div class="form-group">
+        {{ form_label(form.xml_file) }}
+        {{ form_widget(form.xml_file) }}
+        <div class="form-error">
+            {{ form_errors(form.xml_file) }}
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Importer</button>
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}

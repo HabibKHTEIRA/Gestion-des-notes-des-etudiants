@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MaquetteController!{% endblock %}
+
+{% block stylesheets %}
+    {# Include Bootstrap CSS if it's not already included #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU" crossorigin="anonymous">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #003B73;
+        }
+        .table .block {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #333;
+        }
+        .table td.unite {
+            font-size: 1.1em;
+            color: rgb(13, 95, 210);
+            background-color: rgb(209, 235, 242) !important;
+        }
+        .table .periode {
+            font-size: 1em;
+        }
+        .table td.periode-P6 {
+            background-color: pink !important;
+            width: 10px;
+        }
+        .table td.periode-P7 {
+            background-color: blue !important;
+        }
+        .table td.periode-P8 {
+            background-color: green !important;
+        }
+        .table td.periode-P9 {
+            background-color: blueviolet !important;
+        }
+        .table td.periode-P10 {
+            background-color: red !important;
+        }
+        .table .type-epreuve-1 {
+            color: green;
+        }
+        .table .type-epreuve-2 {
+            color: purple;
+        }
+
+        /* Ajoutez ce code CSS pour les boutons */
+        a.bouton {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 1em;
+            font-weight: bold;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        a.bouton-import-maquette {
+            background-color: #007bff;
+        }
+
+        a.bouton-import-codes {
+            background-color: #28a745;
+        }
+
+        a.bouton-autre-lien {
+            background-color: #dc3545;
+        }
+
+        a.bouton:hover {
+            background-color: #333;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <br><br><br><br>
+     <a href="{{ url(path2) }}" class="bouton bouton-autre-lien">{{ message2 }}</a><br>
+    <a href="{{ url('maquette_importer') }}" class="bouton bouton-import-maquette">Importer une maquette par fichier</a><br>
+    <a href="{{ url('codes_importer') }}" class="bouton bouton-import-codes">Importer les codes par fichier</a><br>
+    {% for filiere in filieres %}
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th colspan="5">Filière: {{ filiere.nomFiliere }}</th>
+            </tr>
+            {% for bloc in filiere.getBlocs() %}
+                <tr>
+                    <td class="block" colspan="5"> {{ bloc.nomBloc }}</td>
+                </tr>
+                {% for unite in bloc.getUnites() %}
+                    <tr>
+                        <td class="unite" colspan="5"> {{ unite.nomUnite }} (Coeficient: {{ unite.coeficient }})</td>
+                    </tr>
+                    {% set nombreMatiere = unite.getMatieres()|length %}
+                    {% for matiere in unite.getMatieres() %}
+                        <tr>
+                            <td class="periode periode-P{{ matiere.periode }}">{{ matiere.periode }}</td>
+                            <td colspan="2">{{ matiere.nomMat }}</td>
+                            <td>
+                                {% for epreuve in matiere.getEpreuves() %}
+                                    {% if epreuve.numchance == 1 %}
+                                        <span class="type-epreuve-{{ epreuve.typeEpreuve }}">{{ epreuve.pourcentage }}% {{ epreuve.duree }}<br></span>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            {% for epreuve in matiere.getEpreuves() %}
+                                {% if epreuve.numchance == 2 %}
+                                    <td rowspan="{{ nombreMatiere }}">
+                                        <span class="type-epreuve-{{ epreuve.typeEpreuve }}">{{ epreuve.pourcentage }}% {{ epreuve.duree }}<br></span>
+                                    </td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+        </table>
+    {% endfor %}
+{% endblock %}

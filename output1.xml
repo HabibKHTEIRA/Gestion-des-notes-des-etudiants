@@ -1,0 +1,294 @@
+<?xml version='1.0' encoding='utf-8'?>
+<data>
+    <record>
+        <field_0>Année universitaire : 2023-2024</field_0>
+        <field_2>Intitulé de l'étape (sans abréviations)</field_2>
+    </record>
+    <record>
+        <field_0>CFVU du :</field_0>
+        <field_24>L1 MI</field_24>
+    </record>
+    <record>
+        <field_0>Effectif prévisionnel : ?</field_0>
+        <field_2>Spécialité ou Parcours</field_2>
+    </record>
+    <record>
+        <field_0>V.D.I. : code à définir (pôle modélisation)</field_0>
+    </record>
+    <record>
+        <field_0>V.E.T. : code à définir (pôle modélisation)</field_0>
+    </record>
+    <record>
+        <field_0>Intitulés </field_0>
+        <field_1>Nature</field_1>
+        <field_2>CODE CNU</field_2>
+        <field_3>Participe aux charges</field_3>
+        <field_4>Mutualisé (préciser en remarque avec quelle(s) formations)</field_4>
+        <field_5>Nbre d'heures </field_5>
+        <field_11>ECTS</field_11>
+        <field_12>Coef</field_12>
+        <field_13>MCC P1</field_13>
+        <field_17>MCC P2</field_17>
+        <field_21>MCC E1 - chance 2</field_21>
+        <field_27>MCC P3</field_27>
+        <field_31>MCC P4</field_31>
+        <field_35>MCC P5</field_35>
+        <field_39>MCC E2 - chance 2</field_39>
+        <field_45>Remarques (cours communs, validation en présentiel, notes plancher, report de note établissements co-accrédités)</field_45>
+    </record>
+    <record>
+        <field_5>CM</field_5>
+        <field_6>TD</field_6>
+        <field_7>CM/TD</field_7>
+        <field_8>TP</field_8>
+        <field_9>Travail de groupes /projet</field_9>
+        <field_10>Total</field_10>
+        <field_13>Assidu</field_13>
+        <field_15>DA</field_15>
+        <field_17>Assidu</field_17>
+        <field_19>DA</field_19>
+        <field_21>Assidu</field_21>
+        <field_24>DA</field_24>
+        <field_27>Assidu</field_27>
+        <field_29>DA</field_29>
+        <field_31>Assidu</field_31>
+        <field_33>DA</field_33>
+        <field_35>Assidu</field_35>
+        <field_37>DA</field_37>
+        <field_39>Assidu</field_39>
+        <field_42>DA</field_42>
+    </record>
+    <record>
+        <field_3>O/N</field_3>
+        <field_4>O/N</field_4>
+        <field_5>Nombre d'Heures </field_5>
+        <field_6>Nombre d'Heures </field_6>
+        <field_7>Nombre d'Heures </field_7>
+        <field_8>Nombre d'Heures </field_8>
+        <field_9>Nombre d'Heures estimé </field_9>
+        <field_10>Heures/ étudiant</field_10>
+        <field_13>Nature épreuve + (coeff)</field_13>
+        <field_14>Durée</field_14>
+        <field_15>Nature épreuve + (coeff)</field_15>
+        <field_16>Durée</field_16>
+        <field_17>Nature épreuve + (coeff)</field_17>
+        <field_18>Durée</field_18>
+        <field_19>Nature épreuve + (coeff)</field_19>
+        <field_20>Durée</field_20>
+        <field_21>Nature épreuve + (coeff)</field_21>
+        <field_22>Durée</field_22>
+        <field_23>Report O/N</field_23>
+        <field_24>Nature épreuve + (coeff)</field_24>
+        <field_25>Durée</field_25>
+        <field_26>Report O/N</field_26>
+        <field_27>Nature épreuve + (coeff)</field_27>
+        <field_28>Durée</field_28>
+        <field_29>Nature épreuve + (coeff)</field_29>
+        <field_30>Durée</field_30>
+        <field_31>Nature épreuve + (coeff)</field_31>
+        <field_32>Durée</field_32>
+        <field_33>Nature épreuve + (coeff)</field_33>
+        <field_34>Durée</field_34>
+        <field_35>Nature épreuve + (coeff)</field_35>
+        <field_36>Durée</field_36>
+        <field_37>Nature épreuve + (coeff)</field_37>
+        <field_38>Durée</field_38>
+        <field_39>Nature épreuve + (coeff)</field_39>
+        <field_40>Durée</field_40>
+        <field_41>Report O/N</field_41>
+        <field_42>Nature épreuve + (coeff)</field_42>
+        <field_43>Durée</field_43>
+        <field_44>Report O/N</field_44>
+    </record>
+    <record>
+        <field_0>Choix de un parcours parmi MI-I MI-M</field_0>
+        <field_3>N</field_3>
+    </record>
+    <record>
+        <field_0>MI-Informatique (MI-I)</field_0>
+        <field_1>SOCL</field_1><field_3>N</field_3>
+    </record>
+    <record><field_0>Anglais 1</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-M, M*PC-M, M*PC-PC, MPC-PC</field_4><field_11>2</field_11><field_12>2</field_12></record>
+    <record>
+        <field_0>Anglais 1 (1/2)</field_0>
+        <field_1>MATI</field_1>
+        <field_2>11</field_2>
+        <field_3>O</field_3>
+        <field_6>=4/3</field_6>
+        <field_8>=5*4/3</field_8>
+        <field_10>=SUM(F12:I12)</field_10>
+        <field_17>CC 100%</field_17>
+        <field_18>1h20</field_18>
+        <field_19>CC 100%</field_19>
+        <field_20>1h20</field_20>
+        <field_21>CT 100%</field_21>
+        <field_22>1h</field_22>
+        <field_24>CT 100%</field_24>
+        <field_25>1h</field_25>
+    </record>
+    <record><field_0>Anglais 1 (2/2)</field_0><field_1>MATI</field_1><field_2>11</field_2><field_3>O</field_3><field_6>=4/3</field_6><field_8>=5*4/3</field_8><field_10>=SUM(F13:I13)</field_10></record>
+    <record><field_0>Anglais </field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-M, M*PC-M, M*PC-PC, MPC-PC</field_4><field_11>3</field_11><field_12>1</field_12></record>
+    <record><field_0>Anglais  P3</field_0><field_1>MATI</field_1><field_2>11</field_2><field_3>O</field_3><field_6>=4/3</field_6><field_8>=5*4/3</field_8><field_10>=SUM(F15:I15)</field_10><field_31>CC 100%</field_31><field_32>1h20</field_32><field_33>CC 100%</field_33><field_34>1h20</field_34><field_39>CT 100%</field_39><field_40>1h</field_40><field_42>CT 100%</field_42><field_43>1h</field_43></record>
+    <record><field_0>Anglais  P4</field_0><field_1>MATI</field_1><field_2>11</field_2><field_3>O</field_3><field_6>=4/3</field_6><field_8>=5*4/3</field_8><field_10>=SUM(F16:I16)</field_10></record>
+    <record><field_0>Expression écrite et orale</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-M, M*PC-M, M*PC-PC, MPC-PC</field_4><field_11>2</field_11><field_12>2</field_12></record>
+    <record><field_0>Expression écrite et orale P1</field_0><field_1>MATI</field_1><field_2>9</field_2><field_3>O</field_3><field_7>=5*4/3</field_7><field_10>=SUM(F18:I18)</field_10><field_17>CC 100%</field_17><field_18>1h30</field_18><field_19>CC 100%</field_19><field_20>1h30</field_20><field_21>CT 100%</field_21><field_22>1h</field_22><field_24>CT 100%</field_24><field_25>1h</field_25></record>
+    <record><field_0>Expression écrite et orale P2</field_0><field_1>MATI</field_1><field_2>9</field_2><field_3>O</field_3><field_7>=2*4/3</field_7><field_8>=2*4/3</field_8><field_10>=SUM(F19:I19)</field_10></record>
+    <record><field_0>Projet personnel et professionnel</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-M, M*PC-M, M*PC-PC, MPC-PC</field_4><field_11>1</field_11><field_12>1</field_12></record>
+    <record><field_0>Projet personnel et professionnel P3</field_0><field_1>MATI</field_1><field_3>O</field_3><field_6>=2*4/3</field_6><field_10>=SUM(F21:I21)</field_10><field_31>CC 100%</field_31><field_32>1h</field_32><field_33>CC 100%</field_33><field_34>1h</field_34><field_39>CT 100%</field_39><field_40>1h</field_40><field_42>CT 100%</field_42><field_43>1h</field_43></record>
+    <record><field_0>Projet personnel et professionnel P4</field_0><field_1>MATI</field_1><field_3>O</field_3><field_6>=2*4/3</field_6><field_8>=4/3</field_8><field_10>=SUM(F22:I22)</field_10></record>
+    <record><field_0>Culture numérique</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-M, M*PC-M, M*PC-PC, MPC-PC</field_4><field_11>1</field_11><field_12>1</field_12></record>
+    <record><field_0>Culture numérique P1</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_8>8</field_8><field_10>=SUM(F24:I24)</field_10><field_13>TP 100%</field_13><field_14>1h</field_14><field_15>TP 100%</field_15><field_16>1h</field_16><field_21>TP 100%</field_21><field_22>1h</field_22><field_24>TP 100%</field_24><field_25>1h</field_25></record>
+    <record><field_0>Concrétisation</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>-</field_4><field_11>5</field_11><field_12>5</field_12></record>
+    <record><field_0>Concrétisation P5</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>-</field_4><field_5>4</field_5><field_8>36</field_8><field_10>=SUM(F26:I26)</field_10><field_35>CC 100%</field_35><field_36>-</field_36><field_37>CC 100%</field_37><field_38>-</field_38><field_39>-</field_39><field_40>-</field_40><field_42>-</field_42><field_43>-</field_43><field_45>Pas de seconde chance</field_45></record>
+    <record><field_0>BLOC Mathématiques</field_0><field_1>BLCT</field_1><field_3>N</field_3><field_11>=SUM(L28:L35)</field_11><field_12>=SUM(M28:M35)</field_12><field_45>Note plancher : 5</field_45></record>
+    <record>
+        <field_0>Analyse élémentaire </field_0>
+        <field_1>UE</field_1>
+        <field_3>N</field_3>
+        <field_4>MI-M, M*PC-M, M*PC-PC</field_4>
+        <field_11>5</field_11>
+        <field_12>5</field_12>
+    </record>
+    <record>
+        <field_0>Analyse élémentaire P1</field_0>
+        <field_1>MATI</field_1>
+        <field_2>25</field_2>
+        <field_3>O</field_3>
+        <field_4>"</field_4>
+        <field_7>24</field_7>
+        <field_10>=SUM(F29:I29)</field_10>
+        <field_13>CC 33%</field_13>
+        <field_14>1h30</field_14>
+        <field_15>CC 33%</field_15>
+        <field_16>1h30</field_16>
+        <field_21>CT 100%</field_21>
+        <field_22>2h</field_22>
+        <field_24>CT 100%</field_24>
+        <field_25>2h</field_25>
+    </record>
+    <record>
+        <field_0>Analyse élémentaire  P2</field_0>
+        <field_1>MATI</field_1>
+        <field_2>25</field_2>
+        <field_3>O</field_3>
+        <field_4>"</field_4>
+        <field_7>25.3</field_7>
+        <field_10>=SUM(F30:I30)</field_10>
+        <field_17>CC 67%</field_17>
+        <field_18>2h</field_18>
+        <field_19>CC 67%</field_19>
+        <field_20>2h</field_20>
+    </record>
+    <record><field_0>Algèbre élémentaire </field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-M, M*PC-M, M*PC-PC</field_4><field_11>5</field_11><field_12>5</field_12></record>
+    <record><field_0>Algèbre élémentaire  P1</field_0><field_1>MATI</field_1><field_2>25</field_2><field_3>O</field_3><field_4>"</field_4><field_7>14.7</field_7><field_10>=SUM(F32:I32)</field_10><field_13>CC 33%</field_13><field_14>1h30</field_14><field_15>CC 33%</field_15><field_16>1h30</field_16><field_21>CT 100%</field_21><field_22>2h</field_22><field_24>CT 100%</field_24><field_25>2h</field_25></record>
+    <record><field_0>Algèbre élémentaire  P2</field_0><field_1>MATI</field_1><field_2>25</field_2><field_3>O</field_3><field_4>"</field_4><field_7>16</field_7><field_10>=SUM(F33:I33)</field_10><field_17>CC 67%</field_17><field_18>2h</field_18><field_19>CC 67%</field_19><field_20>2h</field_20></record>
+    <record><field_0>Arithmétique dans Z</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-M, M*PC-M</field_4><field_11>3</field_11><field_12>3</field_12></record>
+    <record><field_0>Arithmétique dans Z P3</field_0><field_1>MATI</field_1><field_2>25</field_2><field_3>O</field_3><field_4>"</field_4><field_5>8</field_5><field_6>20</field_6><field_10>=SUM(F35:I35)</field_10><field_27>CC 100%</field_27><field_28>1h30</field_28><field_29>CC 100%</field_29><field_30>1h30</field_30><field_39>CT 100%</field_39><field_40>1h30</field_40><field_42>CT 100%</field_42><field_43>1h30</field_43></record>
+    <record><field_0>BLOC Fondements et algorithmique</field_0><field_1>BLCT</field_1><field_3>N</field_3><field_11>=SUM(L37:L47)</field_11><field_12>=SUM(M37:M47)</field_12><field_45>Note plancher : 6</field_45></record>
+    <record><field_0>Algorithmique 1</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-M</field_4><field_11>7</field_11><field_12>7</field_12></record>
+    <record><field_0>Algorithmique 1 P1</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>"</field_4><field_7>16</field_7><field_8>12</field_8><field_10>=SUM(F38:I38)</field_10><field_13>CC 40%</field_13><field_14>1h30</field_14><field_15>CC 40%</field_15><field_16>1h30</field_16><field_21>CT 100%</field_21><field_22>1h30</field_22><field_24>CT 100%</field_24><field_25>1h30</field_25></record>
+    <record><field_0>Algorithmique 1 P2</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>"</field_4><field_7>16</field_7><field_8>=8*4/3</field_8><field_10>=SUM(F39:I39)</field_10><field_17>CC 60%</field_17><field_18>1h30</field_18><field_19>CC 60%</field_19><field_20>1h30</field_20></record>
+    <record><field_0>Algorithmique 2</field_0><field_1>UE</field_1><field_3>N</field_3><field_11>8</field_11><field_12>8</field_12></record>
+    <record>
+        <field_0>Algorithmique 2 P3</field_0>
+        <field_1>MATI</field_1>
+        <field_2>27</field_2>
+        <field_3>O</field_3>
+        <field_4>MI-M</field_4>
+        <field_7>12</field_7>
+        <field_8>12</field_8>
+        <field_10>=SUM(F41:I41)</field_10>
+        <field_27>CC 40%</field_27>
+        <field_28>1h30</field_28>
+        <field_29>CC 40%</field_29>
+        <field_30>1h30</field_30>
+        <field_39>CT 100%</field_39>
+        <field_40>1h30</field_40>
+        <field_42>CT 100%</field_42>
+        <field_43>1h30</field_43>
+    </record>
+    <record>
+        <field_0>Algorithmique 2 P4</field_0>
+        <field_1>MATI</field_1>
+        <field_2>27</field_2>
+        <field_3>O</field_3>
+        <field_4>non</field_4>
+        <field_5>8</field_5>
+        <field_6>8</field_6>
+        <field_8>8</field_8>
+        <field_10>=SUM(F42:I42)</field_10>
+        <field_31>CC 60%</field_31>
+        <field_32>1h30</field_32>
+        <field_33>CC 60%</field_33>
+        <field_34>1h30</field_34>
+    </record>
+    <record><field_0>Fondements de l'informatique 1</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>-</field_4><field_11>6</field_11><field_12>6</field_12></record>
+    <record><field_0>Fondements de l'informatique 1 P3</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>-</field_4><field_7>24</field_7><field_10>=SUM(F44:I44)</field_10><field_27>CC 50%</field_27><field_28>1h30</field_28><field_29>CC 50%</field_29><field_30>1h30</field_30><field_39>CT 100%</field_39><field_40>1h30</field_40><field_42>CT 100%</field_42><field_43>1h30</field_43></record>
+    <record><field_0>Fondements de l'informatique 1 P4</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>-</field_4><field_5>8</field_5><field_6>16</field_6><field_10>=SUM(F45:I45)</field_10><field_31>CC 50%</field_31><field_32>1h30</field_32><field_33>CC 50%</field_33><field_34>1h30</field_34></record>
+    <record><field_0>Bases d'informatique</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-M</field_4><field_11>1</field_11><field_12>1</field_12></record>
+    <record><field_0>Bases d'informatique P1</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>"</field_4><field_7>12</field_7><field_10>=SUM(F47:I47)</field_10><field_13>CC 100%</field_13><field_14>1h30</field_14><field_15>CC 100%</field_15><field_16>1h30</field_16><field_21>CT 100%</field_21><field_22>1h30</field_22><field_24>CT 100%</field_24><field_25>1h30</field_25></record>
+    <record><field_0>BLOC Développement</field_0><field_1>BLCT</field_1><field_3>N</field_3><field_11>=SUM(L49:L57)</field_11><field_12>=SUM(M49:M57)</field_12><field_45>Note plancher : 6</field_45></record>
+    <record><field_0>Développement web 1</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>-</field_4><field_11>4</field_11><field_12>4</field_12></record>
+    <record><field_0>Développement web 1 P3</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>-</field_4><field_7>12</field_7><field_8>17.2</field_8><field_10>=SUM(F50:I50)</field_10><field_27>TP 100%</field_27><field_28>1h30</field_28><field_29>TP 100%</field_29><field_30>1h30</field_30><field_39>CT 100%</field_39><field_40>1h30</field_40><field_42>CT 100%</field_42><field_43>1h30</field_43></record>
+    <record><field_0>Linux</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-M</field_4><field_11>2</field_11><field_12>2</field_12></record>
+    <record><field_0>Linux P2</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>"</field_4><field_7>=4*4/3</field_7><field_8>8</field_8><field_10>=SUM(F52:I52)</field_10><field_17>TP 100%</field_17><field_18>1h30</field_18><field_19>TP 100%</field_19><field_20>1h30</field_20><field_21>CT 100%</field_21><field_22>1h30</field_22><field_24>CT 100%</field_24><field_25>1h30</field_25></record>
+    <record><field_0>Développement Python</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-M</field_4><field_11>3</field_11><field_12>3</field_12></record>
+    <record><field_0>Développement Python P4</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>"</field_4><field_5>4</field_5><field_8>16</field_8><field_10>=SUM(F54:I54)</field_10><field_31>TP 100%</field_31><field_32>1h30</field_32><field_33>TP 100%</field_33><field_34>1h30</field_34><field_39>CT 100%</field_39><field_40>1h30</field_40><field_42>CT 100%</field_42><field_43>1h30</field_43></record>
+    <record><field_0>Bases de données 1</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>-</field_4><field_11>4</field_11><field_12>4</field_12></record>
+    <record><field_0>Bases de données 1 P3</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>-</field_4><field_7>=11*4/3</field_7><field_10>=SUM(F56:I56)</field_10><field_27>CC 50%</field_27><field_28>1h</field_28><field_29>CC 50%</field_29><field_30>1h</field_30><field_39>CT 100%</field_39><field_40>1h30</field_40><field_42>CT 100%</field_42><field_43>1h30</field_43></record>
+    <record><field_0>Bases de données 1 P4</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>-</field_4><field_5>=4*4/3</field_5><field_8>12</field_8><field_10>=SUM(F57:I57)</field_10><field_31>CC 50%</field_31><field_32>1h</field_32><field_33>CC 50%</field_33><field_34>1h</field_34></record>
+    <record><field_2>Total heures :</field_2><field_5>=SUM(F11:F57)</field_5><field_6>=SUM(G11:G57)</field_6><field_7>=SUM(H11:H57)</field_7><field_8>=SUM(I11:I57)</field_8><field_9>=SUM(J11:J57)</field_9><field_10>=SUM(F58:I58)</field_10></record>
+    <record><field_0>Conditions de validation du socle :</field_0></record>
+    <record><field_0>MI-Mathématiques (MI-M)</field_0><field_1>SOCL</field_1><field_3>N</field_3></record>
+    <record><field_0>Anglais 1</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-M, M*PC-M, M*PC-PC, MPC-PC</field_4><field_11>2</field_11><field_12>2</field_12></record>
+    <record><field_0>Anglais 1 (1/2)</field_0><field_1>MATI</field_1><field_2>11</field_2><field_3>O</field_3><field_6>=4/3</field_6><field_8>=5*4/3</field_8><field_10>=SUM(F62:I62)</field_10><field_17>CC 100%</field_17><field_18>1h20</field_18><field_19>CC 100%</field_19><field_20>1h20</field_20><field_21>CT 100%</field_21><field_22>1h</field_22><field_24>CT 100%</field_24><field_25>1h</field_25></record>
+    <record><field_0>Anglais 1 (2/2)</field_0><field_1>MATI</field_1><field_2>11</field_2><field_3>O</field_3><field_6>=4/3</field_6><field_8>=5*4/3</field_8><field_10>=SUM(F63:I63)</field_10></record>
+    <record><field_0>Anglais </field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-I, M*PC-M, M*PC-PC, MPC-PC</field_4><field_11>3</field_11><field_12>1</field_12></record>
+    <record><field_0>Anglais  P3</field_0><field_1>MATI</field_1><field_2>11</field_2><field_3>O</field_3><field_6>=4/3</field_6><field_8>=5*4/3</field_8><field_10>=SUM(F65:I65)</field_10><field_31>CC 100%</field_31><field_32>1h20</field_32><field_33>CC 100%</field_33><field_34>1h20</field_34><field_39>CT 100%</field_39><field_40>1h</field_40><field_42>CT 100%</field_42><field_43>1h</field_43></record>
+    <record><field_0>Anglais  P4</field_0><field_1>MATI</field_1><field_2>11</field_2><field_3>O</field_3><field_6>=4/3</field_6><field_8>=5*4/3</field_8><field_10>=SUM(F66:I66)</field_10></record>
+    <record><field_0>Expression écrite et orale</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-I, M*PC-M, M*PC-PC, MPC-PC</field_4><field_11>2</field_11><field_12>2</field_12></record>
+    <record><field_0>Expression écrite et orale P1</field_0><field_1>MATI</field_1><field_2>9</field_2><field_3>O</field_3><field_7>=5*4/3</field_7><field_10>=SUM(F68:I68)</field_10><field_17>CC 100%</field_17><field_18>1h30</field_18><field_19>CC 100%</field_19><field_20>1h30</field_20><field_21>CT 100%</field_21><field_22>1h</field_22><field_24>CT 100%</field_24><field_25>1h</field_25></record>
+    <record><field_0>Expression écrite et orale P2</field_0><field_1>MATI</field_1><field_2>9</field_2><field_3>O</field_3><field_7>=2*4/3</field_7><field_8>=2*4/3</field_8><field_10>=SUM(F69:I69)</field_10></record>
+    <record><field_0>Projet personnel et professionnel</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-I, M*PC-M, M*PC-PC, MPC-PC</field_4><field_11>1</field_11><field_12>1</field_12></record>
+    <record><field_0>Projet personnel et professionnel P3</field_0><field_1>MATI</field_1><field_3>O</field_3><field_6>=2*4/3</field_6><field_10>=SUM(F71:I71)</field_10><field_31>CC 100%</field_31><field_32>1h</field_32><field_33>CC 100%</field_33><field_34>1h</field_34><field_39>CT 100%</field_39><field_40>1h</field_40><field_42>CT 100%</field_42><field_43>1h</field_43></record>
+    <record><field_0>Projet personnel et professionnel P4</field_0><field_1>MATI</field_1><field_3>O</field_3><field_6>=2*4/3</field_6><field_8>=4/3</field_8><field_10>=SUM(F72:I72)</field_10></record>
+    <record><field_0>Culture numérique</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-I, M*PC-M, M*PC-PC, MPC-PC</field_4><field_11>1</field_11><field_12>1</field_12></record>
+    <record><field_0>Culture numérique P1</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_8>8</field_8><field_10>=SUM(F74:I74)</field_10><field_13>TP 100%</field_13><field_14>1h</field_14><field_15>TP 100%</field_15><field_16>1h</field_16><field_21>TP 100%</field_21><field_22>1h</field_22><field_24>TP 100%</field_24><field_25>1h</field_25></record>
+    <record><field_0>Oraux de mathématiques</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>M*PC-M</field_4><field_11>0</field_11><field_12>0</field_12></record>
+    <record><field_0>Oraux de mathématiques P3</field_0><field_1>MATI</field_1><field_2>25</field_2><field_3>O</field_3><field_4>"</field_4><field_6>1</field_6><field_10>1</field_10><field_27>ORA</field_27><field_28>-</field_28><field_45>Pas de seconde chance. L'oral (1) de la P3 donne un bonus (jusqu'à 1 point) à l'unité Géométrie. Uniquement pour assidus.</field_45></record>
+    <record><field_0>Oraux de mathématiques P4</field_0><field_1>MATI</field_1><field_2>25</field_2><field_3>O</field_3><field_4>"</field_4><field_6>1</field_6><field_10>1</field_10><field_31>ORA</field_31><field_32>-</field_32><field_45>Pas de seconde chance. L'oral (2) de la P4 donne un bonus (jusqu'à 2 points) à l'unité Arithmétique des polynômes. Uniquement pour assidus.</field_45></record>
+    <record><field_0>BLOC Mathématiques 1</field_0><field_1>BLCT</field_1><field_3>N</field_3><field_11>=SUM(L79:L84)</field_11><field_12>=SUM(M79:M84)</field_12><field_45>Note plancher : 6</field_45></record>
+    <record><field_0>Analyse élémentaire </field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-I, M*PC-M, M*PC-PC</field_4><field_11>5</field_11><field_12>5</field_12></record>
+    <record><field_0>Analyse élémentaire  P1</field_0><field_1>MATI</field_1><field_2>25</field_2><field_3>O</field_3><field_4>"</field_4><field_7>24</field_7><field_10>=SUM(F80:I80)</field_10><field_13>CC 33%</field_13><field_14>1h30</field_14><field_15>CC 33%</field_15><field_16>1h30</field_16><field_21>CT 100%</field_21><field_22>2h</field_22><field_24>CT 100%</field_24><field_25>2h</field_25></record>
+    <record><field_0>Analyse élémentaire  P2</field_0><field_1>MATI</field_1><field_2>25</field_2><field_3>O</field_3><field_4>"</field_4><field_7>25.3</field_7><field_10>=SUM(F81:I81)</field_10><field_17>CC 67%</field_17><field_18>2h</field_18><field_19>CC 67%</field_19><field_20>2h</field_20></record>
+    <record><field_0>Algèbre élémentaire </field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-I, M*PC-M, M*PC-PC</field_4><field_11>5</field_11><field_12>5</field_12></record>
+    <record><field_0>Algèbre élémentaire  P1</field_0><field_1>MATI</field_1><field_2>25</field_2><field_3>O</field_3><field_4>"</field_4><field_7>14.7</field_7><field_10>=SUM(F83:I83)</field_10><field_13>CC 33%</field_13><field_14>1h30</field_14><field_15>CC 33%</field_15><field_16>1h30</field_16><field_21>CT 100%</field_21><field_22>2h</field_22><field_24>CT 100%</field_24><field_25>2h</field_25></record>
+    <record><field_0>Algèbre élémentaire P2</field_0><field_1>MATI</field_1><field_2>25</field_2><field_3>O</field_3><field_4>"</field_4><field_7>16</field_7><field_10>=SUM(F84:I84)</field_10><field_17>CC 67%</field_17><field_18>2h</field_18><field_19>CC 67%</field_19><field_20>2h</field_20></record>
+    <record><field_0>BLOC Mathématiques 2</field_0><field_1>BLCT</field_1><field_3>N</field_3><field_11>=SUM(L86:L95)</field_11><field_12>=SUM(M86:M95)</field_12><field_45>Note plancher : 6</field_45></record>
+    <record><field_0>Arithmétique dans Z</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-I, M*PC-M</field_4><field_11>4</field_11><field_12>4</field_12></record>
+    <record><field_0>Arithmétique dans Z P3</field_0><field_1>MATI</field_1><field_2>25</field_2><field_3>O</field_3><field_4>"</field_4><field_5>8</field_5><field_6>20</field_6><field_10>=SUM(F87:I87)</field_10><field_27>CC 100%</field_27><field_28>1h30</field_28><field_29>CC 100%</field_29><field_30>1h30</field_30><field_39>CT 100%</field_39><field_40>1h30</field_40><field_42>CT 100%</field_42><field_43>1h30</field_43></record>
+    <record><field_0>Fondements d'analyse</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>M*PC-M</field_4><field_11>9</field_11><field_12>9</field_12></record>
+    <record><field_0>Fondements d'analyse P3</field_0><field_1>MATI</field_1><field_2>25</field_2><field_3>O</field_3><field_4>"</field_4><field_7>28</field_7><field_10>=SUM(F89:I89)</field_10><field_27>CC 33%</field_27><field_28>1h30</field_28><field_29>CC 33%</field_29><field_30>1h30</field_30><field_39>CT 100%</field_39><field_40>2h</field_40><field_42>CT 100%</field_42><field_43>2h</field_43></record>
+    <record><field_0>Fondements d'analyse P4</field_0><field_1>MATI</field_1><field_2>25</field_2><field_3>O</field_3><field_4>"</field_4><field_7>=22*4/3</field_7><field_10>=SUM(F90:I90)</field_10><field_31>CC 67%</field_31><field_32>2h</field_32><field_33>CC 67%</field_33><field_34>2h</field_34></record>
+    <record><field_0>Géométrie</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>M*PC-M</field_4><field_11>9</field_11><field_12>9</field_12></record>
+    <record><field_0>Géométrie P3</field_0><field_1>MATI</field_1><field_2>25</field_2><field_3>O</field_3><field_4>"</field_4><field_5>8</field_5><field_6>20</field_6><field_10>=SUM(F92:I92)</field_10><field_27>CC 33%</field_27><field_28>1h30</field_28><field_29>CC 33%</field_29><field_30>1h30</field_30><field_39>CT 100%</field_39><field_40>2h</field_40><field_42>CT 100%</field_42><field_43>2h</field_43></record>
+    <record><field_0>Géométrie P4</field_0><field_1>MATI</field_1><field_2>25</field_2><field_3>O</field_3><field_4>"</field_4><field_5>8</field_5><field_6>=16*4/3</field_6><field_10>=SUM(F93:I93)</field_10><field_31>CC 67%</field_31><field_32>2h</field_32><field_33>CC 67%</field_33><field_34>2h</field_34></record>
+    <record><field_0>Arithmétique des polynômes</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>M*PC-M</field_4><field_11>5</field_11><field_12>5</field_12></record>
+    <record><field_0>Arithmétique des polynômes P4</field_0><field_1>MATI</field_1><field_2>25</field_2><field_3>O</field_3><field_4>"</field_4><field_5>10.7</field_5><field_6>26.7</field_6><field_10>=SUM(F95:I95)</field_10><field_31>CC 100%</field_31><field_32>1h30</field_32><field_33>CC 100%</field_33><field_34>1h30</field_34><field_39>CT 100%</field_39><field_40>1h30</field_40><field_42>CT 100%</field_42><field_43>1h30</field_43><field_45>Pour les assidus, le CC est composé d'un écrit et un oral. Pour les DA, un écrit.</field_45></record>
+    <record><field_0>BLOC Informatique</field_0><field_1>BLCT</field_1><field_3>N</field_3><field_11>=SUM(L97:L107)</field_11><field_12>=SUM(M97:M107)</field_12><field_45>Note plancher : 5</field_45></record>
+    <record><field_0>Algorithmique 1</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-I</field_4><field_11>7</field_11><field_12>7</field_12></record>
+    <record><field_0>Algorithmique 1 P1</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>"</field_4><field_7>16</field_7><field_8>12</field_8><field_10>=SUM(F98:I98)</field_10><field_13>CC 40%</field_13><field_14>1h30</field_14><field_15>CC 40%</field_15><field_16>1h30</field_16><field_21>CT 100%</field_21><field_22>1h30</field_22><field_24>CT 100%</field_24><field_25>1h30</field_25></record>
+    <record><field_0>Algorithmique 1 P2</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>"</field_4><field_7>16</field_7><field_8>=8*4/3</field_8><field_10>=SUM(F99:I99)</field_10><field_17>CC 60%</field_17><field_18>1h30</field_18><field_19>CC 60%</field_19><field_20>1h30</field_20></record>
+    <record><field_0>Algorithmique 2</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-I</field_4><field_11>3</field_11><field_12>3</field_12></record>
+    <record><field_0>Algorithmique 2 P3</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>"</field_4><field_7>12</field_7><field_8>12</field_8><field_10>=SUM(F101:I101)</field_10><field_27>CC 100%</field_27><field_28>1h30</field_28><field_29>CC 100%</field_29><field_30>1h30</field_30><field_39>CT 100%</field_39><field_40>0h45</field_40><field_42>CT 100%</field_42><field_43>0h45</field_43><field_45>Remarque : les MI-M ne suivent que l'EC "Algorithmique 2 1/2"</field_45></record>
+    <record><field_0>Bases d'informatique</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-I</field_4><field_11>1</field_11><field_12>1</field_12></record>
+    <record><field_0>Bases d'informatique P1</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>"</field_4><field_7>12</field_7><field_10>=SUM(F103:I103)</field_10><field_13>CC 100%</field_13><field_14>1h30</field_14><field_15>CC 100%</field_15><field_16>1h30</field_16><field_21>CT 100%</field_21><field_22>1h30</field_22><field_24>CT 100%</field_24><field_25>1h30</field_25></record>
+    <record><field_0>Linux</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-I</field_4><field_11>2</field_11><field_12>2</field_12></record>
+    <record><field_0>Linux P2</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>"</field_4><field_7>=4*4/3</field_7><field_8>8</field_8><field_10>=SUM(F105:I105)</field_10><field_17>TP 100%</field_17><field_18>1h30</field_18><field_19>TP 100%</field_19><field_20>1h30</field_20><field_21>CT 100%</field_21><field_22>1h30</field_22><field_24>CT 100%</field_24><field_25>1h30</field_25></record>
+    <record><field_0>Développement Python</field_0><field_1>UE</field_1><field_3>N</field_3><field_4>MI-I</field_4><field_11>3</field_11><field_12>3</field_12></record>
+    <record><field_0>Développement Python P4</field_0><field_1>MATI</field_1><field_2>27</field_2><field_3>O</field_3><field_4>"</field_4><field_5>4</field_5><field_8>16</field_8><field_10>=SUM(F107:I107)</field_10><field_31>TP 100%</field_31><field_32>1h30</field_32><field_33>TP 100%</field_33><field_34>1h30</field_34><field_39>CT 100%</field_39><field_40>1h30</field_40><field_42>CT 100%</field_42><field_43>1h30</field_43></record>
+    <record><field_2>Total heures :</field_2><field_5>=SUM(F60:F107)</field_5><field_6>=SUM(G60:G107)</field_6><field_7>=SUM(H60:H107)</field_7><field_8>=SUM(I60:I107)</field_8><field_9>=SUM(J60:J107)</field_9><field_10>=SUM(F108:I108)</field_10></record>
+    <record><field_0>Conditions de validation du socle :</field_0></record>
+    <record><field_0>Conditions de validation de  l'année :</field_0><field_2>Moyenne générale supérieure ou égale à 10 ET Moyenne de bloc supérieure ou égale à la note plancher pour les blocs ayant une note plancher. Acquisition des ECTS par UE (note à l'UE &gt;= 10) ou par bloc (si note de bloc &gt;= 10, les unités composant le bloc sont acquises)</field_2></record>
+    <record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record /><record />
+</data>

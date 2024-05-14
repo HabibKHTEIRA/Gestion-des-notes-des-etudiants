@@ -1,0 +1,163 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Résultat de -- {{etudiant.nom}} - {{etudiant.prenom}} {% endblock title %}
+
+{% block stylesheets %}
+    {# Include Bootstrap CSS if it's not already included #}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .table.releve td, .table.elements td {
+            color: rgb(7, 145, 225);
+            background-color: rgb(209, 235, 242);
+        }
+        .table.releve th, .table.elements th {
+            background-color: #f8f9fa;
+        }
+        .releve-container, .bloc-container {
+            display: none;
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block body %}
+    {% for annee in annees %}
+        <p id="annee-{{ loop.index }}" style="text-align:center; cursor: pointer;" onclick="toggleTable('{{ loop.index }}')">Année universitaire {{annee.annee}}</p>
+        <hr>
+        <div class="releve-container" id="releve-{{ loop.index }}">
+            <p style="color:orange">Relevé de notes au fil de l'eau</p>
+            <table class="table table-striped table-bordered table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th colspan="7">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="text-align: left;">Étape</div>
+                                <div style="text-align: right;">Session 1 / unique</div>
+                            </div>
+                        </th>
+                        <th colspan="2" style="text-align:center;">Session 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{edt_filiere[0][0].Nom}} <span  style="float:right ; margin: left 10px;"> <b> {{edt_filiere[0][0].Note}}</b></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bloc-container" id="bloc-{{ loop.index }}">
+            <table class="table table-bordered table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th colspan="7">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="text-align: left;">Élements pédagogiques</div>
+                                <div style="text-align: right;">Session 1 / unique</div>
+                            </div>
+                        </th>
+                        <th colspan="2" style="text-align:center;">Session 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   {% for bloc in edt_filiere[0][0].Blocs %}
+                    <tr class="bloc">
+                        <td><b style="color:rgb(0, 21, 255);font-size:17px;">BLOC : {{bloc.Nom}} </b> <span style="float:right ; margin: left 15px;">{{bloc.Note}}</span></td>
+                    </tr>
+                    {% for unite in bloc.Unites %}
+                        <tr>
+                            <td style="color:black; font-size:17px;"><b>{{unite.Nom}}  </b><span style="float:right ; margin: left 10px; color:black">{{unite.Note}}</span></td>
+                        </tr>
+                        {% for matiere in unite.Matieres %}
+                            <tr>
+                                <td><i  style="margin-left: 15px;" >{{matiere.Nom}} </i><span style="float:right ; margin: left 15px;">{{matiere.Note}}</span></td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                   {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
+    <button id="stat-button" class="btn btn-primary">Afficher les statistiques</button>
+    <div id="chart-container" style="display: none;">
+        <canvas id="chart"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Sélectionner tous les éléments de la classe "bloc"
+        var blocs = document.querySelectorAll('.bloc');
+
+        // Parcourir tous les éléments de la classe "bloc"
+        for (var i = 0; i < blocs.length; i++) {
+            // Ajouter un écouteur d'événement "click" sur chaque élément de la classe "bloc"
+            blocs[i].addEventListener('click', function() {
+                // Sélectionner tous les éléments "tr" suivants jusqu'à la prochaine balise "tr" avec la classe "bloc"
+                var nextTr = this.nextElementSibling;
+                while (nextTr && nextTr.tagName === 'TR' && !nextTr.classList.contains('bloc')) {
+                    // Basculer la visibilité de chaque élément "tr"
+                    nextTr.classList.toggle('hidden');
+                    nextTr = nextTr.nextElementSibling;
+                }
+            });
+        }
+
+        // Sélectionner le bouton et le conteneur de la courbe
+        var statButton = document.getElementById('stat-button');
+        var chartContainer = document.getElementById('chart-container');
+
+        // Ajouter un écouteur d'événement "click" sur le bouton
+        statButton.addEventListener('click', function() {
+    // Basculer la visibilité du conteneur de la courbe
+    if (chartContainer.style.display === 'none') {
+        chartContainer.style.display = 'block';
+        // Créer la courbe
+        var ctx = document.getElementById('chart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels:{{tab_unites_name | json_encode | raw}} ,// Assurez-vous que le nom de la variable est correct
+                datasets: [{
+                    label: 'Évolution des notes',
+                    data: {{tab_unites_note | json_encode | raw}}, // Ajouter une virgule ici
+                    borderColor: 'rgba(7, 145, 225, 1)',
+                    backgroundColor: 'rgba(7, 145, 225, 0.2)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Note'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Unité'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Évolution des notes'
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    } else {
+        chartContainer.style.display = 'none';
+    }
+});
+</script>
+{% endblock body %}
