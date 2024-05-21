@@ -16,10 +16,13 @@ class MaquetteParticulierController extends AbstractController
     public function index(Request $request, EntityManagerInterface $em): Response
     {
         $codefiliere = $request->get('codefiliere');
-        $filieres = $em->getRepository(Filiere::class)->findOneBy(["codefiliere" => $codefiliere]);
+        $filieres = $em->getRepository(Filiere::class)->findAll();
+        
+        $filiere = $em->getRepository(Filiere::class)->findOneBy(["codefiliere" => $codefiliere]);
         return $this->render('maquette_particulier/index.html.twig', [
             'controller_name' => 'MaquetteParticulierController',
-            'filiere' => $filieres
+            'filiere' => $filiere,
+            'filieres' => $filieres
         ]);
     }
 }

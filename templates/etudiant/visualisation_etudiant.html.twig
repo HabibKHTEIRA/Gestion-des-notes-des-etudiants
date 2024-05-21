@@ -3,13 +3,12 @@
 {% block title %}Résultat de -- {{etudiant.nom}} - {{etudiant.prenom}} {% endblock title %}
 
 {% block stylesheets %}
-    {# Include Bootstrap CSS if it's not already included #}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</style>
+<style>
         body {
             font-family: Arial, sans-serif;
         }
-        .table.releve td, .table.elements td {
+        /*.table.releve td, .table.elements td {
             color: rgb(7, 145, 225);
             background-color: rgb(209, 235, 242);
         }
@@ -18,11 +17,80 @@
         }
         .releve-container, .bloc-container {
             display: none;
+        }*/
+        .boards {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px; /* Add space between the boards */
+        }
+
+        .board {
+            flex: 1;
+            background: #f1f7fe;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+        }
+
+        .board h2 {
+            margin-top: 0;
+        }
+
+        .board .number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Specific styles for boards */
+        .current-budget {
+            
+          background: #f1f7fe;
+          border-radius: 16px;
+          color: #010101;
+        }
+
+        .today-budget {
+           
+          background: #f1f7fe;
+          border-radius: 16px;
+          color: #010101;
+        }
+
+        .today-expense {
+          background: #f1f7fe;
+          border-radius: 16px;
+          color: #010101;
         }
     </style>
 {% endblock stylesheets %}
 
 {% block body %}
+<div class="boards">
+    <div class="board">
+        <p>Numero: {{ etudiant.getNumetd }}</p>
+        <p>Nom: {{ etudiant.getNom }}</p>
+        <p>Prenom: {{ etudiant.getPrenom }}</p>
+        <p>Sexe: {{ etudiant.getSexe }}</p>
+        <p>Nationalité: {{ etudiant.getNationalite }}</p>
+    </div>
+    <div class="board">
+        <p>Téléphone: {{ etudiant.getTel }}</p>
+        <p>Email: {{ etudiant.getEmail }}</p>
+        <p>Adress: {{ etudiant.getAdresse }}</p>
+    </div>
+    <div class="board">
+        <p>Bac: </p>
+        <p>Annee: </p> 
+        <p>Mention: </p>
+        <p>Moyenne: </p>
+    </div>
+</div>
+<button id="stat-button" class="btn btn-primary">Afficher les statistiques</button>
+    <div id="chart-container" style="display: none;">
+        <canvas id="chart"></canvas>
+    </div>
     {% for annee in annees %}
         <p id="annee-{{ loop.index }}" style="text-align:center; cursor: pointer;" onclick="toggleTable('{{ loop.index }}')">Année universitaire {{annee.annee}}</p>
         <hr>
@@ -42,7 +110,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{edt_filiere[0][0].Nom}} <span  style="float:right ; margin: left 10px;"> <b> {{edt_filiere[0][0].Note}}</b></span></td>
+                        <td>{{edt_filiere[0][0].Nom}} <span  style="float:right ; margin: left 10px;"> <b> {{edt_filiere[0][0].Note | number_format(2, '.', ',')}}</b></span></td>
                     </tr>
                 </tbody>
             </table>

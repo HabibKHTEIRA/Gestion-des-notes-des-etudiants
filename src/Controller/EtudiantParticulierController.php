@@ -18,8 +18,9 @@ class EtudiantParticulierController extends AbstractController
     #[Route('/etudiant/particulier/{codefiliere}', name: 'app_etudiant_particulier')]
     public function index(Request $request, EntityManagerInterface $em): Response
     {
+        $filieres = $em->getRepository(Filiere::class)->findAll();
         $codefiliere = $request->get('codefiliere');
-        $filieres = $em->getRepository(Filiere::class)->findOneBy(["codefiliere" => $codefiliere]);
+        $filiere = $em->getRepository(Filiere::class)->findOneBy(["codefiliere" => $codefiliere]);
         $etudiant_tableau = [];
         $qb = $em->createQueryBuilder();
         $qb->select('DISTINCT a.annee')
@@ -49,9 +50,10 @@ class EtudiantParticulierController extends AbstractController
             }
         }
         return $this->render('etudiant_particulier/index.html.twig', [
-            'filiere' => $filieres,
+            'filiere' => $filiere,
             'codefiliere' => $codefiliere,
-            'etudiant_tableau' => $etudiant_tableau
+            'etudiant_tableau' => $etudiant_tableau,
+            'filieres' => $filieres
         ]);
     }
 }

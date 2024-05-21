@@ -10,6 +10,8 @@ use App\Entity\Element;
 use App\Entity\Epreuve;
 use App\Entity\Etudiant;
 use App\Entity\Matiere;
+use App\Entity\Resultatbac;
+use App\Entity\FormationInt;
 use App\Entity\Note;
 use App\Entity\Unite;
 use App\Form\NoteType;
@@ -36,6 +38,8 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Validator\Constraints\Date;
+
 
 class EtudiantController extends AbstractController
 {
@@ -58,16 +62,20 @@ class EtudiantController extends AbstractController
     }
 
     #[Route('etudiant', name: 'app_etudiant')]
-    public function index(): Response
+    public function index(Request $request, EntityManagerInterface $em): Response
     {
+        
+        $filieres = $em->getRepository(Filiere::class)->findAll();
         return $this->render('etudiant/index.html.twig', [
             'controller_name' => 'EtudiantController',
+            'filieres' => $filieres,
         ]);
     }
 
     #[Route('/etudiant/information', name: 'etudiant_information')]
     public function etudiant_information(Request $request, EtudiantRepository $etudiantRepository, EntityManagerInterface $em, managerRegistry $doctrine): Response
     {
+        $filieres = $em->getRepository(Filiere::class)->findAll();
         $entityManager = $doctrine->getManager();
         $validator = Validation::createValidator();
         $form = $this->createFormBuilder()
@@ -105,42 +113,58 @@ class EtudiantController extends AbstractController
             fclose($file);
 
             foreach ($csvData as $record) {
-                if (!empty($record['numero_étudiant'])) {
-                    $etudiant = $entityManager->getRepository(Etudiant::class)->findOneBy(["numetd" => $record['numero_étudiant']]);
+                if (!empty($record['numetd'])) {
+                    $etudiant = $entityManager->getRepository(Etudiant::class)->findOneBy(["numetd" => $record['numetd']]);
 
                     if (!$etudiant) {
                         $etudiant = new Etudiant();
                     }
 
-                    $etudiant->setNumetd($record['numero_étudiant']);
-                    $etudiant->setPrenom($record['Prénom']);
-                    $etudiant->setNom($record['Nom']);
-                    //$etudiant->setSexe($record['sexe']);
-                    //$etudiant->setEmail($record['email']);
-                    //$etudiant->setVillnaiss($record['villnaiss']);
-                    //$etudiant->setDepnaiss($record['depnaiss']);
-                    //$etudiant->setNationalite($record['nationalite']);
-                    //$etudiant->setTel($record['tel']);
-                    //$etudiant->setDerdiplome($record['derdiplome']);
-                    //$etudiant->setRegistre($record['registre']);
-                    //$etudiant->setStatut($record['statut']);
-                    //$etudiant->setSports($record['sports']);
-                    //$etudiant->setHandicape($record['handicape']);
+                    $etudiant->setNumetd($record['numetd']);
+                    $etudiant->setPrenom($record['prenom']);
+                    $etudiant->setNom($record['nom']);
+                    $etudiant->setSexe($record['sexe']);
+                    $etudiant->setEmail($record['email']);
+                    $etudiant->setVillnaiss($record['villnaiss']);
+                    $etudiant->setDepnaiss($record['depnaiss']);
+                    $etudiant->setNationalite($record['nationalite']);
+                    $etudiant->setTel($record['tel']);
+                    $etudiant->setDerdiplome($record['derdiplome']);
+                    $etudiant->setRegistre($record['registre']);
+                    $etudiant->setStatut($record['statut']);
+                    $etudiant->setSports($record['sports']);
+                    $etudiant->setHandicape($record['handicape']);
 
                     // Vérifier et ajouter le type de bac
                     $typeBac = $record['Type_bac'];
-                    $bac = $entityManager->getRepository(Bac::class)->findOneBy(['nom' => $typeBac]);
+                    $bac = $entityManager->getRepository(Bac::class)->findOneBy(['typebac' => $typeBac]);
 
                     if (!$bac) {
                         $bac = new Bac();
-                        $bac->setNom($typeBac);
+                        $bac->setTypebac($typeBac);
                         $entityManager->persist($bac);
+
+                        
                     }
 
-                    $etudiant->setBac($bac);
+                    $resultbac = New Resultatbac();
+                    $resultbac->setBac($bac);
+                    $resultbac->setEtudiant($etudiant);
+                    $resultbac->setAnneebac($record['anneebac']);
+                    $resultbac->setMention($record['mention']);
+                    $resultbac->setMoyennebac($record['moyennebac']);
+                    $entityManager->presist($resultbac);
+
+                    $filiere = $entityManager->getRepository(Filiere::class)->findOneBy(['nomfiliere' => $record['filiere']]);
+                    if($filiere){
+                        $formationInt = New FormationInt();
+                        $formationInt->setEtudiant($etudiant);
+                        $formationInt->setFiliere($filiere);
+                        $entityManager->presist($filiere);
+                    }
 
                     // Ajouter les spécialités
-                    $specialites = $entityManager->getRepository(Specialite::class);
+                    /*$specialites = $entityManager->getRepository(Specialite::class);
 
                     foreach (['Spé-terminale Ecologie', 'Spé-terminale Maths', 'Spé-terminale Numérique', 'Spé-terminale Physique Chimie', 'Spé-terminale SVT', 'Spé-terminale Sc Eco', 'Spé-terminale Sc. Ingénieur', 'Spé-terminale Autre'] as $specialiteName) {
                         if ($record[$specialiteName] === 'Oui') {
@@ -182,7 +206,8 @@ class EtudiantController extends AbstractController
 
         return $this->render('etudiant/info.html.twig', [
             'form' => $form->createView(),
-            'insertionReussie' => $this->insertionReussie
+            'insertionReussie' => $this->insertionReussie,
+            'filieres' => $filieres,
             // Passer le formulaire à la vue Twig
         ]);
     }
@@ -192,6 +217,7 @@ class EtudiantController extends AbstractController
     public function insertion_mail(Request $request, EntityManagerInterface $em)
     {
         $validator = Validation::createValidator();
+        $filieres = $em->getRepository(Filiere::class)->findAll();
 
         $form = $this->createFormBuilder()
             ->add('email_data', TextareaType::class, [
@@ -645,6 +671,8 @@ class EtudiantController extends AbstractController
                         }
                     }
                 }
+                return $this->redirectToRoute('login');
+
             } else {
                 // Gérez le cas où les informations n'ont pas été trouvées
                 $this->addFlash(
@@ -655,7 +683,8 @@ class EtudiantController extends AbstractController
         }
 
         return $this->render('etudiant/mail.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'filieres'=> $filieres,
         ]);
     }
 
@@ -663,6 +692,8 @@ class EtudiantController extends AbstractController
     #[Route('etudiant/note/insertion_file', name: 'insertion_file')]
     public function importCSV(Request $request, EntityManagerInterface $em)
     {
+        $filieres = $em->getRepository(Filiere::class)->findAll();
+        
         $validator = Validation::createValidator();
         $form = $this->createFormBuilder()
             ->add('csv_file', FileType::class, [
@@ -679,6 +710,41 @@ class EtudiantController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /*$data = $form->getData();
+            $csvFile = $data['csv_file'];
+            $csvData = [];
+            $anneeuniversitaire = null;
+            $session = null;
+
+            if (($file = fopen($csvFile->getPathname(), 'r')) !== false) {
+                $i = 0;
+                while (($donnees = fgetcsv($file)) !== false) {
+                    if ($i == 0) {
+                        // Skip header line
+                        $i++;
+                        continue;
+                    }
+
+                    // Extract year and session from each line
+                    $anneeuniversitaire = $donnees[0];
+                    $session = intval(preg_replace('/[^0-9]/', '', $donnees[1]));
+
+                    // Check if the current line has enough columns
+                    if (count($donnees) >= 8) {
+                        $csvData[] = [
+                            'admission' => $donnees[2],
+                            'epreuve' => $donnees[3],
+                            'numetd' => $donnees[4],
+                            'nom' => $donnees[5],
+                            'prenom' => $donnees[6],
+                            'resultat' => $donnees[7],
+                        ];
+                    }
+                }
+                fclose($file);
+            }*/
+            // Here you can handle $csvData for insertion into the database
+            // For example, creating entities and persisting them using $em
             $data = $form->getData();
             $csvFile = $data["csv_file"];
             $file = fopen($csvFile->getPathname(), 'r');
@@ -690,163 +756,95 @@ class EtudiantController extends AbstractController
                     if ($date !== false) {
                         $anneeuniversitaire = $date->format('Y');
                     } else {
-                        $anneeuniversitaire = 2022;
+                        $currentYear = (new \DateTime())->format('Y');
+                        $anneeuniversitaire  = $currentYear;
                     }
                 } else {
-                    $csvData[] = $donnees;
+                    $csvData[] = [
+                        'admission' => $donnees[1],
+                        'epreuve' => $donnees[4],
+                        'numetd' => $donnees[7],
+                        'nom' => $donnees[8],
+                        'prenom' => $donnees[9],
+                        'resultat' => $donnees[14],
+                    ];
                 }
                 $i++;
             }
             fclose($file);
-            $session = intval(preg_replace('/[^0-9]/', '', $csvData[1][1]));
+            $session = intval(preg_replace('/[^0-9]/', '', $csvData[1]['admission']));
 
-            foreach ($csvData as $record) {
-                $etudiant = $em->getRepository(Etudiant::class)->findOneBy(["numetd" => intval($record[7])]);
-                if (!$etudiant) {
-                    // Gérer le cas où l'étudiant n'existe pas dans la base de données
-                    $this->logger->error('L\'étudiant avec le numéro {numero} n\'existe pas dans la base de données.', [
-                        'numero' => intval($record[7]),
-                    ]);
-                    continue;
-                }
-                $element = $em->getRepository(Element::class)->findOneBy(["codeelt" => $record[4]]);
+        
 
-                if (!$element) {
-                    $element = new Element();
-                    $element->setCodeelt($record[4]);
-                    $em->persist($element);
-                }
+            
 
-                $annee = $em->getRepository(AnneeUniversitaire::class)->findOneBy(["annee" => $anneeuniversitaire]);
-
-                $existingNote = $em->getRepository(Note::class)->findOneBy([
-                    'anneeuniversitaire' => $annee,
-                    'etudiant' => $etudiant,
-                    'element' => $element
-                ]);
-
-                if ($existingNote) {
-                    // Mettre à jour la note existante si nécessaire
-                    $existingNote->setNote(floatval($record[14]));
-                    $em->persist($existingNote);
-                } else {
-                    $note = new Note();
-                    $note->setNote(floatval($record[14]));
-                    $note->setEtudiant($etudiant);
-                    $note->setElement($element);
-                    $note->setAnneeuniversitaire($annee);
-
-                    $errors = $validator->validate($note);
-                    if (count($errors) > 0) {
-                        // Gérer les erreurs de validation pour l'entité
-                        foreach ($errors as $error) {
-                            echo $error->getMessage() . "\n";
-                        }
-                    } else {
-                        $em->persist($note);
+            if ($session === 2){
+                foreach($csvData as $record){
+                    $resultat = floatval($record['resultat']);
+                    if ($resultat >= 0 && $resultat <= 20) {
+                    $etudiant = $em->getRepository(Etudiant::class)->findOneBy(["numetd" => intval($record['numetd'])]);
+                    if (!$etudiant) {
+                        // Gérer le cas où l'étudiant n'existe pas dans la base de données
+                        $this->logger->error('L\'étudiant avec le numéro {numero} n\'existe pas dans la base de données.', [
+                            'numero' => intval($record['numetd']),
+                        ]);
+                        continue;
                     }
-                }
+                    $element = $em->getRepository(Element::class)->findOneBy(["codeelt" => $record['epreuve']]);
 
-                $em->flush();
-                if ($session === 1) {
+                    if (!$element) {
+                        $element = new Element();
+                        $element->setCodeelt($record['epreuve']);
+                        $em->persist($element);
+                    }
+
+                    $annee = $em->getRepository(AnneeUniversitaire::class)->findOneBy(["annee" => $anneeuniversitaire]);
+
+                    $existingNote = $em->getRepository(Note::class)->findOneBy([
+                        'anneeuniversitaire' => $annee,
+                        'etudiant' => $etudiant,
+                        'element' => $element
+                    ]);
+
+                    if ($existingNote) {
+                        // Mettre à jour la note existante si nécessaire
+                        $existingNote->setNote(floatval($record['resultat']));
+                        $em->persist($existingNote);
+                    } else {
+                        $note = new Note();
+                        $note->setNote(floatval($record['resultat']));
+                        $note->setEtudiant($etudiant);
+                        $note->setElement($element);
+                        $note->setAnneeuniversitaire($annee);
+
+                        $errors = $validator->validate($note);
+                        if (count($errors) > 0) {
+                            // Gérer les erreurs de validation pour l'entité
+                            foreach ($errors as $error) {
+                                echo $error->getMessage() . "\n";
+                            }
+                        } else {
+                            $em->persist($note);
+                        }
+                    }
+
+                    $em->flush();
+
                     $epreuve = $element->getEpreuve();
                     if ($epreuve !== null) {
                         $matiere = $epreuve->getMatiere();
                         if ($matiere) {
-                            $epreuves = $em->getRepository(Epreuve::class)->findBy([
-                                'matiere' => $matiere,
-                                'numchance' => 1,
-                            ]);
-
-                            $totalPercentage = 0;
-                            $Score = 0;
-
-                            foreach ($epreuves as $epreuve) {
-                                $noteEpreuve = $em->getRepository(Note::class)->findOneBy([
-                                    'etudiant' => $etudiant,
-                                    'element' => $epreuve->getElement(),
-                                ]);
-
-                                if ($noteEpreuve) {
-                                    $percentage = $epreuve->getPourcentage();
-                                    $totalPercentage += $percentage;
-                                    $Score += $noteEpreuve->getNote() * $percentage;
-                                }
-                            }
-
-                            if ($totalPercentage > 0) {
-                                $finalNote = $Score / $totalPercentage;
-
-                                // Vérifier si une note existe déjà pour la matière
-                                $existingNote = $em->getRepository(Note::class)->findOneBy([
-                                    'anneeuniversitaire' => $annee,
-                                    'etudiant' => $etudiant,
-                                    'element' => $matiere->getElement(),
-                                ]);
-
-                                if ($existingNote) {
-                                    // Mettre à jour la note existante
-                                    $existingNote->setNote($finalNote);
-                                    $em->persist($existingNote);
-                                } else {
-                                    // Créer une nouvelle note
-                                    $note = new Note();
-                                    $note->setNote($finalNote);
-                                    $note->setEtudiant($etudiant);
-                                    $note->setElement($matiere->getElement());
-                                    $note->setAnneeuniversitaire($annee);
-                                    $em->persist($note);
-                                }
-
-                                $em->flush();
-
                                 $unite = $matiere->getUnite();
 
                                 if ($unite) {
-                                    $matieres = $em->getRepository(Matiere::class)->findBy([
-                                        'unite' => $unite,
+                                    $noteUnite = $em->getRepository(Note::class)->findOneBy([
+                                        'anneeuniversitaire' => $annee,
+                                        'etudiant' => $etudiant,
+                                        'element' => $unite->getElement(),
                                     ]);
 
-                                    $totalPercentage = 0;
-                                    $Score = 0;
-
-                                    foreach ($matieres as $mat) {
-                                        $noteMatier = $em->getRepository(Note::class)->findOneBy([
-                                            'etudiant' => $etudiant,
-                                            'element' => $mat->getElement(),
-                                        ]);
-
-                                        if ($noteMatier) {
-                                            $percentage = 50;
-                                            $totalPercentage += $percentage;
-                                            $Score += $noteMatier->getNote() * $percentage;
-                                        }
-                                    }
-
-                                    if ($totalPercentage > 0) {
-                                        $finalNote = $Score / $totalPercentage;
-
-                                        // Vérifier si une note existe déjà pour l'unité
-                                        $existingNote = $em->getRepository(Note::class)->findOneBy([
-                                            'anneeuniversitaire' => $annee,
-                                            'etudiant' => $etudiant,
-                                            'element' => $unite->getElement(),
-                                        ]);
-
-                                        if ($existingNote) {
-                                            // Mettre à jour la note existante
-                                            $existingNote->setNote($finalNote);
-                                            $em->persist($existingNote);
-                                        } else {
-                                            // Créer une nouvelle note
-                                            $note = new Note();
-                                            $note->setNote($finalNote);
-                                            $note->setEtudiant($etudiant);
-                                            $note->setElement($unite->getElement());
-                                            $note->setAnneeuniversitaire($annee);
-                                            $em->persist($note);
-                                        }
-
+                                    if ($noteUnite->getNote() < $record['resultat']){
+                                        $noteUnite->setNote($record['resultat']);
                                         $em->flush();
 
                                         $bloc = $unite->getBloc();
@@ -957,52 +955,330 @@ class EtudiantController extends AbstractController
                                             }
                                         }
                                     }
+     
+                                    
                                 }
-                            }
+                        
                         }
                     } else {
                         continue;
                     }
-                } else {
-                    $matiere = $element->getEpreuve()->getMatiere();
-                    $noteMat = $em->getRepository(Note::class)->findOneBy([
-                        "etudiant" => $etudiant,
-                        "element" => $matiere->getElement()
-                    ]);
-
-                    if ($noteMat && ($noteMat->getNote() < floatval($record[14]))) {
-                        $noteMat->setNote(floatval($record[14]));
-                        $em->flush();
-                    }
+                    
+                }else {
+                    // C'est un ABI (valeur non valide entre 0 et 20)
+                    // Sortir de la boucle et continuer vers l'élément suivant
+                    break;
                 }
             }
+            } else {
+                foreach ($csvData as $record) {
+                    $resultat = floatval($record['resultat']);
+                    if ($resultat >= 0 && $resultat <= 20) {
+                    $etudiant = $em->getRepository(Etudiant::class)->findOneBy(["numetd" => intval($record['numetd'])]);
+                    if (!$etudiant) {
+                        // Gérer le cas où l'étudiant n'existe pas dans la base de données
+                        $this->logger->error('L\'étudiant avec le numéro {numero} n\'existe pas dans la base de données.', [
+                            'numero' => intval($record['numetd']),
+                        ]);
+                        continue;
+                    }
+                    $element = $em->getRepository(Element::class)->findOneBy(["codeelt" => $record['epreuve']]);
+    
+                    if (!$element) {
+                        $element = new Element();
+                        $element->setCodeelt($record['epreuve']);
+                        $em->persist($element);
+                    }
+    
+                    $annee = $em->getRepository(AnneeUniversitaire::class)->findOneBy(["annee" => $anneeuniversitaire]);
+    
+                    $existingNote = $em->getRepository(Note::class)->findOneBy([
+                        'anneeuniversitaire' => $annee,
+                        'etudiant' => $etudiant,
+                        'element' => $element
+                    ]);
+    
+                    if ($existingNote) {
+                        // Mettre à jour la note existante si nécessaire
+                        $existingNote->setNote(floatval($record['resultat']));
+                        $em->persist($existingNote);
+                    } else {
+                        $note = new Note();
+                        $note->setNote(floatval($record['resultat']));
+                        $note->setEtudiant($etudiant);
+                        $note->setElement($element);
+                        $note->setAnneeuniversitaire($annee);
+    
+                        $errors = $validator->validate($note);
+                        if (count($errors) > 0) {
+                            // Gérer les erreurs de validation pour l'entité
+                            foreach ($errors as $error) {
+                                echo $error->getMessage() . "\n";
+                            }
+                        } else {
+                            $em->persist($note);
+                        }
+                    }
+    
+                    $em->flush();
+                    //if ($session === 1) {
+                        $epreuve = $element->getEpreuve();
+                        if ($epreuve !== null) {
+                            $matiere = $epreuve->getMatiere();
+                            if ($matiere) {
+                                $epreuves = $em->getRepository(Epreuve::class)->findBy([
+                                    'matiere' => $matiere,
+                                    'numchance' => 1,
+                                ]);
+    
+                                $totalPercentage = 0;
+                                $Score = 0;
+    
+                                foreach ($epreuves as $epreuve) {
+                                    $noteEpreuve = $em->getRepository(Note::class)->findOneBy([
+                                        'etudiant' => $etudiant,
+                                        'element' => $epreuve->getElement(),
+                                    ]);
+    
+                                    if ($noteEpreuve) {
+                                        $percentage = $epreuve->getPourcentage();
+                                        $totalPercentage += $percentage;
+                                        $Score += $noteEpreuve->getNote() * $percentage;
+                                    }
+                                }
+    
+                                if ($totalPercentage > 0) {
+                                    $finalNote = $Score / $totalPercentage;
+    
+                                    // Vérifier si une note existe déjà pour la matière
+                                    $existingNote = $em->getRepository(Note::class)->findOneBy([
+                                        'anneeuniversitaire' => $annee,
+                                        'etudiant' => $etudiant,
+                                        'element' => $matiere->getElement(),
+                                    ]);
+    
+                                    if ($existingNote) {
+                                        // Mettre à jour la note existante
+                                        $existingNote->setNote($finalNote);
+                                        $em->persist($existingNote);
+                                    } else {
+                                        // Créer une nouvelle note
+                                        $note = new Note();
+                                        $note->setNote($finalNote);
+                                        $note->setEtudiant($etudiant);
+                                        $note->setElement($matiere->getElement());
+                                        $note->setAnneeuniversitaire($annee);
+                                        $em->persist($note);
+                                    }
+    
+                                    $em->flush();
+    
+                                    $unite = $matiere->getUnite();
+    
+                                    if ($unite) {
+                                        $matieres = $em->getRepository(Matiere::class)->findBy([
+                                            'unite' => $unite,
+                                        ]);
+    
+                                        $totalPercentage = 0;
+                                        $Score = 0;
+    
+                                        foreach ($matieres as $mat) {
+                                            $noteMatier = $em->getRepository(Note::class)->findOneBy([
+                                                'etudiant' => $etudiant,
+                                                'element' => $mat->getElement(),
+                                            ]);
+    
+                                            if ($noteMatier) {
+                                                $percentage = 50;
+                                                $totalPercentage += $percentage;
+                                                $Score += $noteMatier->getNote() * $percentage;
+                                            }
+                                        }
+    
+                                        if ($totalPercentage > 0) {
+                                            $finalNote = $Score / $totalPercentage;
+    
+                                            // Vérifier si une note existe déjà pour l'unité
+                                            $existingNote = $em->getRepository(Note::class)->findOneBy([
+                                                'anneeuniversitaire' => $annee,
+                                                'etudiant' => $etudiant,
+                                                'element' => $unite->getElement(),
+                                            ]);
+    
+                                            if ($existingNote) {
+                                                // Mettre à jour la note existante
+                                                $existingNote->setNote($finalNote);
+                                                $em->persist($existingNote);
+                                            } else {
+                                                // Créer une nouvelle note
+                                                $note = new Note();
+                                                $note->setNote($finalNote);
+                                                $note->setEtudiant($etudiant);
+                                                $note->setElement($unite->getElement());
+                                                $note->setAnneeuniversitaire($annee);
+                                                $em->persist($note);
+                                            }
+    
+                                            $em->flush();
+    
+                                            $bloc = $unite->getBloc();
+    
+                                            if ($bloc) {
+                                                $unites = $em->getRepository(Unite::class)->findBy([
+                                                    'bloc' => $bloc,
+                                                ]);
+    
+                                                $totalPercentage = 0;
+                                                $Score = 0;
+    
+                                                foreach ($unites as $uni) {
+                                                    $noteUnite = $em->getRepository(Note::class)->findOneBy([
+                                                        'etudiant' => $etudiant,
+                                                        'element' => $uni->getElement(),
+                                                    ]);
+    
+                                                    if ($noteUnite) {
+                                                        $percentage = $uni->getCoeficient();
+                                                        $totalPercentage += $percentage;
+                                                        $Score += $noteUnite->getNote() * $percentage;
+                                                    }
+                                                }
+    
+                                                if ($totalPercentage > 0) {
+                                                    $finalNote = $Score / $totalPercentage;
+    
+                                                    // Vérifier si une note existe déjà pour le bloc
+                                                    $existingNote = $em->getRepository(Note::class)->findOneBy([
+                                                        'anneeuniversitaire' => $annee,
+                                                        'etudiant' => $etudiant,
+                                                        'element' => $bloc->getElement(),
+                                                    ]);
+    
+                                                    if ($existingNote) {
+                                                        // Mettre à jour la note existante
+                                                        $existingNote->setNote($finalNote);
+                                                        $em->persist($existingNote);
+                                                    } else {
+                                                        // Créer une nouvelle note
+                                                        $note = new Note();
+                                                        $note->setNote($finalNote);
+                                                        $note->setEtudiant($etudiant);
+                                                        $note->setElement($bloc->getElement());
+                                                        $note->setAnneeuniversitaire($annee);
+                                                        $em->persist($note);
+                                                    }
+    
+                                                    $em->flush();
+    
+                                                    $filiere = $bloc->getFiliere();
+    
+                                                    if ($filiere) {
+                                                        $blocs = $em->getRepository(Bloc::class)->findBy([
+                                                            'filiere' => $filiere,
+                                                        ]);
+    
+                                                        $totalPercentage = 0;
+                                                        $Score = 0;
+    
+                                                        foreach ($blocs as $blc) {
+                                                            $noteBloc = $em->getRepository(Note::class)->findOneBy([
+                                                                'etudiant' => $etudiant,
+                                                                'element' => $blc->getElement(),
+                                                            ]);
+    
+                                                            if ($noteBloc) {
+                                                                $bloc_unites = $blc->getUnites();
+                                                                $sommeCoefficients = 0;
+    
+                                                                foreach ($bloc_unites as $un) {
+                                                                    $sommeCoefficients += $un->getCoeficient();
+                                                                }
+                                                                $percentage = $sommeCoefficients;
+                                                                $totalPercentage += $percentage;
+                                                                $Score += $noteBloc->getNote() * $percentage;
+                                                            }
+                                                        }
+    
+                                                        if ($totalPercentage > 0) {
+                                                            $finalNote = $Score / $totalPercentage;
+    
+                                                            // Vérifier si une note existe déjà pour la filière
+                                                            $existingNote = $em->getRepository(Note::class)->findOneBy([
+                                                                'anneeuniversitaire' => $annee,
+                                                                'etudiant' => $etudiant,
+                                                                'element' => $filiere->getElement(),
+                                                            ]);
+    
+                                                            if ($existingNote) {
+                                                                // Mettre à jour la note existante
+                                                                $existingNote->setNote($finalNote);
+                                                                $em->persist($existingNote);
+                                                            } else {
+                                                                // Créer une nouvelle note
+                                                                $note = new Note();
+                                                                $note->setNote($finalNote);
+                                                                $note->setEtudiant($etudiant);
+                                                                $note->setElement($filiere->getElement());
+                                                                $note->setAnneeuniversitaire($annee);
+                                                                $em->persist($note);
+                                                            }
+    
+                                                            $em->flush();
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            continue;
+                        }
+                
+                }else {
+                    // C'est un ABI (valeur non valide entre 0 et 20)
+                    // Sortir de la boucle et continuer vers l'élément suivant
+                    break;
+                }
+            }
+            }
+
+            
         }
 
         return $this->render('etudiant/file.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'filieres' => $filieres,
         ]);
     }
-
 
 
     #[Route('etudiant/note', name: 'etudiant_note')]
     public function etudiant_note(Request $request, EntityManagerInterface $em): Response
     {
-        return $this->render('etudiant/note.html.twig');
+        $filieres = $em->getRepository(Filiere::class)->findAll();
+        
+        return $this->render('etudiant/note.html.twig', [
+            'filieres'=>$filieres
+        ]);
     }
 
     #[Route('etudiant/visualisation', name: 'etudiant_visualisation')]
-    public function etudiant_visualisation(managerRegistry $doctrine): Response
+    public function etudiant_visualisation(managerRegistry $doctrine, Request $request, EntityManagerInterface $em): Response
     {
         $entityManager = $doctrine->getManager();
+        $filieres = $em->getRepository(Filiere::class)->findAll();
         $etudiants = $entityManager->getRepository(Etudiant::class)->findAll();
 
         return $this->render('etudiant/visualisation.html.twig', [
             'etudiants' => $etudiants,
+            'filieres' => $filieres,
         ]);
     }
     #[Route('etudiant/visualisationNote', name: 'note_visualisation')]
-    public function note_visualisation(Request $request, managerRegistry $doctrine): Response
+    public function note_visualisation(Request $request, managerRegistry $doctrine, EntityManagerInterface $em): Response
     {
         $numetd = $request->get('numetd');
         $entityManager = $doctrine->getManager();
@@ -1140,7 +1416,8 @@ class EtudiantController extends AbstractController
             'annees' => $annee, // Ajout de la variable 'annees'
             'edt_filiere' => $etd_filiere_details,
             'tab_unites_name' => $tab_unites_names,
-            'tab_unites_note' => $tab_unites_notes
+            'tab_unites_note' => $tab_unites_notes,
+            'filieres' => $filieres,
         ]);
     }
 }

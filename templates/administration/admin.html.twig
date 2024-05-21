@@ -4,173 +4,587 @@
 {% block stylesheets %}
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style>
-  body {
-    background-color: #003B73;
-    font-family: 'Roboto', sans-serif;
-}
-
-.container {
-    max-width: 1100px;
-    margin: auto;
-}
-
-.btn-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.btn-custom {
-    background-color: #1abc9c;
-    border: none;
-    color: #ffffff;
-    padding: 0 30px;
-    font-size: 20px;
-    margin: 0 10px;
-    border-radius: 25px;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    height: 90px;
-    width: 200px;
-}
-
-.btn-custom:hover {
-    background-color: #16a085;
-}
-
-.btn-custom:focus {
-    outline: none;
-}
-
-.btn-container a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
-}
-
-/* Ajout de la classe .nav-right */
-.nav-right {
-    margin-left: auto;
-}
-
-.flex-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    max-width: 100%;
-}
-
-.flex-item {
-    flex-basis: calc(25% - 20px);
-    margin: 10px;
-}
-
-.filiere-box {
-    display: inline-block;
-    width: 100%;
-    height: 200px;
-    text-align: center;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-    background-color:#BFD7ED;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.filiere-head {
-    background-color: #ff9800;
-    color: #fff;
-    padding: 10px 0;
-    border-radius: 10px 10px 0 0;
-}
-
-.filiere-body {
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+  
+    body {
+      background-color:#003B73;
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+              padding: 0;
+  }
+  
+  .container {
+      max-width: 1100px;
+      margin: auto;
+  }
+  
+  .btn-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+  }
+  
+  .btn-custom {
+      background-color: #1abc9c;
+      border: none;
+      color: #ffffff;
+      padding: 0 30px;
+      font-size: 20px;
+      margin: 0 10px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      height: 90px;
+      width: 200px;
+  }
+  
+  .btn-custom:hover {
+      background-color: #16a085;
+  }
+  
+  .btn-custom:focus {
+      outline: none;
+  }
+  
+  .btn-container a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 50px;
+  }
+  
+  /* Ajout de la classe .nav-right */
+  .nav-right {
+      margin-left: auto;
+  }
+  
+  .flex-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      max-width: 100%;
+  }
+  
+  .flex-item {
+      flex-basis: calc(25% - 20px);
+      margin: 10px;
+      background-color: #012a4a;
+  }
+  
+  .filiere-box {
+      display: inline-block;
+      width: 100%;
+      height: 200px;
+      text-align: center;
+      box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      background-color: #BFD7ED;
+      border-radius: 10px;
+      overflow: hidden;
+  }
+  
+  .filiere-head {
+      background-color: #ff9800;
+      color: #fff;
+      padding: 10px 0;
+      border-radius: 10px 10px 0 0;
+  }
+  
+  .filiere-body {
+      padding: 20px;
+      font-family: 'Roboto', sans-serif;
+      background-color: #BFD7ED;
+  }
+  
+  .link-box {
+      display: inline-block;
+      width: 100px;
+      height: 50px;
+      background-color: #1abc9c;
+      margin: 10px;
+      line-height: 50px;
+      text-align: center;
+      color: #fff;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+  }
+  
+  .link-box:hover {
+      background-color: #16a085;
+  }
+  
+  .link-box a {
+      color: #fff;
+      text-decoration: none;
+  }
+  
+  .sec-center {
+      position: relative;
+      max-width: 100%;
+      text-align: center;
+      z-index: 200;
+    }
+    [type="checkbox"]:checked,
+    [type="checkbox"]:not(:checked){
+      position: absolute;
+      left: -9999px;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .dark-light:checked + label,
+    .dark-light:not(:checked) + label{
+      position: fixed;
+      top: 40px;
+      right: 40px;
+      z-index: 20000;
+      display: block;
+      border-radius: 50%;
+      width: 46px;
+      height: 46px;
+      cursor: pointer;
+      transition: all 200ms linear;
+      box-shadow: 0 0 25px #D4F1F4;
+    }
+    .dark-light:checked + label{
+      transform: rotate(360deg);
+    }
+    .dark-light:checked + label:after,
+    .dark-light:not(:checked) + label:after{
+      position: absolute;
+      content: '';
+      top: 1px;
+      left: 1px;
+      overflow: hidden;
+      z-index: 2;
+      display: block;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      background-color: #102770;
+      background-image: url('https://assets.codepen.io/1462889/moon.svg');
+      background-size: 20px 20px;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: all 200ms linear;
+      opacity: 0;
+    }
+    .dark-light:checked + label:after {
+      opacity: 1;
+    }
+    .dark-light:checked + label:before,
+    .dark-light:not(:checked) + label:before{
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: 1;
+      display: block;
+      border-radius: 50%;
+      width: 46px;
+      height: 46px;
+      background-color: #48dbfb;
+      background-image: url('https://assets.codepen.io/1462889/sun.svg');
+      background-size: 25px 25px;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: all 200ms linear;
+    }
+    .dark-light:checked + label:before{
+      background-color: #000;
+    }
+    .light-back{
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      background-color: #fff;
+      overflow: hidden;
+      background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1462889/pat-back.svg');
+      background-position: center;
+      background-repeat: repeat;
+      background-size: 4%;
+      height: 100%;
+      width: 100%;
+      transition: all 200ms linear;
+      opacity: 0;
+    }
+    .dark-light:checked ~ .light-back{
+      opacity: 1;
+    }
+    .dropdown:checked + label,
+    .dropdown:not(:checked) + label{
+      position: relative;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      font-size: 15px;
+      line-height: 2;
+      height: 50px;
+      transition: all 200ms linear;
+      border-radius: 4px;
+      width: 220px;
+      letter-spacing: 1px;
+      display: -webkit-inline-flex;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      -webkit-align-items: center;
+      -moz-align-items: center;
+      -ms-align-items: center;
+      align-items: center;
+      -webkit-justify-content: center;
+      -moz-justify-content: center;
+      -ms-justify-content: center;
+      justify-content: center;
+      -ms-flex-pack: center;
+      text-align: center;
+      border: none;
+      background-color: #ffeba7;
+      cursor: pointer;
+      color: #102770;
+      box-shadow: 0 12px 35px 0 rgba(255,235,167,.15);
+    }
+    .dark-light:checked ~ .sec-center .for-dropdown{
+      background-color: #102770;
+      color: #ffeba7;
+      box-shadow: 0 12px 35px 0 rgba(16,39,112,.25);
+    }
+    .dropdown:checked + label:before,
+    .dropdown:not(:checked) + label:before{
+      position: fixed;
+      top: 0;
+      left: 0;
+      content: '';
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      cursor: auto;
+      pointer-events: none;
+    }
+    .dropdown:checked + label:before{
+      pointer-events: auto;
+    }
+    .dropdown:not(:checked) + label .uil {
+      font-size: 24px;
+      margin-left: 10px;
+      transition: transform 200ms linear;
+    }
+    .dropdown:checked + label .uil {
+      transform: rotate(180deg);
+      font-size: 24px;
+      margin-left: 10px;
+      transition: transform 200ms linear;
+    }
+    .section-dropdown {
+      position: absolute;
+      padding: 5px;
+      background-color: #111;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      border-radius: 4px;
+      display: block;
+      box-shadow: 0 14px 35px 0 rgba(9,9,12,0.4);
+      z-index: 2;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+      transition: all 200ms linear;
+    }
+    .dark-light:checked ~ .sec-center .section-dropdown {
+      background-color: #fff;
+      box-shadow: 0 14px 35px 0 rgba(9,9,12,0.15);
+    }
+    .dropdown:checked ~ .section-dropdown{
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .section-dropdown:before {
+      position: absolute;
+      top: -20px;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      content: '';
+      display: block;
+      z-index: 1;
+    }
+    .section-dropdown:after {
+      position: absolute;
+      top: -7px;
+      left: 30px;
+      width: 0; 
+      height: 0; 
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent; 
+      border-bottom: 8px solid #111;
+      content: '';
+      display: block;
+      z-index: 2;
+      transition: all 200ms linear;
+    }
+    .dark-light:checked ~ .sec-center .section-dropdown:after {
+      border-bottom: 8px solid #fff;
+    }
+    
+    .menubutton {
+      position: relative;
+      color: #fff;
+      transition: all 200ms linear;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      font-size: 15px;
+      border-radius: 2px;
+      padding: 5px 0;
+      padding-left: 20px;
+      padding-right: 15px;
+      margin: 2px 0;
+      text-align: left;
+      text-decoration: none;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -moz-align-items: center;
+      -ms-align-items: center;
+      align-items: center;
+      justify-content: space-between;
+        -ms-flex-pack: distribute;
+    }
+    .dark-light:checked ~ .sec-center .section-dropdown a {
+      color: #102770;
+    }
+    .menubutton:hover {
+      color: #102770;
+      background-color: #ffeba7;
+    }
+    .dark-light:checked ~ .sec-center .section-dropdown a:hover {
+      color: #ffeba7;
+      background-color: #102770;
+    }
+    a .uil {
+      font-size: 22px;
+    }
+    .dropdown-sub:checked + label,
+    .dropdown-sub:not(:checked) + label{
+      position: relative;
+      color: #fff;
+      transition: all 200ms linear;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      font-size: 15px;
+      border-radius: 2px;
+      padding: 5px 0;
+      padding-left: 20px;
+      padding-right: 15px;
+      text-align: left;
+      text-decoration: none;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -moz-align-items: center;
+      -ms-align-items: center;
+      align-items: center;
+      justify-content: space-between;
+        -ms-flex-pack: distribute;
+        cursor: pointer;
+    }
+    .dropdown-sub:checked + label .uil,
+    .dropdown-sub:not(:checked) + label .uil{
+      font-size: 22px;
+    }
+    .dropdown-sub:not(:checked) + label .uil {
+      transition: transform 200ms linear;
+    }
+    .dropdown-sub:checked + label .uil {
+      transform: rotate(135deg);
+      transition: transform 200ms linear;
+    }
+    .dropdown-sub:checked + label:hover,
+    .dropdown-sub:not(:checked) + label:hover{
+      color: #102770;
+      background-color: #ffeba7;
+    }
+    .dark-light:checked ~ .sec-center .section-dropdown .for-dropdown-sub{
+      color: #102770;
+    }
+    .dark-light:checked ~ .sec-center .section-dropdown .for-dropdown-sub:hover{
+      color: #ffeba7;
+      background-color: #102770;
+    }
+    
+    .section-dropdown-sub {
+      position: relative;
+      display: block;
+      width: 100%;
+      pointer-events: none;
+      opacity: 0;
+      max-height: 0;
+      padding-left: 10px;
+      padding-right: 3px;
+      overflow: hidden;
+      transition: all 200ms linear;
+    }
+    .dropdown-sub:checked ~ .section-dropdown-sub{
+      pointer-events: auto;
+      opacity: 1;
+      max-height: 999px;
+    }
+    .section-dropdown-sub a {
+      font-size: 14px;
+    }
+    .section-dropdown-sub a .uil {
+      font-size: 20px;
+    }
+    .logo {
+        position: fixed;
+        top: 50px;
+        left: 40px;
+        display: block;
+        z-index: 11000000;
+      background-color: transparent;
+      border-radius: 0;
+      padding: 0;
+        transition: all 250ms linear;
+    }
+    .logo:hover {
+      background-color: transparent;
+    }
+    .logo img {
+        height: 26px;
+        width: auto;
+        display: block;
+      transition: all 200ms linear;
+    }
+    .dark-light:checked ~ .logo img{
+      filter: brightness(10%);
+    }
+    
+    @media screen and (max-width: 991px) {
+    .logo {
+        top: 30px;
+        left: 20px;
+    }
+    .dark-light:checked + label,
+    .dark-light:not(:checked) + label{
+      top: 20px;
+      right: 20px;
+    }
+    }
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 30px;
+      background-color: #f1f7fe;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      
+  }
+  
+  .categorie {
+    flex-basis: calc(25% - 20px); /* 20% minus margin and padding */
     padding: 20px;
-    font-family: 'Roboto', sans-serif;
-    background-color: #BFD7ED;
-}
-
-.link-box {
-    display: inline-block;
-    width: 100px;
-    height: 50px;
-    background-color: #1abc9c;
+    text-align: left;
     margin: 10px;
-    line-height: 50px;
-    text-align: center;
-    color: #fff;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-}
-
-.link-box:hover {
-    background-color: #16a085;
-}
-
-.link-box a {
-    color: #fff;
-    text-decoration: none;
-}
-
-
-</style>
+    border-radius: 32px;
+    background: #d5f0fb;
+    width: 25%;
+    box-sizing: border-box;
+  }
+  
+  
+  
+  
+  </style>
 {% endblock %}
 {% block body %}
 <nav class="navbar navbar-expand-lg fixed-top" style="background-color: #0ABBEF;">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/"><img src="https://upload.wikimedia.org/wikipedia/fr/thumb/b/b9/Universit%C3%A9_d%27Angers_%28logo%29.svg/640px-Universit%C3%A9_d%27Angers_%28logo%29.svg.png" width="50px" alt="Logo de l'université d'Angers"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav nav-right"> <!-- Ajout de la classe .nav-right -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_admin_user') }}"><strong>Utilisateurs</strong></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_etudiant') }}"><strong>Étudiants</strong></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_maquette') }}"><strong>Maquettes</strong></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_maquette') }}"><strong>Statistiques</strong></a>
-                    </li>
-                </ul>
-            </div>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/"><img src="https://upload.wikimedia.org/wikipedia/fr/thumb/b/b9/Universit%C3%A9_d%27Angers_%28logo%29.svg/640px-Universit%C3%A9_d%27Angers_%28logo%29.svg.png" width="50px" alt="Logo de l'université d'Angers"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav nav-right"> 
+               <!-- Ajout de la classe .nav-right -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_admin_user') }}"><strong>Utilisateurs</strong></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_etudiant') }}"><strong>Étudiants</strong></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_maquette') }}"><strong>Maquettes</strong></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('etudiant_information') }}"><strong>Inserer des étudiants</strong></a>
+                </li>
+                
+            </ul>
         </div>
-    </nav>
+        <div class="sec-center"> 	
+          <input class="dropdown" type="checkbox" id="dropdown" name="dropdown"/>
+          <label class="for-dropdown" for="dropdown">Explorer<i class="uil uil-arrow-down"></i></label>
+          <div class="section-dropdown"> 
+              {% for filiere in filieres %}
+                  <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/>
+                  <label class="for-dropdown-sub" for="dropdown-sub">{{ filiere }}<i class="uil uil-plus"></i></label>
+                  <div class="section-dropdown-sub"> 
+                  <a class="menubutton" href="{{ path('app_maquette_particulier' ,{'codefiliere' : filiere.codefiliere }) }}">Maquette</a>
+                  <a class="menubutton" href="{{ path('app_maquette_particulier' , {'codefiliere' : filiere.codefiliere }) }}">Statistiques</a>
+                  <a class="menubutton" href="{{ path('app_etudiant_particulier' , {'codefiliere' : filiere.codefiliere }) }}">Étudiants</a>
+                  </div>
+              {% endfor %}
+              <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/>
+                  <label class="for-dropdown-sub" for="dropdown-sub">Étudiants<i class="uil uil-plus"></i></label>
+                  <div class="section-dropdown-sub"> 
+                    <a class="menubutton" href="{{ path('etudiant_information') }}">Inserer des étudiants</a>
+                    <a class="menubutton" href="{{ path('etudiant_visualisation') }}">Visualisation des étudiants</a>
+                    
+                  </div>
+              <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/>
+                  <label class="for-dropdown-sub" for="dropdown-sub">Inserer des notes<i class="uil uil-plus"></i></label>
+                  <div class="section-dropdown-sub">
+                    <a class="menubutton" href="{{ path('insertion_mail') }}">Inserer par email</a>
+                    <a class="menubutton" href="{{ path('insertion_file') }}">Inserer par fichier</a>
+                  </div> 
+              <a class="menubutton" href="{{ path('app_maquette') }}"><strong>Maquettes</strong></a>
+          </div>
+      </div>
+    </div>
+</nav>
     <br><br><br><br>
-   
 </div>
-    <div class="flex-container">
+<div class="categories">
     {% for filiere in filieres %}
-        <div class="flex-item">
-            <div class="filiere-box">
-                <div class="filiere-head" style="background-color:#0ABBEF;">
-                    <b> Gestion de la {{ filiere }}</b>
-                </div>
-                <div class="filiere-body">
-                    <div class="link-box">
-                        <a href="{{ path('app_etudiant_particulier' , {'codefiliere' : filiere.codefiliere }) }}">Étudiants</a>
-                    </div>
-                    <div class="link-box">
-                        <a href="{{ path('app_maquette_particulier' ,{'codefiliere' : filiere.codefiliere }) }}">Maquette</a>
-                    </div>
-                    <div class="link-box">
-                        <a href="{{ path('app_maquette_particulier' , {'codefiliere' : filiere.codefiliere }) }}">Statistiques</a>
-                    </div>
-                </div>
-            </div>
+    <div class="categorie">
+      <h3>Gestion de la {{ filiere }}</h3>
+      <ul>
+        <li>
+          <div class="link-box">
+            <a href="{{ path('app_etudiant_particulier' , {'codefiliere' : filiere.codefiliere }) }}">Étudiants</a>
+          </div>
+        </li>
+        <li>
+          <div class="link-box">
+            <a href="{{ path('app_maquette_particulier' ,{'codefiliere' : filiere.codefiliere }) }}">Maquette</a>
+          </div>
+        </li>
+        <li>
+          <div class="link-box">
+            <a href="{{ path('app_statistique_particulier' , {'codefiliere' : filiere.codefiliere }) }}">Statistiques</a>
         </div>
+        </li>
+      </ul>
+      
+  </div>
     {% endfor %}
-</div>
-
+    </div>
 {% endblock %}

@@ -56,6 +56,22 @@
     display: block; /* afficher le bouton comme un bloc pour pouvoir le centrer */
     margin: 0 auto; /* centrer le bouton horizontalement dans la cellule */
 }
+#search-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        #search-bar {
+            width: 30%;
+            padding: 8px 36px 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%234CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
 
 /* Ajoutez des styles pour les boutons verts et rouges */
 button.admis {
@@ -73,9 +89,12 @@ button.ajourne {
 
 {% block body %}
     <br><br><br><br>
+     <div id="search-container">
+        <input type="text" id="search-bar" placeholder="Rechercher un étudiant..." onkeyup="searchStudent()">
+    </div>
     {% for year , annee in etudiant_tableau %}
         <p style="text-align:center ; color : orange;"><b>Année Universitaire {{year}} </b></p>
-        <table class="table table-bordered table-hover table-sm">
+        <table class="table table-bordered table-hover table-sm" id ="student-table">
             <thead>
                 <tr style="background-color:greenyellow;">
                     <th>Numéro Étudiant</th>
@@ -92,16 +111,43 @@ button.ajourne {
                         <td>{{ numetd }}</td>
                         <td>{{ etudiant[0] }}</td>
                         <td>{{ etudiant[1] }}</td>
-                        <td>{{ etudiant[2] }}</td>
+                        <td>{{ etudiant[2] | number_format(2, '.', ',') }}</td>
                         {% if etudiant[2]  >= 10 %}
                             <td> <button class="admis"> Admis </button></td>
                         {% else %}
                             <td><button class="ajourne">Ajournée</button></td>
                         {% endif %}
-                        <td> <a href="{{path('etudiant_visual' , {'numetd' : numetd  })}}">résultat</a></td>
+                        <td> <a href="{{path('etudiant_visual' , {'numetd' : numetd })}}">résultat</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% endfor %}
+    <script>
+         function searchStudent() {
+            const input = document.getElementById('search-bar');
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById('student-table');
+            const tr = table.getElementsByTagName('tr');
+
+            for (let i = 0; i < tr.length; i++) {
+                const td = tr[i].getElementsByTagName('td');
+                let found = false;
+
+                for (let j = 0; j < td.length; j++) {
+                    if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        found = true;
+                    }
+                }
+
+                if (found) {
+                    tr[i].style.display = '';
+                } else {
+                    tr[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
 {% endblock %}
+
+

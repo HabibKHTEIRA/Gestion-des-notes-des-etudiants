@@ -60,17 +60,22 @@ class MaquetteController extends AbstractController
     {
         $entityManager = $doctrine->getManager();
         $filiere = $entityManager->getRepository(Filiere::class)->findOneBy(['codefiliere' => $codefiliere]);
+        $filieres = $em->getRepository(Filiere::class)->findAll();
+
 
 
         return $this->render('maquette/modifier.html.twig', [
             'controller_name' => 'MaquetteController',
             'filiere'  => $filiere,
+            'filieres' => $filieres,
         ]);
     }
 
     #[Route('/maquette/importer', name: 'maquette_importer')]
     public function importXML(Request $request, EtudiantRepository $etudiantRepository, EntityManagerInterface $em, managerRegistry $doctrine): Response
     {
+        $filieres = $em->getRepository(Filiere::class)->findAll();
+
 
         $entityManager = $doctrine->getManager();
         $validator = Validation::createValidator();
@@ -441,12 +446,15 @@ class MaquetteController extends AbstractController
 
         return $this->render('maquette/import.html.twig', [
             'form' => $form->createView(),
+            'filieres' => $filieres,
         ]);
     }
 
     #[Route('/maquette/importer_codes', name: 'codes_importer')]
     public function importcodeXML(Request $request, EtudiantRepository $etudiantRepository, EntityManagerInterface $em, managerRegistry $doctrine): Response
     {
+        $filieres = $em->getRepository(Filiere::class)->findAll();
+
 
         $entityManager = $doctrine->getManager();
         $validator = Validation::createValidator();
@@ -608,6 +616,7 @@ class MaquetteController extends AbstractController
 
         return $this->render('maquette/importCode.html.twig', [
             'form' => $form->createView(),
+            'filieres' => $filieres,
         ]);
     }
 }

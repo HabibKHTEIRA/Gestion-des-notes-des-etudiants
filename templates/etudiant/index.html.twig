@@ -1,28 +1,27 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Étudiant{% endblock %}
-
-{% block body %}
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-  <script>
-  $(function() {
+{% extends 'base.html.twig' %} {% block title %}Étudiant{% endblock %} {% block
+body %}
+<link
+  rel="stylesheet"
+  href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"
+/>
+<link rel="stylesheet" href="/resources/demos/style.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script>
+  $(function () {
     $("#tabs").tabs({
-      beforeLoad: function(event, ui) {
-        ui.jqXHR.error(function() {
+      beforeLoad: function (event, ui) {
+        ui.jqXHR.error(function () {
           ui.panel.html("Error loading content.");
         });
-      }
+      },
     });
   });
-  </script>
+</script>
 
 <div id="tabs">
   <ul>
     <li><a href="#bloc">Insertion des notes</a></li>
-    <li><a href="#tabs-2">Insertion des étudiants</a></li>
     <li><a href="#tabs-4">Visualisation des étudiants</a></li>
   </ul>
   <div id="bloc"></div>
@@ -32,28 +31,21 @@
 </div>
 
 <script>
-$( "#tabs" ).tabs({
-  beforeActivate: function( event, ui ) {
-    var activeTab = $(ui.newPanel).attr('id');
-    switch (activeTab) {
-      case 'bloc':
-        $('#' + activeTab).load('./etudiant/note');
-        break;
-      case 'tabs-2':
-        $('#' + activeTab).load('./etudiant/information');
-        break;
-      case 'tabs-4':
-        $('#' + activeTab).load('./etudiant/visualisation');
-        break;
-    }
-  }
-});
+  $("#tabs").tabs({
+    beforeActivate: function (event, ui) {
+      var activeTab = $(ui.newPanel).attr("id");
+      switch (activeTab) {
+        case "bloc":
+          $("#" + activeTab).load("./etudiant/note");
+          break;
+        case "tabs-4":
+          $("#" + activeTab).load("./etudiant/visualisation");
+          break;
+      }
+    },
+  });
 </script>
 
 <style>
-button:hover{
-    background:#1ABBEF;
-    color:white;
-}
 </style>
 {% endblock %}
