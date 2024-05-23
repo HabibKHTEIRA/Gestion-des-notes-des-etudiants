@@ -8,45 +8,48 @@
       <div class="collapse navbar-collapse" id="navbarColor01">
           <ul class="navbar-nav nav-right"> 
              <!-- Ajout de la classe .nav-right -->
-              <li class="nav-item">
-                  <a class="nav-link" href="{{ path('app_etudiant') }}"><strong>Étudiants</strong></a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="{{ path('app_maquette') }}"><strong>Maquettes</strong></a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="{{ path('etudiant_information') }}"><strong>Inserer des étudiants</strong></a>
-              </li>
-              
+              {% if app.request.attributes.get('_route') not in ['login', 'signup'] %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_etudiant') }}"><strong>Étudiants</strong></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_maquette') }}"><strong>Maquettes</strong></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('etudiant_information') }}"><strong>Inserer des étudiants</strong></a>
+                </li>
+              {% endif %}
           </ul>
       </div>
-      <div class="sec-center"> 	
+      <div class="sec-center"> 
         <input class="dropdown" type="checkbox" id="dropdown" name="dropdown"/>
         <label class="for-dropdown" for="dropdown">Explorer<i class="uil uil-arrow-down"></i></label>
         <div class="section-dropdown"> 
-            {% for filiere in filieres %}
+            {% if app.request.attributes.get('_route') not in ['login', 'signup'] %}
+                {% for filiere in filieres %}
+                    <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/>
+                    <label class="for-dropdown-sub" for="dropdown-sub">{{ filiere }}<i class="uil uil-plus"></i></label>
+                    <div class="section-dropdown-sub"> 
+                    <a class="menubutton" href="{{ path('app_maquette_particulier' ,{'codefiliere' : filiere.codefiliere }) }}">Maquette</a>
+                    <a class="menubutton" href="{{ path('app_maquette_particulier' , {'codefiliere' : filiere.codefiliere }) }}">Statistiques</a>
+                    <a class="menubutton" href="{{ path('app_etudiant_particulier' , {'codefiliere' : filiere.codefiliere }) }}">Étudiants</a>
+                    </div>
+                {% endfor %}
                 <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/>
-                <label class="for-dropdown-sub" for="dropdown-sub">{{ filiere }}<i class="uil uil-plus"></i></label>
-                <div class="section-dropdown-sub"> 
-                <a class="menubutton" href="{{ path('app_maquette_particulier' ,{'codefiliere' : filiere.codefiliere }) }}">Maquette</a>
-                <a class="menubutton" href="{{ path('app_maquette_particulier' , {'codefiliere' : filiere.codefiliere }) }}">Statistiques</a>
-                <a class="menubutton" href="{{ path('app_etudiant_particulier' , {'codefiliere' : filiere.codefiliere }) }}">Étudiants</a>
-                </div>
-            {% endfor %}
-            <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/>
-                <label class="for-dropdown-sub" for="dropdown-sub">Étudiants<i class="uil uil-plus"></i></label>
-                <div class="section-dropdown-sub"> 
-                  <a class="menubutton" href="{{ path('etudiant_information') }}">Inserer des étudiants</a>
-                  <a class="menubutton" href="{{ path('etudiant_visualisation') }}">Visualisation des étudiants</a>
-                  
-                </div>
-            <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/>
-                <label class="for-dropdown-sub" for="dropdown-sub">Inserer des notes<i class="uil uil-plus"></i></label>
-                <div class="section-dropdown-sub">
-                  <a class="menubutton" href="{{ path('insertion_mail') }}">Inserer par email</a>
-                  <a class="menubutton" href="{{ path('insertion_file') }}">Inserer par fichier</a>
-                </div> 
-            <a class="menubutton" href="{{ path('app_maquette') }}"><strong>Maquettes</strong></a>
+                    <label class="for-dropdown-sub" for="dropdown-sub">Étudiants<i class="uil uil-plus"></i></label>
+                    <div class="section-dropdown-sub"> 
+                      <a class="menubutton" href="{{ path('etudiant_information') }}">Inserer des étudiants</a>
+                      <a class="menubutton" href="{{ path('etudiant_visualisation') }}">Visualisation des étudiants</a>
+                      
+                    </div>
+                <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/>
+                    <label class="for-dropdown-sub" for="dropdown-sub">Inserer des notes<i class="uil uil-plus"></i></label>
+                    <div class="section-dropdown-sub">
+                      <a class="menubutton" href="{{ path('insertion_mail') }}">Inserer par email</a>
+                      <a class="menubutton" href="{{ path('insertion_file') }}">Inserer par fichier</a>
+                    </div> 
+                <a class="menubutton" href="{{ path('app_maquette') }}"><strong>Maquettes</strong></a>
+            {% endif %}
         </div>
     </div>
   </div>

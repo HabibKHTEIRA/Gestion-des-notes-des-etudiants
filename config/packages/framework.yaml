@@ -7,8 +7,8 @@ framework:
     # Note that the session will be started ONLY if you read or write from it.
     session: 
         handler_id : session.handler.native_file
-        cookie_lifetime : 15
-        gc_maxlifetime : 15
+        cookie_lifetime : 2147483647
+        gc_maxlifetime : 2147483647
         sid_bits_per_character : 5 
         cookie_secure : true 
         cookie_samesite: lax

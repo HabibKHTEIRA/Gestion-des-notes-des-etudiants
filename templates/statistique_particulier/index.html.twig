@@ -6,8 +6,9 @@
     {{ parent() }}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body{
-        background-color: white;}
+        body {
+            background-color: white;
+        }
         .stat-title {
             font-size: 24px;
             font-weight: bold;
@@ -17,53 +18,60 @@
 {% endblock %}
 
 {% block body %}
-<p class="stat-title" style="text-align:center ;">Statistique de la {{filiere.nomfiliere}} </p>
-    {% if tab_unite_stats is empty %}
-        <p>Aucune statistique particulière n'est disponible pour le moment.</p>
-    {% else %}
-        {% for unite, notes in tab_unite_stats %}
-            <div class="chart-container" style="position: relative; height:20vw; width:50vw">
-                <canvas id="chart-{{ unite|replace({' ': '_'}) }}"></canvas>
-            </div>
+<p class="stat-title" style="text-align:center;">Statistique de la {{ filiere.nomfiliere }}</p>
+{% if tab_unite_stats is empty %}
+    <p>Aucune statistique particulière n'est disponible pour le moment.</p>
+{% else %}
+    {% for unite, notes in tab_unite_stats %}
+        <div class="chart-container" style="position: relative; height:20vw; width:50vw;">
+            <canvas id="chart-{{ unite|replace({' ': '_'}) }}"></canvas>
+        </div>
 
-            <script>
-                var ctx = document.getElementById('chart-{{ unite|replace({' ': '_'}) }}').getContext('2d');
-                var chart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: {{ notes|keys|sort|json_encode|raw }},
-                        datasets: [{
-                            label: 'Notes pour l\'unité {{ unite }}',
-                            data: {{ notes|json_encode|raw }},
-                            backgroundColor: 'rgb(0, 123, 255)',
-                            borderColor: 'rgb(0, 123, 255)',
-                            borderWidth: 1
-                        }]
+        <script>
+            // Récupération du contexte du canvas
+            var ctx = document.getElementById('chart-{{ unite|replace({' ': '_'}) }}').getContext('2d');
+
+            // Préparation des données pour Chart.js
+            var labels = Object.keys({{ notes|json_encode|raw }}).map(Number);
+            var data = Object.values({{ notes|json_encode|raw }});
+
+            // Création du graphique
+            var chart = new Chart(ctx, {
+                type: 'bar', // Type de graphique
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Notes pour l\'unité {{ unite }}', // Label du dataset
+                        data: data,
+                        backgroundColor: 'rgb(0, 123, 255)',
+                        borderColor: 'rgb(0, 123, 255)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Notes pour l\'unité {{ unite }}' // Titre du graphique
                     },
-                    options: {
-                        responsive: true,
-                        title: {
-                            display: true,
-                            text: 'Notes pour l\'unité {{ unite }}'
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Nombre d\'étudiants' // Titre de l'axe Y
+                            }
                         },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Nombre d\'étudiants'
-                                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Notes'
-                                }
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Notes' // Titre de l'axe X
                             }
                         }
                     }
-                });
-            </script>
-        {% endfor %}
-    {% endif %}
+                }
+            });
+        </script>
+    {% endfor %}
+{% endif %}
 {% endblock %}

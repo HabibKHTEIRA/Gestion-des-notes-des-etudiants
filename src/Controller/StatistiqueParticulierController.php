@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
 class StatistiqueParticulierController extends AbstractController
 {
@@ -19,23 +19,33 @@ class StatistiqueParticulierController extends AbstractController
         $codefiliere = $request->get('codefiliere');
         $filiere = $em->getRepository(Filiere::class)->findOneBy(["codefiliere" => $codefiliere]);
         $blocs = $filiere->getBlocs();
-        $tab_unite_stats = [] ; 
-        foreach ($blocs as $bloc){
-            $unites = $bloc->getUnites(); 
-            foreach ($unites as $unit){
-                $notes = $em->getRepository(Note::class)->findBy(['element' => $unit->getCodeunite()]);
-                $tab_notes = []; 
-                foreach($notes as $nte){
-                     $tab_notes [] = floatval($nte->getNote()); 
+        $tab_unite_stats = [];
+
+        foreach ($blocs as $bloc) {
+            $unites = $bloc->getUnites();
+            foreach ($unites as $unite) {
+                $notes = $em->getRepository(Note::class)->findBy(['element' => $unite->getCodeunite()]);
+                $tab_notes_count = [];
+
+                foreach ($notes as $note) {
+                    $noteValue = floatval($note->getNote());
+                    if (array_key_exists($noteValue, $tab_notes_count)) {
+                        $tab_notes_count[$noteValue]++;
+                    } else {
+                        $tab_notes_count[$noteValue] = 1;
+                    }
                 }
-                $tab_unite_stats [$unit->getNomunite()] = $tab_notes; 
+
+                // Tri des notes par ordre croissant
+                ksort($tab_notes_count);
+                $tab_unite_stats[$unite->getNomunite()] = $tab_notes_count;
             }
         }
-       // dd($tab_unite_stats);
+
         return $this->render('statistique_particulier/index.html.twig', [
-            'tab_unite_stats' => $tab_unite_stats , 
+            'tab_unite_stats' => $tab_unite_stats,
             'filiere' => $filiere,
-            'filieres' => $filieres,          
+            'filieres' => $filieres,
         ]);
     }
 }

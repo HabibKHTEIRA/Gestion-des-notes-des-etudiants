@@ -15,7 +15,21 @@ body %}
           ui.panel.html("Error loading content.");
         });
       },
+      beforeActivate: function (event, ui) {
+        var activeTab = $(ui.newPanel).attr("id");
+        switch (activeTab) {
+          case "bloc":
+            $("#" + activeTab).load("./etudiant/note");
+            break;
+          case "tabs-4":
+            $("#" + activeTab).load("./etudiant/visualisation");
+            break;
+        }
+      }
     });
+    // Load the "Visualisation des étudiants" tab content by default
+    $("#tabs-4").load("./etudiant/visualisation");
+    $("#tabs").tabs("option", "active", 1); // Set the second tab as active
   });
 </script>
 
@@ -30,21 +44,7 @@ body %}
   <div id="tabs-4"></div>
 </div>
 
-<script>
-  $("#tabs").tabs({
-    beforeActivate: function (event, ui) {
-      var activeTab = $(ui.newPanel).attr("id");
-      switch (activeTab) {
-        case "bloc":
-          $("#" + activeTab).load("./etudiant/note");
-          break;
-        case "tabs-4":
-          $("#" + activeTab).load("./etudiant/visualisation");
-          break;
-      }
-    },
-  });
-</script>
+
 
 <style>
 </style>

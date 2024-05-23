@@ -40,6 +40,9 @@ class Epreuve
     #[ORM\Column(nullable: true)]
     private ?int $pourcentage = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $codeTrouve = null;
+
     
 
 
@@ -153,6 +156,18 @@ class Epreuve
     public function setPourcentage(?int $pourcentage): static
     {
         $this->pourcentage = $pourcentage;
+
+        return $this;
+    }
+
+    public function getCodeTrouve(): ?string
+    {
+        return $this->codeTrouve;
+    }
+
+    public function setCodeTrouve(?string $codeTrouve): static
+    {
+        $this->codeTrouve = $codeTrouve;
 
         return $this;
     }

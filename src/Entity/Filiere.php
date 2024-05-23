@@ -38,6 +38,9 @@ class Filiere
     #[ORM\OneToMany(targetEntity: FormationInt::class, mappedBy: 'filiere', orphanRemoval: true)]
     private Collection $formationInts;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $codeTrouve = null;
+
     public function __construct()
     {
         $this->blocs = new ArrayCollection();
@@ -172,6 +175,18 @@ class Filiere
                 $formationInt->setFiliere(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCodeTrouve(): ?string
+    {
+        return $this->codeTrouve;
+    }
+
+    public function setCodeTrouve(?string $codeTrouve): static
+    {
+        $this->codeTrouve = $codeTrouve;
 
         return $this;
     }

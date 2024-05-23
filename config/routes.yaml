@@ -6,9 +6,9 @@ controllers:
 users_delete:
   path: /administration/user/user/{id}/delete
   methods: ['POST']
-  controller: App\Controller\UserController::delete
+  controller: App\Controller\SecurController::delete
 
 users_confirm:
   path: /administration/user/user/{id}/confirm
   methods: ['POST']
-  controller: App\Controller\UserController::confirm
+  controller: App\Controller\SecurController::confirm

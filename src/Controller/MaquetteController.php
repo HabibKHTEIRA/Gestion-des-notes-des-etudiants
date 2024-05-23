@@ -31,6 +31,8 @@ class MaquetteController extends AbstractController
     private $comptunite = 1;
     private $comptmatiere = 1;
     private $comptepreuve = 1;
+    private $choix = false;
+    private $nontrouve = false;
 
 
     #[Route('/maquette', name: 'app_maquette')]
@@ -119,101 +121,148 @@ class MaquetteController extends AbstractController
 
                 switch ($field_1) {
                     case 'SOCL':
-
+                        $filiere = new Filiere();
                         $this->comptbloc = 1;
-                        $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => $field_0, 'nature' => ['SOCL', 'PAR']]);
+                        $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => strtolower($field_0), 'nature' => ['SOCL', 'PAR']]);
                         if ($existingCodeEntity) {
+                            $filiere->setCodeTrouve('oui');
                             $codeFiliere = $existingCodeEntity->getCode();
                         } else {
                             // Générer un nouveau code
-                            $codeFiliere = 'T' . substr($field_0, 0, 2) . $anne;
+                            $codeFiliere = 'T' . 'INF' . $anne;
+                            $this->nontrouve = true;
+                            $filiere->setCodeTrouve('non');
                         }
                         //substr($field_0, 0, 2)
                         if ($entityManager->getRepository(Filiere::class)->findOneBy(["codefiliere" => $codeFiliere])) {
                             $this->comptfiliere++;
                             break;
                         }
-                        $filiere = new Filiere();
+                        
                         $filiere->setCodefiliere($codeFiliere);
                         $filiere->setNomfiliere($field_0);
 
                         $entityManager->persist($filiere);
-                        $element = new Element();
-                        $element->setFiliere($filiere);
-                        $element->setCodeelt($filiere->getCodefiliere());
-                        $em->persist($element);
-                        $em->flush();
+                        $element = $entityManager->getRepository(Element::class)->findOneBy(["codeelt" => $codeFiliere]);
+                        if($element){
+                            $element->setFiliere($filiere);
+                            $element->setType('filiere');
+                            $em->persist($element);
+                        } else{
+                            $element = new Element();
+                            $element->setFiliere($filiere);
+                            $element->setCodeelt($filiere->getCodefiliere());
+                            $element->setType('filiere');
+                            $em->persist($element);
+                        }
+                        
+                        //$em->flush();
 
                         $this->derfiliere = $filiere;
                         break;
                     case 'BLCT':
                         $this->comptunite = 1;
-                        $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => $field_0, 'nature' => ['BLOC', 'BLCT']]);
+                        $bloc = new Bloc();
+                        $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => strtolower($field_0), 'nature' => ['BLOC', 'BLCT']]);
                         if ($existingCodeEntity) {
                             $codeBloc = $existingCodeEntity->getCode();
+                            $bloc->setCodeTrouve('oui');
                         } else {
                             // Générer un nouveau code
                             $codeBloc = $this->derfiliere->getCodefiliere() . 'B' . $this->comptbloc;
+                            $this->nontrouve = true;
+                            $bloc->setCodeTrouve('non');
                         }
                         $this->comptbloc++;
-                        $bloc = new Bloc();
+                        
                         $bloc->setCodebloc($codeBloc);
                         $bloc->setNombloc($field_0);
                         $bloc->setNoteplancher(filter_var($field_45, FILTER_SANITIZE_NUMBER_INT));
                         $bloc->setFiliere($this->derfiliere);
-                        $entityManager->flush();
+                        //$entityManager->flush();
 
                         $entityManager->persist($bloc);
-                        $element = new Element();
-                        $element->setBloc($bloc);
-                        $element->setCodeelt($bloc->getCodebloc());
-                        $entityManager->persist($element);
+                        $element = $entityManager->getRepository(Element::class)->findOneBy(["codeelt" => $codeBloc]);
+                        if($element){
+                            $element->setBloc($bloc);
+                            $element->setType('bloc');
+                            $entityManager->persist($element);
+                        } else{
+                            $element = new Element();
+                            $element->setBloc($bloc);
+                            $element->setCodeelt($codeBloc);
+                            $element->setType('filiere');
+                            $entityManager->persist($element);
+                        }
                         $this->derbloc = $bloc;
                         break;
                     case 'UE':
                         $this->comptmatiere = 1;
                         if (!$this->derbloc) {
                             $this->comptunite = 1;
-                            $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => 'Transversaux', 'nature' => ['BLOC', 'BLCT']]);
+                            $bloc = new Bloc();
+                            $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => 'transversaux', 'nature' => ['BLOC', 'BLCT']]);
                             if ($existingCodeEntity) {
+                                $bloc->setCodeTrouve('oui');
                                 $codebloc = $existingCodeEntity->getCode();
                             } else {
                                 // Générer un nouveau code
                                 $codebloc = $this->derfiliere->getCodefiliere() . 'B' . $this->comptbloc;
+                                $this->nontrouve = true;
+                                $bloc->setCodeTrouve('non');
                             }
                             $this->comptbloc++;
-                            $bloc = new Bloc();
                             $bloc->setCodebloc($codebloc);
                             $bloc->setNombloc('Transversaux');
                             $bloc->setFiliere($this->derfiliere);
                             $entityManager->persist($bloc);
-                            $element = new Element();
-                            $element->setBloc($bloc);
-                            $element->setCodeelt($bloc->getCodebloc());
-                            $entityManager->persist($element);
+                            $element = $entityManager->getRepository(Element::class)->findOneBy(["codeelt" => $codebloc]);
+                            if($element){
+                                $element->setBloc($bloc);
+                                $element->setType('bloc');
+                                $entityManager->persist($element);
+                            } else{
+                                $element = new Element();
+                                $element->setBloc($bloc);
+                                $element->setCodeelt($codebloc);
+                                $element->setType('bloc');
+                                $entityManager->persist($element);
+                            }
                             $this->derbloc = $bloc;
                         }
                         $codebloc = $this->derbloc->getCodebloc();
-                        $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => $field_0, 'nature' => $field_1]);
+                        $unite = new Unite();
+                        $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => strtolower($field_0), 'nature' => $field_1]);
                         if ($existingCodeEntity) {
                             $codeUnite = $existingCodeEntity->getCode();
+                            $unite->setCodeTrouve('oui');
                         } else {
                             // Générer un nouveau code
                             $codeUnite = $this->derbloc->getCodebloc() . 'U' . $this->comptunite;
+                            $this->nontrouve = true;
+                            $unite->setCodeTrouve('non');
                         }
                         $this->comptunite++;
-                        $unite = new Unite();
                         $unite->setCodeunite($codeUnite);
                         $unite->setNomunite($field_0);
                         $unite->setCoeficient((int)$field_12);
                         $unite->setBloc($this->derbloc);
 
                         $entityManager->persist($unite);
-                        $element = new Element();
-                        $element->setUnite($unite);
-                        $element->setCodeelt($unite->getCodeunite());
-                        $entityManager->persist($element);
+                        $element = $entityManager->getRepository(Element::class)->findOneBy(["codeelt" => $unite->getCodeunite()]);
+                        if($element){
+                            $element->setUnite($unite);
+                            $element->setType('unite');
+                            $entityManager->persist($element);
+                        } else{
+                            $element = new Element();
+                            $element->setUnite($unite);
+                            $element->setCodeelt($unite->getCodeunite());
+                            $element->setType('unite');
+                            $entityManager->persist($element);
+                        }
                         $this->derunite = $unite;
+                        $epreuveTemp = [];
                         break;
                     case 'MATI':
                         $this->comptepreuve = 1;
@@ -221,216 +270,406 @@ class MaquetteController extends AbstractController
                         $nomMatiere = $parts[0];
                         $periode = isset($parts[1]) ? 'P' . substr($parts[1], 0, 2) : 'P1';
                         $codeMatiere = $this->derunite->getCodeunite() . 'M' . $this->comptmatiere;
-                        $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => $nomMatiere .' '. $periode, 'nature' => 'MAT']);
+                        $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => strtolower($nomMatiere .' '. $periode), 'nature' => 'MAT']);
+                        $matiere = new Matiere();
                         if ($existingCodeEntity) {
                             $codeMatiere = $existingCodeEntity->getCode();
+                            $matiere->setCodeTrouve('oui');
                         } else {
                             // Générer un nouveau code
                             $codeMatiere = $this->derunite->getCodeunite() . 'M' . $this->comptmatiere;
+                            $matiere->setCodeTrouve('non');
+                            $this->nontrouve = true;
+
                         }
                         $this->comptmatiere = $this->comptmatiere + 1;
-                        $matiere = new Matiere();
                         $matiere->setCodemat($codeMatiere);
                         $matiere->setNommat($nomMatiere);
                         $matiere->setPeriode($periode);
                         $entityManager->persist($matiere);
-                        $element = new Element();
-                        $element->setMatiere($matiere);
-                        $element->setCodeelt($matiere->getCodemat());
-                        $entityManager->persist($element);
+                        $element = $entityManager->getRepository(Element::class)->findOneBy(["codeelt" => $matiere->getCodemat()]);
+                        if($element){
+                            $element->setMatiere($matiere);
+                            $element->setType('matiere');
+                            $entityManager->persist($element);
+                        } else{
+                            $element = new Element();
+                            $element->setMatiere($matiere);
+                            $element->setCodeelt($matiere->getCodemat());
+                            $element->setType('matiere');
+                            $entityManager->persist($element);
+                        }
                         $matiere->setUnite($this->derunite);
                         $this->dermatier = $matiere;
                         if ($record->field_13) {
-                            $epreuve = new Epreuve();
-                            $epreuve->setMatiere($this->dermatier);
-                            $parts = explode(' ', $record->field_13);
-                            $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => $this->dermatier->getNommat() .' '. $this->dermatier->getPeriode(), 'nature' => $parts[0]]);
-                            if ($existingCodeEntity) {
-                                $codeepr = $existingCodeEntity->getCode();
-                            } else {
-                                // Générer un nouveau code
-                                $codeepr =  $this->dermatier->getCodemat() . 'E' . $this->comptepreuve;
+                            $epreuveSegments = explode('%', $record->field_13); // Séparation initiale par %
+
+                            foreach ($epreuveSegments as $segment) {
+                                $segment = trim($segment); // Enlever les espaces inutiles
+                                if ($segment) {
+                                    $parts = explode(' ', $segment);
+                                    $type = $parts[0]; // Le type est le premier élément
+                                    $pourcentage = intval($parts[count($parts) - 1]); // Le pourcentage est le dernier élément
+
+                                    $epreuve = new Epreuve();
+                                    $epreuve->setMatiere($this->dermatier);
+                                    $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => strtolower($this->dermatier->getNommat() .' '. $this->dermatier->getPeriode()), 'nature' => ['CC', 'TP', 'ECR']]);
+                                    if ($existingCodeEntity) {
+                                        $codeepr = $existingCodeEntity->getCode();
+                                        $epreuve->setCodeTrouve('oui');
+                                    } else {
+                                        // Générer un nouveau code
+                                        $codeepr =  $this->dermatier->getCodemat() . 'E' . $this->comptepreuve;
+                                        $epreuve->setCodeTrouve('non');
+                                        $this->nontrouve = true;
+                                    }
+                                    if (!$entityManager->getRepository(Epreuve::class)->findOneBy(["codeepreuve" => $codeepr]) && !in_array($codeepr, $epreuveTemp)) {
+                                        $this->comptepreuve++;
+                                        $epreuve->setCodeepreuve($codeepr);
+
+                                        $epreuve->setPourcentage($pourcentage);
+                                        $epreuve->setTypeepreuve($type);
+
+                                        if ($record->field_14) {
+                                            $epreuve->setDuree($record->field_14);
+                                        }
+                                        $epreuve->setNumchance(1);
+                                        $entityManager->persist($epreuve);
+                                        $element = $entityManager->getRepository(Element::class)->findOneBy(["codeelt" => $epreuve->getCodeepreuve()]);
+                                        if($element){
+                                            $element->setEpreuve($epreuve);
+                                            $element->setType('epreuve');
+                                            $entityManager->persist($element);
+                                        } else{
+                                            $element = new Element();
+                                            $element->setEpreuve($epreuve);
+                                            $element->setCodeelt($epreuve->getCodeepreuve());
+                                            $element->setType('epreuve');
+                                            $entityManager->persist($element);
+                                        }
+                                        $epreuveTemp[] = $codeepr;
+                                    }
+                                }
                             }
-                            $this->comptepreuve++;
-                            $epreuve->setCodeepreuve($codeepr);
-                            $epreuve->setPourcentage(filter_var($record->field_13, FILTER_SANITIZE_NUMBER_INT));
-                            $epreuve->setTypeepreuve($parts[0]);
-                            if ($record->field_14) {
-                                $epreuve->setDuree($record->field_14);
-                            }
-                            $epreuve->setNumchance(1);
-                            $entityManager->persist($epreuve);
-                            $element = new Element();
-                            $element->setEpreuve($epreuve);
-                            $element->setCodeelt($epreuve->getCodeepreuve());
-                            $entityManager->persist($element);
                         }
                         if ($record->field_17) {
-                            $epreuve = new Epreuve();
-                            $epreuve->setMatiere($this->dermatier);
-                            $parts = explode(' ', $record->field_17);
-                            $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => $this->dermatier->getNommat() .' '. $this->dermatier->getPeriode(), 'nature' => $parts[0]]);
-                            if ($existingCodeEntity) {
-                                $codeepr = $existingCodeEntity->getCode();
-                            } else {
-                                // Générer un nouveau code
-                                $codeepr =  $this->dermatier->getCodemat() . 'E' . $this->comptepreuve;
+                            $epreuveSegments = explode('%', $record->field_17); // Séparation initiale par %
+
+                            foreach ($epreuveSegments as $segment) {
+                                $segment = trim($segment); // Enlever les espaces inutiles
+                                if ($segment) {
+                                    $parts = explode(' ', $segment);
+                                    $type = $parts[0]; // Le type est le premier élément
+                                    $pourcentage = intval($parts[count($parts) - 1]); // Le pourcentage est le dernier élément
+
+                                    $epreuve = new Epreuve();
+                                    $epreuve->setMatiere($this->dermatier);
+                                    $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => strtolower($this->dermatier->getNommat() .' '. $this->dermatier->getPeriode()), 'nature' => ['CC', 'TP', 'ECR']]);
+                                    if ($existingCodeEntity) {
+                                        $codeepr = $existingCodeEntity->getCode();
+                                        $epreuve->setCodeTrouve('oui');
+                                    } else {
+                                        // Générer un nouveau code
+                                        $codeepr =  $this->dermatier->getCodemat() . 'E' . $this->comptepreuve;
+                                        $epreuve->setCodeTrouve('non');
+                                        $this->nontrouve = true;
+                                    }
+                                    if (!$entityManager->getRepository(Epreuve::class)->findOneBy(["codeepreuve" => $codeepr]) && !in_array($codeepr, $epreuveTemp)) {
+                                        $this->comptepreuve++;
+                                        $epreuve->setCodeepreuve($codeepr);
+
+                                        $epreuve->setPourcentage($pourcentage);
+                                        $epreuve->setTypeepreuve($type);
+
+                                        if ($record->field_18) {
+                                            $epreuve->setDuree($record->field_18);
+                                        }
+                                        $epreuve->setNumchance(1);
+                                        $entityManager->persist($epreuve);
+
+                                        $element = $entityManager->getRepository(Element::class)->findOneBy(["codeelt" => $epreuve->getCodeepreuve()]);
+                                        if($element){
+                                            $element->setEpreuve($epreuve);
+                                            $element->setType('epreuve');
+                                            $entityManager->persist($element);
+                                        } else{
+                                            $element = new Element();
+                                            $element->setEpreuve($epreuve);
+                                            $element->setCodeelt($epreuve->getCodeepreuve());
+                                            $element->setType('epreuve');
+                                            $entityManager->persist($element);
+                                        }
+                                        $epreuveTemp[] = $codeepr;
+                                    }
+                                }
                             }
-                            $this->comptepreuve++;
-                            $epreuve->setCodeepreuve($codeepr);
-                            $epreuve->setPourcentage(filter_var($record->field_17, FILTER_SANITIZE_NUMBER_INT));
-                            $epreuve->setTypeepreuve($parts[0]);
-                            if ($record->field_18) {
-                                $epreuve->setDuree($record->field_18);
-                            }
-                            $epreuve->setNumchance(1);
-                            $entityManager->persist($epreuve);
-                            $element = new Element();
-                            $element->setEpreuve($epreuve);
-                            $element->setCodeelt($epreuve->getCodeepreuve());
-                            $entityManager->persist($element);
                         }
                         if ($record->field_21) {
-                            $epreuve = new Epreuve();
-                            $parts = explode(' ', $record->field_21);
-                            $epreuve->setMatiere($this->dermatier);
-                            $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => $this->derunite->getNomunite(), 'nature' => $parts[0]]);
-                            if ($existingCodeEntity) {
-                                $codeepr = $existingCodeEntity->getCode();
-                            } else {
-                                // Générer un nouveau code
-                                $codeepr =  $this->dermatier->getCodemat() . 'E' . $this->comptepreuve;
+                            $epreuveSegments = explode('%', $record->field_21); // Séparation initiale par %
+
+                            foreach ($epreuveSegments as $segment) {
+                                $segment = trim($segment); // Enlever les espaces inutiles
+                                if ($segment) {
+                                    $parts = explode(' ', $segment);
+                                    $type = $parts[0]; // Le type est le premier élément
+                                    $pourcentage = intval($parts[count($parts) - 1]); // Le pourcentage est le dernier élément
+
+                                    $epreuve = new Epreuve();
+                                    $epreuve->setMatiere($this->dermatier);
+                                    $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => strtolower($this->derunite->getNomunite()), 'nature' => ['TP', 'ECR']]);
+                                    if ($existingCodeEntity) {
+                                        $codeepr = $existingCodeEntity->getCode();
+                                        $epreuve->setCodeTrouve('oui');
+                                    } else {
+                                        // Générer un nouveau code
+                                        $codeepr =  $this->dermatier->getCodemat() . 'E' . $this->comptepreuve;
+                                        $epreuve->setCodeTrouve('non');
+                                        $this->nontrouve = true;
+                                    }
+                                    if (!$entityManager->getRepository(Epreuve::class)->findOneBy(["codeepreuve" => $codeepr]) && !in_array($codeepr, $epreuveTemp)) {
+                                        $this->comptepreuve++;
+                                        $epreuve->setCodeepreuve($codeepr);
+
+                                        $epreuve->setPourcentage($pourcentage);
+                                        $epreuve->setTypeepreuve($type);
+
+                                        if ($record->field_22) {
+                                            $epreuve->setDuree($record->field_22);
+                                        }
+                                        $epreuve->setNumchance(2);
+                                        $entityManager->persist($epreuve);
+
+                                        $element = $entityManager->getRepository(Element::class)->findOneBy(["codeelt" => $epreuve->getCodeepreuve()]);
+                                        if($element){
+                                            $element->setEpreuve($epreuve);
+                                            $element->setType('epreuve');
+                                            $entityManager->persist($element);
+                                        } else{
+                                            $element = new Element();
+                                            $element->setEpreuve($epreuve);
+                                            $element->setCodeelt($epreuve->getCodeepreuve());
+                                            $element->setType('epreuve');
+                                            $entityManager->persist($element);
+                                        }
+                                        $epreuveTemp[] = $codeepr;
+
+                                    }
+                                }
                             }
-                            $this->comptepreuve++;
-                            $epreuve->setCodeepreuve($codeepr);
-                            $epreuve->setPourcentage(filter_var($record->field_21, FILTER_SANITIZE_NUMBER_INT));
-                            
-                            $epreuve->setTypeepreuve($parts[0]);
-                            if ($record->field_22) {
-                                $epreuve->setDuree($record->field_22);
-                            }
-                            $epreuve->setNumchance(2);
-                            $entityManager->persist($epreuve);
-                            $element = new Element();
-                            $element->setEpreuve($epreuve);
-                            $element->setCodeelt($epreuve->getCodeepreuve());
-                            $entityManager->persist($element);
                         }
                         if ($record->field_27) {
-                            $epreuve = new Epreuve();
-                            $epreuve->setMatiere($this->dermatier);
-                            $parts = explode(' ', $record->field_27);
-                            $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => $this->dermatier->getNommat() .' '. $this->dermatier->getPeriode(), 'nature' => $parts[0]]);
-                            if ($existingCodeEntity) {
-                                $codeepr = $existingCodeEntity->getCode();
-                            } else {
-                                // Générer un nouveau code
-                                $codeepr =  $this->dermatier->getCodemat() . 'E' . $this->comptepreuve;
+                            $epreuveSegments = explode('%', $record->field_27); // Séparation initiale par %
+
+                            foreach ($epreuveSegments as $segment) {
+                                $segment = trim($segment); // Enlever les espaces inutiles
+                                if ($segment) {
+                                    $parts = explode(' ', $segment);
+                                    $type = $parts[0]; // Le type est le premier élément
+                                    $pourcentage = intval($parts[count($parts) - 1]); // Le pourcentage est le dernier élément
+
+                                    $epreuve = new Epreuve();
+                                    $epreuve->setMatiere($this->dermatier);
+                                    $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => strtolower($this->dermatier->getNommat() .' '. $this->dermatier->getPeriode()), 'nature' => ['CC', 'TP', 'ECR']]);
+                                    if ($existingCodeEntity) {
+                                        $codeepr = $existingCodeEntity->getCode();
+                                        $epreuve->setCodeTrouve('oui');
+                                    } else {
+                                        // Générer un nouveau code
+                                        $codeepr =  $this->dermatier->getCodemat() . 'E' . $this->comptepreuve;
+                                        $epreuve->setCodeTrouve('non');
+                                        $this->nontrouve = true;
+                                    }
+                                    if (!$entityManager->getRepository(Epreuve::class)->findOneBy(["codeepreuve" => $codeepr]) && !in_array($codeepr, $epreuveTemp)) {
+                                        $this->comptepreuve++;
+                                        $epreuve->setCodeepreuve($codeepr);
+
+                                        $epreuve->setPourcentage($pourcentage);
+                                        $epreuve->setTypeepreuve($type);
+
+                                        if ($record->field_28) {
+                                            $epreuve->setDuree($record->field_28);
+                                        }
+                                        $epreuve->setNumchance(1);
+                                        $entityManager->persist($epreuve);
+
+                                        $element = $entityManager->getRepository(Element::class)->findOneBy(["codeelt" => $epreuve->getCodeepreuve()]);
+                                        if($element){
+                                            $element->setEpreuve($epreuve);
+                                            $element->setType('epreuve');
+                                            $entityManager->persist($element);
+                                        } else{
+                                            $element = new Element();
+                                            $element->setEpreuve($epreuve);
+                                            $element->setCodeelt($epreuve->getCodeepreuve());
+                                            $element->setType('epreuve');
+                                            $entityManager->persist($element);
+                                        }
+                                        $epreuveTemp[] = $codeepr;
+
+                                    }
+                                }
                             }
-                            $this->comptepreuve++;
-                            $epreuve->setCodeepreuve($codeepr);
-                            $pourcentage = filter_var($record->field_27, FILTER_SANITIZE_NUMBER_INT);
-                            if ($pourcentage) {
-                                $epreuve->setPourcentage($pourcentage);
-                            }
-                            $epreuve->setTypeepreuve($parts[0]);
-                            if ($record->field_28) {
-                                $epreuve->setDuree($record->field_28);
-                            }
-                            $epreuve->setNumchance(1);
-                            $entityManager->persist($epreuve);
-                            $element = new Element();
-                            $element->setEpreuve($epreuve);
-                            $element->setCodeelt($epreuve->getCodeepreuve());
-                            $entityManager->persist($element);
                         }
                         if ($record->field_31) {
-                            $epreuve = new Epreuve();
-                            $epreuve->setMatiere($this->dermatier);
-                            $parts = explode(' ', $record->field_31);
-                            $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => $this->dermatier->getNommat() .' '. $this->dermatier->getPeriode(), 'nature' => $parts[0]]);
-                            if ($existingCodeEntity) {
-                                $codeepr = $existingCodeEntity->getCode();
-                            } else {
-                                // Générer un nouveau code
-                                $codeepr =  $this->dermatier->getCodemat() . 'E' . $this->comptepreuve;
+                            $epreuveSegments = explode('%', $record->field_31); // Séparation initiale par %
+
+                            foreach ($epreuveSegments as $segment) {
+                                $segment = trim($segment); // Enlever les espaces inutiles
+                                if ($segment) {
+                                    $parts = explode(' ', $segment);
+                                    $type = $parts[0]; // Le type est le premier élément
+                                    $pourcentage = intval($parts[count($parts) - 1]); // Le pourcentage est le dernier élément
+
+                                    $epreuve = new Epreuve();
+                                    $epreuve->setMatiere($this->dermatier);
+                                    $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => strtolower($this->dermatier->getNommat() .' '. $this->dermatier->getPeriode()), 'nature' => ['CC', 'TP', 'ECR']]);
+                                    if ($existingCodeEntity) {
+                                        $codeepr = $existingCodeEntity->getCode();
+                                        $epreuve->setCodeTrouve('oui');
+                                    } else {
+                                        // Générer un nouveau code
+                                        $codeepr =  $this->dermatier->getCodemat() . 'E' . $this->comptepreuve;
+                                        $epreuve->setCodeTrouve('non');
+                                        $this->nontrouve = true;
+                                    }
+                                    if (!$entityManager->getRepository(Epreuve::class)->findOneBy(["codeepreuve" => $codeepr]) && !in_array($codeepr, $epreuveTemp)) {
+                                        $this->comptepreuve++;
+                                        $epreuve->setCodeepreuve($codeepr);
+
+                                        $epreuve->setPourcentage($pourcentage);
+                                        $epreuve->setTypeepreuve($type);
+
+                                        if ($record->field_32) {
+                                            $epreuve->setDuree($record->field_32);
+                                        }
+                                        $epreuve->setNumchance(1);
+                                        $entityManager->persist($epreuve);
+
+                                        $element = $entityManager->getRepository(Element::class)->findOneBy(["codeelt" => $epreuve->getCodeepreuve()]);
+                                        if($element){
+                                            $element->setEpreuve($epreuve);
+                                            $element->setType('epreuve');
+                                            $entityManager->persist($element);
+                                        } else{
+                                            $element = new Element();
+                                            $element->setEpreuve($epreuve);
+                                            $element->setCodeelt($epreuve->getCodeepreuve());
+                                            $element->setType('epreuve');
+                                            $entityManager->persist($element);
+                                        }
+                                        $epreuveTemp[] = $codeepr;
+
+                                    }
+                                }
                             }
-                            $this->comptepreuve++;
-                            $epreuve->setCodeepreuve($codeepr);
-                            $pourcentage = filter_var($record->field_31, FILTER_SANITIZE_NUMBER_INT);
-                            if ($pourcentage) {
-                                $epreuve->setPourcentage($pourcentage);
-                            }
-                            $epreuve->setTypeepreuve($parts[0]);
-                            if ($record->field_32) {
-                                $epreuve->setDuree($record->field_32);
-                            }
-                            $epreuve->setNumchance(1);
-                            $entityManager->persist($epreuve);
-                            $element = new Element();
-                            $element->setEpreuve($epreuve);
-                            $element->setCodeelt($epreuve->getCodeepreuve());
-                            $entityManager->persist($element);
                         }
                         if ($record->field_35) {
-                            $epreuve = new Epreuve();
-                            $epreuve->setMatiere($this->dermatier);
-                            $parts = explode(' ', $record->field_35);
-                            $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => $this->dermatier->getNommat() .' '. $this->dermatier->getPeriode(), 'nature' => $parts[0]]);
-                            if ($existingCodeEntity) {
-                                $codeepr = $existingCodeEntity->getCode();
-                            } else {
-                                // Générer un nouveau code
-                                $codeepr =  $this->dermatier->getCodemat() . 'E' . $this->comptepreuve;
+                            $epreuveSegments = explode('%', $record->field_35); // Séparation initiale par %
+
+                            foreach ($epreuveSegments as $segment) {
+                                $segment = trim($segment); // Enlever les espaces inutiles
+                                if ($segment) {
+                                    $parts = explode(' ', $segment);
+                                    $type = $parts[0]; // Le type est le premier élément
+                                    $pourcentage = intval($parts[count($parts) - 1]); // Le pourcentage est le dernier élément
+
+                                    $epreuve = new Epreuve();
+                                    $epreuve->setMatiere($this->dermatier);
+                                    $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => strtolower($this->dermatier->getNommat() .' '. $this->dermatier->getPeriode()), 'nature' => ['CC', 'TP', 'ECR']]);
+                                    if ($existingCodeEntity) {
+                                        $codeepr = $existingCodeEntity->getCode();
+                                        $epreuve->setCodeTrouve('oui');
+                                    } else {
+                                        // Générer un nouveau code
+                                        $codeepr =  $this->dermatier->getCodemat() . 'E' . $this->comptepreuve;
+                                        $epreuve->setCodeTrouve('non');
+                                        $this->nontrouve = true;
+                                    }
+                                    if (!$entityManager->getRepository(Epreuve::class)->findOneBy(["codeepreuve" => $codeepr]) && !in_array($codeepr, $epreuveTemp)) {
+                                        $this->comptepreuve++;
+                                        $epreuve->setCodeepreuve($codeepr);
+
+                                        $epreuve->setPourcentage($pourcentage);
+                                        $epreuve->setTypeepreuve($type);
+
+                                        if ($record->field_36) {
+                                            $epreuve->setDuree($record->field_36);
+                                        }
+                                        $epreuve->setNumchance(1);
+                                        $entityManager->persist($epreuve);
+
+                                        $element = $entityManager->getRepository(Element::class)->findOneBy(["codeelt" => $epreuve->getCodeepreuve()]);
+                                        if($element){
+                                            $element->setEpreuve($epreuve);
+                                            $element->setType('epreuve');
+                                            $entityManager->persist($element);
+                                        } else{
+                                            $element = new Element();
+                                            $element->setEpreuve($epreuve);
+                                            $element->setCodeelt($epreuve->getCodeepreuve());
+                                            $element->setType('epreuve');
+                                            $entityManager->persist($element);
+                                        }
+                                        $epreuveTemp[] = $codeepr;
+
+                                    }
+                                }
                             }
-                            $this->comptepreuve++;
-                            $epreuve->setCodeepreuve($codeepr);
-                            $pourcentage = filter_var($record->field_35, FILTER_SANITIZE_NUMBER_INT);
-                            if ($pourcentage) {
-                                $epreuve->setPourcentage($pourcentage);
-                            }
-                            $epreuve->setTypeepreuve($parts[0]);
-                            if ($record->field_36) {
-                                $epreuve->setDuree($record->field_36);
-                            }
-                            $epreuve->setNumchance(1);
-                            $entityManager->persist($epreuve);
-                            $element = new Element();
-                            $element->setEpreuve($epreuve);
-                            $element->setCodeelt($epreuve->getCodeepreuve());
-                            $entityManager->persist($element);
                         }
                         if ($record->field_39) {
-                            $epreuve = new Epreuve();
-                            $parts = explode(' ', $record->field_39);
-                            $epreuve->setMatiere($this->dermatier);
-                            $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => $this->derunite->getNomunite(), 'nature' => $parts[0]]);
-                            if ($existingCodeEntity) {
-                                $codeepr = $existingCodeEntity->getCode();
-                            } else {
-                                // Générer un nouveau code
-                                $codeepr =  $this->dermatier->getCodemat() . 'E' . $this->comptepreuve;
-                            }
-                            $this->comptepreuve++;
-                            $epreuve->setCodeepreuve($codeepr);
 
+                            $epreuveSegments = explode('%', $record->field_39); // Séparation initiale par %
 
+                            foreach ($epreuveSegments as $segment) {
+                                $segment = trim($segment); // Enlever les espaces inutiles
+                                if ($segment) {
+                                    $parts = explode(' ', $segment);
+                                    $type = $parts[0]; // Le type est le premier élément
+                                    $pourcentage = intval($parts[count($parts) - 1]); // Le pourcentage est le dernier élément
 
-                            $pourcentagestring = filter_var($record->field_39, FILTER_SANITIZE_NUMBER_INT);
-                            $pourcnetage = intval($pourcentagestring);
-                            if ($pourcentage) {
-                                $epreuve->setPourcentage($pourcentage);
+                                    $epreuve = new Epreuve();
+                                    $epreuve->setMatiere($this->dermatier);
+                                    $existingCodeEntity = $entityManager->getRepository(Codes::class)->findOneBy(['Nom' => strtolower($this->derunite->getNomunite()), 'nature' => ['TP', 'ECR']]);
+                                    if ($existingCodeEntity) {
+                                        $codeepr = $existingCodeEntity->getCode();
+                                        $epreuve->setCodeTrouve('oui');
+                                    } else {
+                                        // Générer un nouveau code
+                                        $codeepr =  $this->dermatier->getCodemat() . 'E' . $this->comptepreuve;
+                                        $epreuve->setCodeTrouve('non');
+                                        $this->nontrouve = true;
+                                    }
+                                    if (!$entityManager->getRepository(Epreuve::class)->findOneBy(["codeepreuve" => $codeepr]) && !in_array($codeepr, $epreuveTemp)) {
+                                        $this->comptepreuve++;
+                                        $epreuve->setCodeepreuve($codeepr);
+
+                                        $epreuve->setPourcentage($pourcentage);
+                                        $epreuve->setTypeepreuve($type);
+
+                                        if ($record->field_40) {
+                                            $epreuve->setDuree($record->field_40);
+                                        }
+                                        $epreuve->setNumchance(2);
+                                        $entityManager->persist($epreuve);
+
+                                        $element = $entityManager->getRepository(Element::class)->findOneBy(["codeelt" => $epreuve->getCodeepreuve()]);
+                                        if($element){
+                                            $element->setEpreuve($epreuve);
+                                            $element->setType('epreuve');
+                                            $entityManager->persist($element);
+                                        } else{
+                                            $element = new Element();
+                                            $element->setEpreuve($epreuve);
+                                            $element->setCodeelt($epreuve->getCodeepreuve());
+                                            $element->setType('epreuve');
+                                            $entityManager->persist($element);
+                                        }
+                                        $epreuveTemp[] = $codeepr;
+
+                                    }
+                                    
+                                }
                             }
-                            $epreuve->setTypeepreuve($parts[0]);
-                            if ($record->field_40) {
-                                $epreuve->setDuree($record->field_40);
-                            }
-                            $epreuve->setNumchance(2);
-                            $entityManager->persist($epreuve);
-                            $element = new Element();
-                            $element->setEpreuve($epreuve);
-                            $element->setCodeelt($epreuve->getCodeepreuve());
-                            $entityManager->persist($element);
                         }
                         break;
                     default:
@@ -439,8 +678,12 @@ class MaquetteController extends AbstractController
             }
             $entityManager->flush();
             $em->flush();
-
-            return $this->redirectToRoute('app_maquette');
+            if($this->nontrouve){
+                return $this->redirectToRoute('app_code_non_trouve', ['codefiliere' => $this->derfiliere->getCodefiliere()]);
+            }else{
+                return $this->redirectToRoute('app_maquette');
+            }
+            
         }
 
 
@@ -485,9 +728,10 @@ class MaquetteController extends AbstractController
                 $nom = $record->field_0;
                 $code = $record->field_1;
                 $nature = $record->field_2;
+                $nom = strtolower($nom);
 
                 if ($nature == 'SOCL' || $nature == 'PAR') {
-                    $nom = str_replace(['Parcours', 'filiere'], '', $nom);
+                    $nom = str_replace(['parcours', 'filiere'], '', $nom);
                     $nom = trim($nom);
 
                     $existingCode = $em->getRepository(Codes::class)->findOneBy([
@@ -505,8 +749,8 @@ class MaquetteController extends AbstractController
                         $em->flush();
                     }
                 } elseif ($nature == 'BLCT' || $nature == 'BLOC') {
-                    if (strpos($nom, 'Transversaux') !== false) {
-                        $nom = 'Transversaux';
+                    if (strpos($nom, 'transversaux') !== false) {
+                        $nom = 'transversaux';
                     }
                     $existingCode = $em->getRepository(Codes::class)->findOneBy([
                         'Nom' => $nom,
@@ -521,6 +765,15 @@ class MaquetteController extends AbstractController
                         $codeEntity->setCode($code);
                         $em->persist($codeEntity);
                         $em->flush();
+                        $nouvnom = str_replace('bloc ', '', $nom);
+                        if($nouvnom != $nom){
+                            $codeEntity = new Codes();
+                            $codeEntity->setNom($nouvnom);
+                            $codeEntity->setNature($nature);
+                            $codeEntity->setCode($code);
+                            $em->persist($codeEntity);
+                            $em->flush();
+                        }
                     }
                 } elseif ($nature == 'UE') {
                     $nom = explode('-', $nom)[0];
@@ -540,53 +793,58 @@ class MaquetteController extends AbstractController
                         $codeEntity->setCode($code);
                         $em->persist($codeEntity);
                         $em->flush();
+                        $this->choix = false;
                     }
                     
-                } elseif ($nature == 'CC' || $nature == 'TP') {
-                    $nomArray = explode('-', $nom);
-                    $nom = $nomArray[0] . $nomArray[1];
-                    $nom = str_replace('*', '', $nom);
-                    $nom = trim($nom);
-                    $nom = substr($nom, 3);
-                    $existingCode = $em->getRepository(Codes::class)->findOneBy([
-                        'Nom' => $nom,
-                        'nature' => $nature,
-                        'code' => $code
-                    ]);
-            
-                    if (!$existingCode) {
-                        $codeEntity = new Codes();
-                        $codeEntity->setNom($nom);
-                        $codeEntity->setNature($nature);
-                        $codeEntity->setCode($code);
-                        $em->persist($codeEntity);
-                        $code = substr($code, 0, -2);
-                        $matiere = new Codes();
-                        $matiere->setNom($nom);
-                        $matiere->setNature('MAT'); 
-                        $matiere->setCode($code . 'M' . $compteurMatiere); 
-                        $em->persist($matiere);
-                        $compteurMatiere++;
-                        $em->flush();
-                    }
-                } elseif ($nature == 'ECR') {
-                    $nom = explode('-', $nom)[0];
-                    $nom = str_replace('*', '', $nom);
-                    //$nom = substr($nom, 0, -3);
-                    $nom = substr($nom, 3);
-                    $existingCode = $em->getRepository(Codes::class)->findOneBy([
-                        'Nom' => $nom,
-                        'nature' => $nature,
-                        'code' => $code
-                    ]);
-            
-                    if (!$existingCode) {
-                        $codeEntity = new Codes();
-                        $codeEntity->setNom($nom);
-                        $codeEntity->setNature($nature);
-                        $codeEntity->setCode($code);
-                        $em->persist($codeEntity);
-                        $em->flush();
+                }elseif ($nature == 'CHOI') {
+                    $this->choix = true;
+                } elseif ($nature == 'CC' || $nature == 'TP' || $nature == 'ECR') {
+                    if($this->choix == false){
+                        $nomArray = explode('-', $nom);
+                        $nom = $nomArray[0] . $nomArray[1];
+                        $nom = str_replace('*', '', $nom);
+                        $nom = trim($nom);
+                        $nom = substr($nom, 3);
+                        $existingCode = $em->getRepository(Codes::class)->findOneBy([
+                            'Nom' => $nom,
+                            'nature' => $nature,
+                            'code' => $code
+                        ]);
+                
+                        if (!$existingCode) {
+                            $codeEntity = new Codes();
+                            $codeEntity->setNom($nom);
+                            $codeEntity->setNature($nature);
+                            $codeEntity->setCode($code);
+                            $em->persist($codeEntity);
+                            $code = substr($code, 0, -2);
+                            $matiere = new Codes();
+                            $matiere->setNom($nom);
+                            $matiere->setNature('MAT'); 
+                            $matiere->setCode($code . 'M' . $compteurMatiere); 
+                            $em->persist($matiere);
+                            $compteurMatiere++;
+                            $em->flush();
+                        }
+                    }else{
+                        $nom = explode('-', $nom)[0];
+                        $nom = str_replace('*', '', $nom);
+                        //$nom = substr($nom, 0, -3);
+                        $nom = substr($nom, 3);
+                        $existingCode = $em->getRepository(Codes::class)->findOneBy([
+                            'Nom' => $nom,
+                            'nature' => $nature,
+                            'code' => $code
+                        ]);
+                
+                        if (!$existingCode) {
+                            $codeEntity = new Codes();
+                            $codeEntity->setNom($nom);
+                            $codeEntity->setNature($nature);
+                            $codeEntity->setCode($code);
+                            $em->persist($codeEntity);
+                            $em->flush();
+                        }
                     }
                 }
 
@@ -598,19 +856,7 @@ class MaquetteController extends AbstractController
             $filieres = $entityManager->getRepository(Filiere::class)->findAll();
 
 
-            $path = 'maquette_modifier';
-            $message = 'modifier la filière';
-            $path2 = 'filiere.ajouter';
-            $message2 = 'ajouter une filière';
-
-            return $this->render('maquette/index.html.twig', [
-                'controller_name' => 'MaquetteController',
-                'filieres'  => $filieres,
-                'path' => $path,
-                'message' => $message,
-                'path2' => $path2,
-                'message2' => $message2,
-            ]);
+            return $this->redirectToRoute('app_maquette');
         }
 
 

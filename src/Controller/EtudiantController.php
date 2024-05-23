@@ -710,41 +710,6 @@ class EtudiantController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /*$data = $form->getData();
-            $csvFile = $data['csv_file'];
-            $csvData = [];
-            $anneeuniversitaire = null;
-            $session = null;
-
-            if (($file = fopen($csvFile->getPathname(), 'r')) !== false) {
-                $i = 0;
-                while (($donnees = fgetcsv($file)) !== false) {
-                    if ($i == 0) {
-                        // Skip header line
-                        $i++;
-                        continue;
-                    }
-
-                    // Extract year and session from each line
-                    $anneeuniversitaire = $donnees[0];
-                    $session = intval(preg_replace('/[^0-9]/', '', $donnees[1]));
-
-                    // Check if the current line has enough columns
-                    if (count($donnees) >= 8) {
-                        $csvData[] = [
-                            'admission' => $donnees[2],
-                            'epreuve' => $donnees[3],
-                            'numetd' => $donnees[4],
-                            'nom' => $donnees[5],
-                            'prenom' => $donnees[6],
-                            'resultat' => $donnees[7],
-                        ];
-                    }
-                }
-                fclose($file);
-            }*/
-            // Here you can handle $csvData for insertion into the database
-            // For example, creating entities and persisting them using $em
             $data = $form->getData();
             $csvFile = $data["csv_file"];
             $file = fopen($csvFile->getPathname(), 'r');

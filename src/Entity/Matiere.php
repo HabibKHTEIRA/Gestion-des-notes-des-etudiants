@@ -33,6 +33,9 @@ class Matiere
     #[ORM\JoinColumn(name:"element", referencedColumnName:"codeelt")]
     private ?Element $element = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $codeTrouve = null;
+
     public function __construct()
     {
         $this->epreuves = new ArrayCollection();
@@ -133,6 +136,18 @@ class Matiere
     public function setCodemat($codemat)
     {
         $this->codemat = $codemat;
+
+        return $this;
+    }
+
+    public function getCodeTrouve(): ?string
+    {
+        return $this->codeTrouve;
+    }
+
+    public function setCodeTrouve(?string $codeTrouve): static
+    {
+        $this->codeTrouve = $codeTrouve;
 
         return $this;
     }

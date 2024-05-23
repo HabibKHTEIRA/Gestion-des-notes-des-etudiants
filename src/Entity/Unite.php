@@ -36,6 +36,9 @@ class Unite
     #[ORM\JoinColumn(name:"element", referencedColumnName:"codeelt")]
     private ?Element $element = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $codeTrouve = null;
+
     public function __construct()
     {
         $this->matieres = new ArrayCollection();
@@ -151,6 +154,18 @@ class Unite
     public function setCodeunite($codeunite)
     {
         $this->codeunite = $codeunite;
+
+        return $this;
+    }
+
+    public function getCodeTrouve(): ?string
+    {
+        return $this->codeTrouve;
+    }
+
+    public function setCodeTrouve(?string $codeTrouve): static
+    {
+        $this->codeTrouve = $codeTrouve;
 
         return $this;
     }

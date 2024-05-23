@@ -33,6 +33,9 @@ class Bloc
     #[ORM\JoinColumn(name:"element", referencedColumnName:"codeelt")]
     private ?Element $element = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $codeTrouve = null;
+
     public function __construct()
     {
         $this->unites = new ArrayCollection();
@@ -136,6 +139,18 @@ class Bloc
     public function setCodebloc($codebloc)
     {
         $this->codebloc = $codebloc;
+
+        return $this;
+    }
+
+    public function getCodeTrouve(): ?string
+    {
+        return $this->codeTrouve;
+    }
+
+    public function setCodeTrouve(?string $codeTrouve): static
+    {
+        $this->codeTrouve = $codeTrouve;
 
         return $this;
     }
