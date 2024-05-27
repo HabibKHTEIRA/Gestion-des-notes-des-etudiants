@@ -62,7 +62,7 @@ class SecurController extends AbstractController
             if (!$existingUser) {
                 $user = new User();
                 $user->setEmail($email);
-                $user->setPassword($Passwordhasher->hashPassword($user, 'Habib2345#'));
+                $user->setPassword($Passwordhasher->hashPassword($user, 'habib2'));
                 $user->setFirstname('KHTEIRA');
                 $user->setLastname('Habib');
                 $user->setRoles(["ROLE_ADMIN"]);
@@ -93,9 +93,47 @@ class SecurController extends AbstractController
     }
 
     #[Route('/', name: 'login')]
-public function login(AuthenticationUtils $authenticationUtils, EntityManagerInterface $em): Response
+public function login(AuthenticationUtils $authenticationUtils, EntityManagerInterface $em,UserPasswordHasherInterface $Passwordhasher): Response
 {
     $filieres = $em->getRepository(Filiere::class)->findAll(); 
+    $admin1 = $em->getRepository(User::class)->findOneBy(['lastname' => 'BARRY', 'firstname' => 'Boubacar']);
+        $admin2 = $em->getRepository(User::class)->findOneBy(['lastname' => 'KHTEIRA', 'firstname' => 'Habib']);
+
+        if (!$admin1) {
+            $email = 'bouba@demo.fr';
+            $existingUser = $em->getRepository(User::class)->findOneBy(['email' => $email]);
+            if (!$existingUser) {
+                $user = new User();
+                $user->setEmail($email);
+                $user->setPassword($Passwordhasher->hashPassword($user, 'Bouba2345#'));
+                $user->setFirstname('BARRY');
+                $user->setLastname('Boubacar');
+                $user->setRoles(["ROLE_ADMIN"]);
+                $user->setValidation(true);
+                $em->persist($user);
+                $em->flush();
+            }
+        } else {
+            $admin1->setRoles(["ROLE_ADMIN"]);
+        }
+
+        if (!$admin2) {
+            $email = 'habib@demo.fr';
+            $existingUser = $em->getRepository(User::class)->findOneBy(['email' => $email]);
+            if (!$existingUser) {
+                $user = new User();
+                $user->setEmail($email);
+                $user->setPassword($Passwordhasher->hashPassword($user, 'habib2'));
+                $user->setFirstname('KHTEIRA');
+                $user->setLastname('Habib');
+                $user->setRoles(["ROLE_ADMIN"]);
+                $user->setValidation(true);
+                $em->persist($user);
+                $em->flush();
+            }
+        } else {
+            $admin2->setRoles(["ROLE_ADMIN"]);
+        }
 
     // Vérifier si l'utilisateur est déjà connecté
     if ($this->getUser()) {
@@ -190,7 +228,7 @@ public function confirm(Request $request, EntityManagerInterface $em, User $user
     ");
     $response->headers->set('Content-Type', 'text/html');
 
-    return $response;
+    return $this->redirectToRoute('app_admin_user');
 }
 
 #[Route('administration/user/user/supprimer/{id}' , name : 'users_supprimer' , methods:['POST'])]
@@ -212,7 +250,7 @@ public function supprimer (Request $request , EntityManagerInterface $em , User 
     ");
     $response->headers->set('Content-Type', 'text/html');
 
-    return $response;
+    return $this->redirectToRoute('app_admin_user');
 }
 #[Route('/administration/user/user/modif/{id}', name: 'users_modif', methods: ['POST'])]
 public function modification(Request $request, EntityManagerInterface $em, User $user): Response
@@ -233,7 +271,7 @@ public function modification(Request $request, EntityManagerInterface $em, User 
                 ");
                 $response->headers->set('Content-Type', 'text/html');
 
-                return $response;
+                return $this->redirectToRoute('app_admin_user');
             } else {
                 $user->setRoles(['ROLE_USER']);
                 $em->flush();
@@ -246,7 +284,7 @@ public function modification(Request $request, EntityManagerInterface $em, User 
                 ");
                 $response->headers->set('Content-Type', 'text/html');
 
-                return $response;
+                return $this->redirectToRoute('app_admin_user');
             }
         }
     }

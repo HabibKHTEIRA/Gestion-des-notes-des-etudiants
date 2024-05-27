@@ -55,10 +55,10 @@
         <p>Email: {{ etudiant.getEmail }}</p>
     </div>
     <div class="board">
-        <p>Bac: </p>
-        <p>Annee: </p> 
-        <p>Mention: </p>
-        <p>Moyenne: </p>
+        <p>Bac: {{ etudiant.getResultatbac.getBac.getTypebac }}</p>
+        <p>Annee: {{ etudiant.getResultatbac.getAnneebac }}</p> 
+        <p>Mention: {{ etudiant.getResultatbac.getMention }}</p>
+        <p>Moyenne: {{ etudiant.getResultatbac.getMoyennebac }}</p>
     </div>
 </div>
 <br><br><br>
@@ -120,7 +120,7 @@
                 </tbody>
             </table>
         <br><br>
-        <button id="releve-button-{{ loop.index }}" class="btn btn-primary" onclick="toggleReleve('{{ loop.index }}')">Afficher les relevés de notes</button>
+        <button id="releve-button-{{ loop.index }}" class="btn btn-primary" onclick="toggleReleve('{{ loop.index }}')">Afficher le relevé de notes</button>
         <div class="releve-container" id="releve-{{ loop.index }}" style="display: none;">
             <p style="color:orange"></p>
         </div>
