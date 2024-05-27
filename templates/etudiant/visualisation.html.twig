@@ -20,6 +20,7 @@
             background-color: #4CAF50;
             color: white;
             font-weight: bold;
+            cursor: pointer;
         }
         .table tbody tr:nth-of-type(even) {
             background-color: #f2f2f2;
@@ -51,6 +52,9 @@
             background-repeat: no-repeat;
             background-position: right 10px center;
         }
+        .sort-icon {
+            margin-left: 5px;
+        }
     </style>
 {% endblock %}
 {% block body %}
@@ -62,8 +66,8 @@
         <thead>
             <tr>
                 <th>Numéro Étudiant</th>
-                <th>Nom</th>
-                <th>Prénom</th>
+                <th onclick="sortTable(1)">Nom <span id="sort-icon-nom" class="sort-icon">&#9650;</span></th>
+                <th onclick="sortTable(2)">Prénom <span id="sort-icon-prenom" class="sort-icon">&#9650;</span></th>
                 <th>Email</th>
                 <th>Voir plus</th>
             </tr>
@@ -73,16 +77,13 @@
                 <tr>
                     <td>{{ etudiant.getNumetd }}</td>
                     <td>{{ etudiant.getNom }}</td>
-                    <td>
-                            {{ etudiant.getPrenom }}
-                        
-                    </td>
+                    <td>{{ etudiant.getPrenom }}</td>
                     <td>
                         <a href="mailto:{{ etudiant.getEmail }}">
                             {{ etudiant.getEmail }}
                         </a>
                     </td>
-                        <td><a href="{{ path('etudiant_visual', {'numetd': etudiant.getNumetd}) }}">information-resultat</a></td>
+                    <td><a href="{{ path('etudiant_visual', {'numetd': etudiant.getNumetd}) }}">information-resultat</a></td>
                 </tr>
                 {% set total = total + 1 %}
             {% endfor %}
@@ -90,27 +91,51 @@
     </table>
 
     <script>
+        let sortOrder = {
+            nom: true,
+            prenom: true
+        };
+
+        function sortTable(columnIndex) {
+            const table = document.getElementById("student-table");
+            const rows = Array.from(table.rows).slice(1); // Exclude header row
+            const column = columnIndex === 1 ? 'nom' : 'prenom';
+            const sortIconId = column === 'nom' ? 'sort-icon-nom' : 'sort-icon-prenom';
+
+            rows.sort((a, b) => {
+                const cellA = a.cells[columnIndex].innerText.toLowerCase();
+                const cellB = b.cells[columnIndex].innerText.toLowerCase();
+                if (cellA < cellB) return sortOrder[column] ? -1 : 1;
+                if (cellA > cellB) return sortOrder[column] ? 1 : -1;
+                return 0;
+            });
+
+            // Re-attach sorted rows
+            rows.forEach(row => table.appendChild(row));
+
+            // Toggle sort order and icon
+            sortOrder[column] = !sortOrder[column];
+            document.getElementById(sortIconId).innerHTML = sortOrder[column] ? '&#9650;' : '&#9660;';
+        }
+
         function searchStudent() {
             const input = document.getElementById('search-bar');
             const filter = input.value.toUpperCase();
             const table = document.getElementById('student-table');
             const tr = table.getElementsByTagName('tr');
 
-            for (let i = 0; i < tr.length; i++) {
+            for (let i = 1; i < tr.length; i++) { // Skip header row
                 const td = tr[i].getElementsByTagName('td');
                 let found = false;
 
                 for (let j = 0; j < td.length; j++) {
                     if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
                         found = true;
+                        break;
                     }
                 }
 
-                if (found) {
-                    tr[i].style.display = '';
-                } else {
-                    tr[i].style.display = 'none';
-                }
+                tr[i].style.display = found ? '' : 'none';
             }
         }
     </script>

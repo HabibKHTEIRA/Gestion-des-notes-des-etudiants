@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MaquetteController!{% endblock %}
+{% block title %}Maquettes{% endblock %}
 
 {% block stylesheets %}
     {# Include Bootstrap CSS if it's not already included #}
@@ -82,10 +82,10 @@
 {% block body %}
     
     <br><br><br><br>
-     <a href="{{ url(path2) }}" class="bouton bouton-autre-lien">{{ message2 }}</a><br>
-    <a href="{{ url('maquette_importer') }}" class="bouton bouton-import-maquette">Importer une maquette par fichier</a><br>
-    <a href="{{ url('codes_importer') }}" class="bouton bouton-import-codes">Importer les codes par fichier</a><br>
+    <a href="{{ url('codes_importer') }}" class="bouton bouton-import-codes">Importer des codes</a><br>
+    <a href="{{ url('maquette_importer') }}" class="bouton bouton-import-maquette">Importer une maquette</a><br>
     {% for filiere in filieres %}
+    <br><br><br>
         <table class="table table-bordered table-hover">
             <tr>
                 <td class="block" colspan="5">Filière: {{ filiere.nomFiliere }} </td>

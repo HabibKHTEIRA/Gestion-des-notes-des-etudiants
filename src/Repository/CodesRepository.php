@@ -21,6 +21,14 @@ class CodesRepository extends ServiceEntityRepository
         parent::__construct($registry, Codes::class);
     }
 
+    public function deleteAll()
+    {
+        $queryBuilder = $this->createQueryBuilder('p');
+        $queryBuilder->delete()
+                     ->getQuery()
+                     ->execute();
+    }
+
     //    /**
     //     * @return Codes[] Returns an array of Codes objects
     //     */

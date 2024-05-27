@@ -54,15 +54,15 @@
 
         <table class="table table-bordered table-hover">
             <tr>
-                <th colspan="5">Filière: {{ filiere.nomFiliere }}</th>
+                <td class="block" colspan="5">Filière: {{ filiere.nomFiliere }}</td>
             </tr>
             {% for bloc in filiere.getBlocs() %}
                 <tr>
-                    <td class="block" colspan="5"> {{ bloc.nomBloc }}</td>
+                    <th colspan="5"> {{ bloc.nomBloc }}</td>
                 </tr>
                 {% for unite in bloc.getUnites() %}
                     <tr>
-                        <td class="unite" colspan="5"> {{ unite.nomUnite }} (Coeficient: {{ unite.coeficient }})</td>
+                        <td class="unite" colspan="5"> {{ unite.nomUnite }} (Coeficient: {{ unite.coeficient }})</th>
                     </tr>
                     {% set nombreMatiere = unite.getMatieres()|length %}
                     {% for matiere in unite.getMatieres() %}
@@ -72,14 +72,14 @@
                             <td>
                                 {% for epreuve in matiere.getEpreuves() %}
                                     {% if epreuve.numchance == 1 %}
-                                        <span class="type-epreuve-{{ epreuve.typeEpreuve }}">{{ epreuve.pourcentage }}% {{ epreuve.duree }}<br></span>
+                                        <span class="type-epreuve-{{ epreuve.typeEpreuve }}">{{ epreuve.typeEpreuve }} {{ epreuve.pourcentage }}% {{ epreuve.duree }}<br></span>
                                     {% endif %}
                                 {% endfor %}
                             </td>
                             {% for epreuve in matiere.getEpreuves() %}
                                 {% if epreuve.numchance == 2 %}
                                     <td rowspan="{{ nombreMatiere }}">
-                                        <span class="type-epreuve-{{ epreuve.typeEpreuve }}">{{ epreuve.pourcentage }}% {{ epreuve.duree }}<br></span>
+                                        <span class="type-epreuve-{{ epreuve.typeEpreuve }}">{{ epreuve.typeEpreuve }} {{ epreuve.pourcentage }}% {{ epreuve.duree }}<br></span>
                                     </td>
                                 {% endif %}
                             {% endfor %}

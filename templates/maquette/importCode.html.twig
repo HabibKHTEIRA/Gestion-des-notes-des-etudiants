@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Import des codes{% endblock %}
+
 {% block stylesheets %}
 <style>
    body{font-family: Arial, sans-serif;
@@ -24,7 +26,7 @@
 
 {% block body %}
 <div class="form-container">
-    <h1 style="text-align:center; font-size:30px;">Importation d'un fichier CSV contenant les étudiants</h1>
+    <h1 style="text-align:center; font-size:30px;">Importation d'un fichier XML contenant les codes</h1>
     {{ form_start(form) }}
     <div class="form-group">
         {{ form_label(form.xml_file) }}

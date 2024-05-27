@@ -34,11 +34,11 @@ class CodeNonTrouveController extends AbstractController
 
                         if ($epreuve->getCodeTrouve() == 'non' && $epreuve->getNumchance() == 1) {
                             $formBuilder->add($epreuveKey1, TextType::class, [
-                                'label' => strtolower($epreuve->getTypeepreuve().' '.$matiere->getNommat().' '.$matiere->getPeriode()),
+                                'label' => $epreuve->getTypeepreuve().' '.$matiere->getNommat().' '.$matiere->getPeriode(),
                             ]);
                         } elseif ($epreuve->getCodeTrouve() == 'non' && $epreuve->getNumchance() == 2) {
                             $formBuilder->add($epreuveKey2, TextType::class, [
-                                'label' => strtolower($epreuve->getTypeepreuve().' '.$unite->getNomunite()),
+                                'label' => $epreuve->getTypeepreuve().' '.$unite->getNomunite(),
                             ]);
                         }
                     }
@@ -83,7 +83,7 @@ class CodeNonTrouveController extends AbstractController
                                 $epreuve->setCodeepreuve($data[$epreuveKey2]);
                                 $epreuve->setCodeTrouve('oui');
                                 $em->persist($epreuve);
-                                $element = $em->getRepository(Element::class)->findOneBy(["codeelt" => $data[$epreuveKey1]]);
+                                $element = $em->getRepository(Element::class)->findOneBy(["codeelt" => $data[$epreuveKey2]]);
                                 if($element){
                                     $element->setEpreuve($epreuve);
                                     $element->setType('epreuve');
@@ -91,7 +91,7 @@ class CodeNonTrouveController extends AbstractController
                                 } else{
                                     $element = new Element();
                                     $element->setEpreuve($epreuve);
-                                    $element->setCodeelt($data[$epreuveKey1]);
+                                    $element->setCodeelt($data[$epreuveKey2]);
                                     $element->setType('epreuve');
                                     $em->persist($element);
                                 }

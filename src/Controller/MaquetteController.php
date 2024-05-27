@@ -129,8 +129,8 @@ class MaquetteController extends AbstractController
                             $codeFiliere = $existingCodeEntity->getCode();
                         } else {
                             // Générer un nouveau code
-                            $codeFiliere = 'T' . 'INF' . $anne;
-                            $this->nontrouve = true;
+                            $temp = substr($field_0, 0, 2) == 'MI' ? 'MI' : 'INF';
+                            $codeFiliere = 'T' . $temp . $anne;
                             $filiere->setCodeTrouve('non');
                         }
                         //substr($field_0, 0, 2)
@@ -156,7 +156,7 @@ class MaquetteController extends AbstractController
                             $em->persist($element);
                         }
                         
-                        //$em->flush();
+                        $em->flush();
 
                         $this->derfiliere = $filiere;
                         break;
@@ -170,7 +170,6 @@ class MaquetteController extends AbstractController
                         } else {
                             // Générer un nouveau code
                             $codeBloc = $this->derfiliere->getCodefiliere() . 'B' . $this->comptbloc;
-                            $this->nontrouve = true;
                             $bloc->setCodeTrouve('non');
                         }
                         $this->comptbloc++;
@@ -208,7 +207,6 @@ class MaquetteController extends AbstractController
                             } else {
                                 // Générer un nouveau code
                                 $codebloc = $this->derfiliere->getCodefiliere() . 'B' . $this->comptbloc;
-                                $this->nontrouve = true;
                                 $bloc->setCodeTrouve('non');
                             }
                             $this->comptbloc++;
@@ -239,7 +237,6 @@ class MaquetteController extends AbstractController
                         } else {
                             // Générer un nouveau code
                             $codeUnite = $this->derbloc->getCodebloc() . 'U' . $this->comptunite;
-                            $this->nontrouve = true;
                             $unite->setCodeTrouve('non');
                         }
                         $this->comptunite++;
@@ -279,7 +276,6 @@ class MaquetteController extends AbstractController
                             // Générer un nouveau code
                             $codeMatiere = $this->derunite->getCodeunite() . 'M' . $this->comptmatiere;
                             $matiere->setCodeTrouve('non');
-                            $this->nontrouve = true;
 
                         }
                         $this->comptmatiere = $this->comptmatiere + 1;
@@ -678,6 +674,9 @@ class MaquetteController extends AbstractController
             }
             $entityManager->flush();
             $em->flush();
+            $codeRepository = $em->getRepository(Codes::class);
+
+            $codeRepository->deleteAll();
             if($this->nontrouve){
                 return $this->redirectToRoute('app_code_non_trouve', ['codefiliere' => $this->derfiliere->getCodefiliere()]);
             }else{

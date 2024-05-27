@@ -122,16 +122,18 @@ class EtudiantController extends AbstractController
 
                     $etudiant->setNumetd($record['numetd']);
                     $etudiant->setPrenom($record['prenom']);
+                    //$etudiant->setAdresse($record['adresse']);
                     $etudiant->setNom($record['nom']);
+                    
                     $etudiant->setSexe($record['sexe']);
                     $etudiant->setEmail($record['email']);
-                    $etudiant->setVillnaiss($record['villnaiss']);
-                    $etudiant->setDepnaiss($record['depnaiss']);
+                    //$etudiant->setVillnaiss($record['villnaiss']);
+                    //$etudiant->setDepnaiss($record['depnaiss']);
                     $etudiant->setNationalite($record['nationalite']);
                     $etudiant->setTel($record['tel']);
                     $etudiant->setDerdiplome($record['derdiplome']);
-                    $etudiant->setRegistre($record['registre']);
-                    $etudiant->setStatut($record['statut']);
+                    //$etudiant->setRegistre($record['registre']);
+                    //$etudiant->setStatut($record['statut']);
                     $etudiant->setSports($record['sports']);
                     $etudiant->setHandicape($record['handicape']);
 
@@ -153,14 +155,14 @@ class EtudiantController extends AbstractController
                     $resultbac->setAnneebac($record['anneebac']);
                     $resultbac->setMention($record['mention']);
                     $resultbac->setMoyennebac($record['moyennebac']);
-                    $entityManager->presist($resultbac);
+                    $entityManager->persist($resultbac);
 
                     $filiere = $entityManager->getRepository(Filiere::class)->findOneBy(['nomfiliere' => $record['filiere']]);
                     if($filiere){
                         $formationInt = New FormationInt();
                         $formationInt->setEtudiant($etudiant);
                         $formationInt->setFiliere($filiere);
-                        $entityManager->presist($filiere);
+                        $entityManager->persist($formationInt);
                     }
 
                     // Ajouter les spécialités
@@ -1290,99 +1292,130 @@ class EtudiantController extends AbstractController
         if (!$etudiant) {
             throw new \Exception("Étudiant non trouvé");
         }
-        $annee = $noteRepository->findDistinctYearsForEtudiant($etudiant);
+        $annees = $noteRepository->findDistinctYearsForEtudiant($etudiant);
         $filieres = $em->getRepository(Filiere::class)->findAll();
+        rsort($annees);
 
-        $etd_filiere_details = [];
+        $filieres_moy = [];
+        $annees_donnee = [];
+        $compteurtemp = 1;
+        foreach($annees as $annee){
+            $etd_filiere_details = [];
 
-        foreach ($filieres as $filiere) {
-            $element = $filiere->getElement();
+            foreach ($filieres as $filiere) {
+                $element = $filiere->getElement();
+                $anneeUni = $em->getRepository(AnneeUniversitaire::class)->findOneBy(["annee"=>$annee]);
 
-            $note_element = $em->getRepository(Note::class)->findOneBy([
-                "element" => $element,
-                "etudiant" => $etudiant,
-            ]);
+                $note_element = $em->getRepository(Note::class)->findOneBy([
+                    "element" => $element,
+                    "etudiant" => $etudiant,
+                    "anneeuniversitaire" => $anneeUni,
+                ]);
 
-            if ($note_element) {
+                if ($note_element) {
 
-                $filiere_table = [
-                    ["Nom" => $filiere->getNomfiliere(), "Note" => $note_element->getNote(), "Blocs" => []]
-                ];
-
-                $blocs = $filiere->getBlocs();
-                foreach ($blocs as $bloc) {
-                    $note_bloc = $em->getRepository(Note::class)->findOneBy([
-                        "element" => $bloc->getElement(),
-                        "etudiant" => $etudiant,
-                    ]);
-
-                    $bloc_data = [
-                        "Nom" => $bloc->getNombloc(),
-                        "Note" => $note_bloc ? $note_bloc->getNote() : "-",
-                        "Unites" => []
+                    $filiere_table = [
+                        ["Nom" => $filiere->getNomfiliere(), "Note" => $note_element->getNote(), "Blocs" => []]
                     ];
-
-                    $unites = $bloc->getUnites();
-                    foreach ($unites as $unite) {
-                        $note_unite = $em->getRepository(Note::class)->findOneBy([
-                            "element" => $unite->getElement(),
+                    $filiere_moy = [["Nom"=>$filiere->getNomfiliere(), "Annee"=>$note_element->getAnneeuniversitaire()->getAnnee(),"Note" => $note_element->getNote()]];
+                    $filieres_moy[] = $filiere_moy;
+                    $blocs = $filiere->getBlocs();
+                    foreach ($blocs as $bloc) {
+                        $note_bloc = $em->getRepository(Note::class)->findOneBy([
+                            "element" => $bloc->getElement(),
                             "etudiant" => $etudiant,
                         ]);
 
-                        $unite_data = [
-                            "Nom" => $unite->getNomunite(),
-                            "Note" => $note_unite ? $note_unite->getNote() : "-",
-                            "Matieres" => []
+                        $bloc_data = [
+                            "Nom" => $bloc->getNombloc(),
+                            "Note" => $note_bloc ? $note_bloc->getNote() : "-",
+                            "Unites" => []
                         ];
 
-                        $matieres = $unite->getMatieres();
-                        foreach ($matieres as $matiere) {
-                            $note_matiere = $em->getRepository(Note::class)->findOneBy([
-                                "element" => $matiere->getElement(),
+                        $unites = $bloc->getUnites();
+                        foreach ($unites as $unite) {
+                            $note_unite = $em->getRepository(Note::class)->findOneBy([
+                                "element" => $unite->getElement(),
                                 "etudiant" => $etudiant,
                             ]);
 
-                            $unite_data["Matieres"][] = [
-                                "Nom" => $matiere->getNommat() . ' ' . $matiere->getPeriode(),
-                                "Note" => $note_matiere ? $note_matiere->getNote() : "-"
+                            $unite_data = [
+                                "Nom" => $unite->getNomunite(),
+                                "Note" => $note_unite ? $note_unite->getNote() : "-",
+                                "Matieres" => []
                             ];
+
+                            $matieres = $unite->getMatieres();
+                            foreach ($matieres as $matiere) {
+                                $note_matiere = $em->getRepository(Note::class)->findOneBy([
+                                    "element" => $matiere->getElement(),
+                                    "etudiant" => $etudiant,
+                                ]);
+
+                                $unite_data["Matieres"][] = [
+                                    "Nom" => $matiere->getNommat() . ' ' . $matiere->getPeriode(),
+                                    "Note" => $note_matiere ? $note_matiere->getNote() : "-"
+                                ];
+                            }
+
+                            $bloc_data["Unites"][] = $unite_data;
                         }
 
-                        $bloc_data["Unites"][] = $unite_data;
+                        $filiere_table[0]["Blocs"][] = $bloc_data;
                     }
 
-                    $filiere_table[0]["Blocs"][] = $bloc_data;
+                    $etd_filiere_details[] = $filiere_table;
+                }
+            }
+            //dd($etd_filiere_details);
+            if($compteurtemp === 1){
+                $tab_unites_names = [];
+                $tab_unites_notes = [];
+
+                foreach ($etd_filiere_details[0][0]["Blocs"] as $bloc) {
+                    foreach ($bloc["Unites"] as $unite) {
+                        $tab_unites_names[] = $unite["Nom"];
+                        $tab_unites_notes[] = $unite["Note"];
+                    }
                 }
 
-                $etd_filiere_details[] = $filiere_table;
+                // Remplacer les tirets par des zéros dans le tableau de notes
+                $tab_unites_notes = array_map(function ($note) {
+                    return $note === '-' ? 0 : $note;
+                }, $tab_unites_notes);
+
+                $compteurtemp++;
             }
+            
+
+
+            $annees_donnee[] = [[
+                "annee" => $annee,
+                "edt_filiere"=>$etd_filiere_details,
+                
+            ]];
+
+        
         }
-        //dd($etd_filiere_details);
-        $tab_unites_names = [];
-        $tab_unites_notes = [];
-
-        foreach ($etd_filiere_details[0][0]["Blocs"] as $bloc) {
-            foreach ($bloc["Unites"] as $unite) {
-                $tab_unites_names[] = $unite["Nom"];
-                $tab_unites_notes[] = $unite["Note"];
-            }
-        }
-
-        // Remplacer les tirets par des zéros dans le tableau de notes
-        $tab_unites_notes = array_map(function ($note) {
-            return $note === '-' ? 0 : $note;
-        }, $tab_unites_notes);
-
+        //dd($annees_donnee);
+        
         // Afficher les tableaux de noms et de notes
-
+        
         return $this->render('etudiant/visualisation_etudiant.html.twig', [
             //'filieres' => $filiere,
             'etudiant' => $etudiant,
-            'annees' => $annee, // Ajout de la variable 'annees'
-            'edt_filiere' => $etd_filiere_details,
+            'annees' => $annees, // Ajout de la variable 'annees'
+            'filieres' => $filieres,
+            'filieres_moy' => $filieres_moy,
+            'annees_donnee' => $annees_donnee,
             'tab_unites_name' => $tab_unites_names,
             'tab_unites_note' => $tab_unites_notes,
-            'filieres' => $filieres,
         ]);
     }
+
+
+
+
 }
+
+
