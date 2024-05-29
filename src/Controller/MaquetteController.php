@@ -693,7 +693,7 @@ class MaquetteController extends AbstractController
     }
 
     #[Route('/maquette/importer_codes', name: 'codes_importer')]
-    public function importcodeXML(Request $request, EtudiantRepository $etudiantRepository, EntityManagerInterface $em, managerRegistry $doctrine): Response
+    public function importcodeXML(Request $request, EtudiantRepository $etudiantRepository, EntityManagerInterface $em, managerRegistry $doctrine,  \Twig\Environment $twig): Response
     {
         $filieres = $em->getRepository(Filiere::class)->findAll();
 
@@ -853,9 +853,16 @@ class MaquetteController extends AbstractController
             }
             $entityManager = $doctrine->getManager();
             $filieres = $entityManager->getRepository(Filiere::class)->findAll();
-
-
-            return $this->redirectToRoute('app_maquette');
+            $content = $twig->render('alert_and_redirect.html.twig', [
+                'message' => "Les codes ont été importés avec succès.",
+                'path' => $this->generateUrl('app_maquette')
+            ]);
+        
+            $response = new Response();
+            $response->setContent($content);
+            $response->headers->set('Content-Type', 'text/html');
+        
+            return $response;
         }
 
 

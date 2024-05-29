@@ -93,7 +93,7 @@ class SecurController extends AbstractController
     }
 
     #[Route('/', name: 'login')]
-public function login(AuthenticationUtils $authenticationUtils, EntityManagerInterface $em,UserPasswordHasherInterface $Passwordhasher): Response
+public function login(AuthenticationUtils $authenticationUtils, EntityManagerInterface $em,UserPasswordHasherInterface $Passwordhasher,  \Twig\Environment $twig): Response
 {
     $filieres = $em->getRepository(Filiere::class)->findAll(); 
     $admin1 = $em->getRepository(User::class)->findOneBy(['lastname' => 'BARRY', 'firstname' => 'Boubacar']);
@@ -147,16 +147,17 @@ public function login(AuthenticationUtils $authenticationUtils, EntityManagerInt
                 return $this->redirectToRoute('app_administration_user');
             }
             else {
-                $response = new Response();
-    $response->setContent("
-        <script>
-            alert('Votre inscription est en attente de validation par un administrateur.');
-            window.location.href ='/'; // Redirigez l'utilisateur vers une autre page si nécessaire
-        </script>
-    ");
-    $response->headers->set('Content-Type', 'text/html');
+                
+                $content = $twig->render('alert_and_redirect.html.twig', [
+                    'message' => "Votre inscription est en attente de validation par un administrateur.",
+                    'path' => $this->generateUrl('login')
+                ]);
 
-    return $response;
+                $response = new Response();
+                $response->setContent($content);
+                $response->headers->set('Content-Type', 'text/html');
+
+                return $response;
                 
             }
         }
@@ -252,6 +253,10 @@ public function supprimer (Request $request , EntityManagerInterface $em , User 
 
     return $this->redirectToRoute('app_admin_user');
 }
+
+
+
+
 #[Route('/administration/user/user/modif/{id}', name: 'users_modif', methods: ['POST'])]
 public function modification(Request $request, EntityManagerInterface $em, User $user): Response
 {

@@ -50,7 +50,9 @@ class EtudiantParticulierController extends AbstractController
                 }
             }
         }
-        //dd($etudiant_tableau); 
+        krsort($etudiant_tableau); 
+
+        //rsort($etudiant_tableau);
         return $this->render('etudiant_particulier/index.html.twig', [
             'filiere' => $filiere,
             'codefiliere' => $codefiliere,

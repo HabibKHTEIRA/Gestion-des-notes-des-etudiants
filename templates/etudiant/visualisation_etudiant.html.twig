@@ -76,7 +76,7 @@
             {% for filiere_moy in filieres_moy %}
             <tr>
                 <td>{{ filiere_moy[0].Nom }} </td>
-                <td>{{ filiere_moy[0].Annee }}</td>
+                <td>{{ filiere_moy[0].Annee }}-{{ filiere_moy[0].Annee + 1 }}</td>
                 <td>{{ filiere_moy[0].Note | number_format(2, '.', ',') }}</td>
             </tr>
             {% endfor %}
@@ -91,7 +91,7 @@
 <br><br>
     {% for annee_donnee in annees_donnee %}
     
-        <p id="annee-{{ loop.index }}" style="text-align:center; cursor: pointer;" onclick="toggleTable('{{ loop.index }}')"><b>Année universitaire {{ annee_donnee[0].annee.annee }}</b></p>
+        <p id="annee-{{ loop.index }}" style="text-align:center; cursor: pointer;" onclick="toggleTable('{{ loop.index }}')"><b>Année universitaire {{ annee_donnee[0].annee.annee }}-{{ annee_donnee[0].annee.annee + 1}}</b></p>
         <hr>
         
 

@@ -91,7 +91,7 @@
         <input type="text" id="search-bar" placeholder="Rechercher un étudiant..." onkeyup="searchStudent()">
     </div>
     {% for year, annee in etudiant_tableau %}
-        <p style="text-align:center; color: orange;"><b>Année Universitaire {{ year }} </b></p>
+        <p style="text-align:center; color: orange;"><b>Année Universitaire {{ year }}-{{ year + 1 }} </b></p>
         <table class="table table-bordered table-hover table-sm" id="student-table">
             <thead>
                 <tr style="background-color:greenyellow;">

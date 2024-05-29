@@ -73,7 +73,7 @@ class EtudiantController extends AbstractController
     }
 
     #[Route('/etudiant/information', name: 'etudiant_information')]
-    public function etudiant_information(Request $request, EtudiantRepository $etudiantRepository, EntityManagerInterface $em, managerRegistry $doctrine): Response
+    public function etudiant_information(Request $request, EtudiantRepository $etudiantRepository, EntityManagerInterface $em, managerRegistry $doctrine, \Twig\Environment $twig): Response
     {
         $filieres = $em->getRepository(Filiere::class)->findAll();
         $entityManager = $doctrine->getManager();
@@ -201,22 +201,29 @@ class EtudiantController extends AbstractController
                     }
                 }
             }
+            $content = $twig->render('alert_and_redirect.html.twig', [
+                'message' => "Les étuidants ont été insérés avec succès.",
+                'path' => $this->generateUrl('etudiant_visualisation')
+            ]);
+        
+            $response = new Response();
+            $response->setContent($content);
+            $response->headers->set('Content-Type', 'text/html');
+        
+            return $response;
 
-            // Redirection après traitement
-            return $this->redirectToRoute('etudiant_visualisation');
         }
 
         return $this->render('etudiant/info.html.twig', [
             'form' => $form->createView(),
             'insertionReussie' => $this->insertionReussie,
             'filieres' => $filieres,
-            // Passer le formulaire à la vue Twig
         ]);
     }
 
 
     #[Route('etudiant/note/insertion_mail', name: 'insertion_mail')]
-    public function insertion_mail(Request $request, EntityManagerInterface $em)
+    public function insertion_mail(Request $request, EntityManagerInterface $em, \Twig\Environment $twig)
     {
         $validator = Validation::createValidator();
         $filieres = $em->getRepository(Filiere::class)->findAll();
@@ -673,14 +680,28 @@ class EtudiantController extends AbstractController
                         }
                     }
                 }
-                return $this->redirectToRoute('login');
+                $content = $twig->render('alert_and_redirect.html.twig', [
+                    'message' => "Les notes ont été insérés avec succès.",
+                    'path' => $this->generateUrl('login')
+                ]);
+            
+                $response = new Response();
+                $response->setContent($content);
+                $response->headers->set('Content-Type', 'text/html');
+            
+                return $response;
 
             } else {
-                // Gérez le cas où les informations n'ont pas été trouvées
-                $this->addFlash(
-                    'error',
-                    'Les informations nécessaires n\'ont pas été trouvées dans les données reçues par email.'
-                );
+                $content = $twig->render('alert_and_redirect.html.twig', [
+                    'message' => "Les informations nécessaires n'ont pas été trouvées dans les données reçues par email.",
+                    'path' => $this->generateUrl('insertion_mail')
+                ]);
+            
+                $response = new Response();
+                $response->setContent($content);
+                $response->headers->set('Content-Type', 'text/html');
+            
+                return $response;
             }
         }
 
@@ -692,7 +713,7 @@ class EtudiantController extends AbstractController
 
 
     #[Route('etudiant/note/insertion_file', name: 'insertion_file')]
-    public function importCSV(Request $request, EntityManagerInterface $em)
+    public function importCSV(Request $request, EntityManagerInterface $em,  \Twig\Environment $twig)
     {
         $filieres = $em->getRepository(Filiere::class)->findAll();
         
@@ -1211,6 +1232,16 @@ class EtudiantController extends AbstractController
                 }
             }
             }
+            $content = $twig->render('alert_and_redirect.html.twig', [
+                'message' => "Les notes ont été insérés avec succès.",
+                'path' => $this->generateUrl('login')
+            ]);
+        
+            $response = new Response();
+            $response->setContent($content);
+            $response->headers->set('Content-Type', 'text/html');
+        
+            return $response;
 
             
         }
